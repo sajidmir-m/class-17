@@ -64,6 +64,17 @@ export default function Home() {
     },
   }
 
+  const clientPublicImages = {
+    'Epson India Pvt Ltd': '/epson.png',
+    HP: '/hp.png',
+    Doms: '/domc.png',
+    Kellox: '/kelloggs.jpg',
+    'Bhartiya Exla Life Insurance': '/bharti.jpg',
+    DNA: '/DNA.png',
+    'Star Sports Pro Kabaddi Junior': '/star sports kabadi.jpg',
+    'Z Network': '/z network.jpg',
+  }
+
   const indiaStatesAndUTs = [
     'Andaman & Nicobar Islands',
     'Andhra Pradesh',
@@ -289,6 +300,11 @@ export default function Home() {
 
               const clientObj =
                 clients.length > 0 ? clients.find((c) => c.name === name) || clients[index] : null
+              const logoSrc = clientObj?.logo_url || clientPublicImages[name]
+              const imageClass =
+                name === 'Epson India Pvt Ltd'
+                  ? 'w-full h-full object-contain object-center p-4 group-hover:scale-105 transition-transform duration-500'
+                  : 'w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500'
 
               return (
                 <article
@@ -296,11 +312,11 @@ export default function Home() {
                   className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 card-hover group"
                 >
                   <div className="relative h-40 w-full bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200 flex items-center justify-center overflow-hidden">
-                    {clientObj?.logo_url ? (
+                    {logoSrc ? (
                       <img
-                        src={clientObj.logo_url}
+                        src={logoSrc}
                         alt={name}
-                        className="w-full h-full object-contain px-6 py-4 group-hover:scale-105 transition-transform duration-500"
+                        className={imageClass}
                       />
                     ) : (
                       <span className="text-gray-500 font-semibold text-lg px-4 text-center">{name}</span>
