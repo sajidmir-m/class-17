@@ -9,7 +9,6 @@ export default function StateWorkPage() {
   const [clientsById, setClientsById] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [selectedWorkId, setSelectedWorkId] = useState(null)
   const [selectedImage, setSelectedImage] = useState(null)
 
   useEffect(() => {
@@ -75,14 +74,6 @@ export default function StateWorkPage() {
 
   const primaryWork = works[0]
   const stateName = primaryWork?.state || (slug ? slug.replace(/-/g, ' ') : 'State')
-  const selectedWork = works.find((w) => w.id === selectedWorkId) || null
-
-  useEffect(() => {
-    // Default to first card selected when data loads.
-    if (works.length > 0 && !selectedWorkId) {
-      setSelectedWorkId(works[0].id)
-    }
-  }, [works, selectedWorkId])
 
   return (
     <PublicLayout>
@@ -154,107 +145,83 @@ export default function StateWorkPage() {
               <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 md:p-8">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">Our Work in {stateName}</h2>
                 <p className="text-gray-600 text-sm md:text-base mb-6">
-                  Select any work card to view detailed activities and 4-5 gallery images.
+                  All state work is shown below as multiple cards inside this section.
                 </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                  {works.map((work) => {
-                    const coverImage = Array.isArray(work.images) && work.images.length > 0 ? work.images[0] : null
-                    const isActive = selectedWork?.id === work.id
+                <div className="space-y-6">
+                  {works.map((work, idx) => {
+                    const gallery = Array.isArray(work.images) ? work.images.slice(0, 5) : []
                     return (
-                      <button
-                        key={work.id}
-                        type="button"
-                        onClick={() => setSelectedWorkId(work.id)}
-                        className={`text-left rounded-2xl overflow-hidden border transition-all ${
-                          isActive
-                            ? 'border-blue-500 shadow-lg ring-2 ring-blue-200'
-                            : 'border-gray-200 shadow-sm hover:shadow-md hover:border-blue-300'
-                        }`}
-                      >
-                        <div className="h-40 bg-gray-100">
-                          {coverImage ? (
-                            <img src={coverImage} alt={work.title || work.state} className="w-full h-full object-cover" />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center text-sm text-gray-500">
-                              No image
-                            </div>
+                      <article key={work.id} className="rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+                        <div className="p-5 md:p-6 bg-gradient-to-r from-blue-50 to-purple-50 border-b border-gray-200">
+                          <p className="text-xs font-semibold uppercase tracking-wide text-blue-700 mb-1">
+                            Work {idx + 1}
+                          </p>
+                          <h3 className="text-xl font-bold text-gray-900">
+                            {work.title || `Campaign in ${stateName}`}
+                          </h3>
+                          {work.brand_client_id && (
+                            <p className="text-sm text-gray-600 mt-1">
+                              Brand:{' '}
+                              <span className="font-semibold text-gray-800">
+                                {clientsById[work.brand_client_id]?.name || 'Not specified'}
+                              </span>
+                            </p>
+                          )}
+                          {work.description && (
+                            <p className="text-gray-700 mt-3 text-sm md:text-base">{work.description}</p>
                           )}
                         </div>
-                        <div className="p-4">
-                          <p className="text-sm text-blue-600 font-semibold mb-1">{work.state}</p>
-                          <h3 className="font-bold text-gray-900 mb-2 line-clamp-2">
-                            {work.title || 'Untitled work'}
-                          </h3>
-                          <p className="text-xs text-gray-500">
-                            {(work.activities || []).length} activities • {(work.images || []).length} images
-                          </p>
+
+                        <div className="p-5 md:p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                          <div>
+                            <h4 className="text-lg font-semibold text-gray-900 mb-3">Activities</h4>
+                            {Array.isArray(work.activities) && work.activities.length > 0 ? (
+                              <ul className="space-y-2">
+                                {work.activities.map((activity) => (
+                                  <li key={activity} className="text-sm text-gray-700 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
+                                    {activity}
+                                  </li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <p className="text-sm text-gray-500">No activities added yet.</p>
+                            )}
+                          </div>
+
+                          <div>
+                            <div className="flex items-center justify-between mb-3">
+                              <h4 className="text-lg font-semibold text-gray-900">Gallery</h4>
+                              <span className="text-xs text-gray-500">
+                                Showing {gallery.length} of {(work.images || []).length}
+                              </span>
+                            </div>
+                            {gallery.length > 0 ? (
+                              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                {gallery.map((img, index) => (
+                                  <button
+                                    key={`${img}-${index}`}
+                                    type="button"
+                                    onClick={() => setSelectedImage(img)}
+                                    className="rounded-lg overflow-hidden border border-gray-200"
+                                  >
+                                    <img
+                                      src={img}
+                                      alt={`Work image ${index + 1} in ${stateName}`}
+                                      className="w-full h-24 sm:h-28 object-cover hover:scale-105 transition-transform"
+                                    />
+                                  </button>
+                                ))}
+                              </div>
+                            ) : (
+                              <p className="text-sm text-gray-500">No images added yet.</p>
+                            )}
+                          </div>
                         </div>
-                      </button>
+                      </article>
                     )
                   })}
                 </div>
               </div>
-
-              {selectedWork && (
-                <>
-                  <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 md:p-8">
-                    <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                      {selectedWork.title || `Campaign in ${stateName}`}
-                    </h2>
-                    {selectedWork.description && (
-                      <p className="text-gray-700 leading-relaxed">{selectedWork.description}</p>
-                    )}
-                    {selectedWork.brand_client_id && (
-                      <p className="mt-3 text-sm text-gray-600">
-                        Brand:{' '}
-                        <span className="font-semibold text-gray-900">
-                          {clientsById[selectedWork.brand_client_id]?.name || 'Not specified'}
-                        </span>
-                      </p>
-                    )}
-                  </div>
-
-                  {Array.isArray(selectedWork.activities) && selectedWork.activities.length > 0 && (
-                    <div className="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 rounded-2xl shadow-lg border border-gray-200 p-6 md:p-8">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-5">Activities We Have Done</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {selectedWork.activities.map((activity) => (
-                          <div key={activity} className="bg-white rounded-xl p-4 border border-gray-200">
-                            <p className="text-gray-800 font-medium">{activity}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {Array.isArray(selectedWork.images) && selectedWork.images.length > 0 && (
-                    <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 md:p-8">
-                      <div className="flex items-center justify-between mb-6">
-                        <h3 className="text-2xl font-bold text-gray-900">Our Work Gallery</h3>
-                        <span className="text-sm text-gray-500">
-                          Showing {Math.min(5, selectedWork.images.length)} of {selectedWork.images.length}
-                        </span>
-                      </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-                        {selectedWork.images.slice(0, 5).map((img, index) => (
-                          <button
-                            key={`${img}-${index}`}
-                            type="button"
-                            onClick={() => setSelectedImage(img)}
-                            className="relative group rounded-xl overflow-hidden border border-gray-200"
-                          >
-                            <img
-                              src={img}
-                              alt={`Work image ${index + 1} in ${stateName}`}
-                              className="w-full h-48 object-cover group-hover:scale-105 transition-transform"
-                            />
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </>
-              )}
             </>
           )}
         </div>
