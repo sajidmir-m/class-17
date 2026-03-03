@@ -35,6 +35,14 @@ In your Supabase SQL Editor, run the entire `seed_state_works_epson.sql` file.
 
 If your Supabase doesn't support DO blocks, use the simpler version in `seed_state_works_epson_simple.sql` which uses direct INSERT statements.
 
+## If you already ran the seed (Patch)
+If you already ran the seed and want to add any missed images later, run:
+
+```sql
+-- Supabase SQL editor: run the file
+-- supabase/seed_state_works_epson_after_run_patch.sql
+```
+
 ## States Covered:
 - ✅ Uttar Pradesh (Agra, Gorakhpur, Lucknow, Prayagraj)
 - ✅ Bihar (Muzaffarpur, Patna, Dhanbad)
