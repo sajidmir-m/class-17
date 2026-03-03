@@ -149,6 +149,7 @@ export default function StateWorkPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [selectedImage, setSelectedImage] = useState(null)
+  const [expandedWorkGalleries, setExpandedWorkGalleries] = useState({})
 
   const selectedDistrict = (searchParams.get('district') || '').trim()
   const selectedType = (searchParams.get('type') || '').trim()
@@ -263,7 +264,7 @@ export default function StateWorkPage() {
 
   return (
     <PublicLayout>
-      <section className="bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 text-white py-16 md:py-20">
+      <section className="bg-gradient-to-br from-[#0b0b0c] via-[#1a0b10] to-[#5b0d1b] text-white py-16 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
@@ -288,7 +289,7 @@ export default function StateWorkPage() {
               </Link>
               <Link
                 to="/contact"
-                className="btn-modern bg-white text-blue-600 hover:bg-gray-100 shadow-lg text-sm"
+                className="btn-modern bg-white text-[#5b0d1b] hover:bg-gray-100 shadow-lg text-sm"
               >
                 Plan a Campaign in {stateName}
               </Link>
@@ -336,17 +337,17 @@ export default function StateWorkPage() {
                 </p>
 
                 {/* Filters */}
-                <div className="rounded-2xl border border-gray-200 bg-gradient-to-br from-gray-50 via-white to-gray-50 p-5 md:p-6 mb-8 space-y-5">
+                <div className="rounded-2xl border border-gray-200 bg-gradient-to-br from-[#0b0b0c] via-[#121214] to-[#1a0b10] p-5 md:p-6 mb-8 space-y-5 text-white">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                     <div>
-                      <p className="text-sm font-semibold text-gray-900">Filter by District / City</p>
-                      <p className="text-xs text-gray-600">Click a district to see only the work from that location.</p>
+                      <p className="text-sm font-semibold text-white">Filter by District / City</p>
+                      <p className="text-xs text-white/70">Click a district to see only the work from that location.</p>
                     </div>
                     {(selectedDistrict || selectedType) && (
                       <button
                         type="button"
                         onClick={() => setFilterParams({ district: '', type: '' })}
-                        className="text-xs font-semibold text-gray-700 hover:text-gray-900 border border-gray-300 hover:border-gray-400 bg-white rounded-full px-3 py-2 w-fit"
+                        className="text-xs font-semibold text-white hover:text-white border border-white/20 hover:border-white/40 bg-white/10 rounded-full px-3 py-2 w-fit"
                       >
                         Clear filters
                       </button>
@@ -359,8 +360,8 @@ export default function StateWorkPage() {
                       onClick={() => setFilterParams({ district: '' })}
                       className={
                         selectedDistrict
-                          ? 'text-xs font-semibold text-gray-700 bg-white border border-gray-200 rounded-full px-3 py-1 hover:border-gray-300'
-                          : 'text-xs font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 border border-transparent rounded-full px-3 py-1'
+                          ? 'text-xs font-semibold text-white bg-white/10 border border-white/20 rounded-full px-3 py-1 hover:border-white/40'
+                          : 'text-xs font-semibold text-white bg-gradient-to-r from-[#5b0d1b] to-[#0b0b0c] border border-transparent rounded-full px-3 py-1'
                       }
                     >
                       All Districts
@@ -372,8 +373,8 @@ export default function StateWorkPage() {
                         onClick={() => setFilterParams({ district: d })}
                         className={
                           selectedDistrict === d
-                            ? 'text-xs font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 border border-transparent rounded-full px-3 py-1'
-                            : 'text-xs font-semibold text-gray-700 bg-white border border-gray-200 rounded-full px-3 py-1 hover:border-gray-300'
+                            ? 'text-xs font-semibold text-white bg-gradient-to-r from-[#5b0d1b] to-[#0b0b0c] border border-transparent rounded-full px-3 py-1'
+                            : 'text-xs font-semibold text-white/90 bg-white/10 border border-white/20 rounded-full px-3 py-1 hover:border-white/40'
                         }
                       >
                         {d}
@@ -383,15 +384,15 @@ export default function StateWorkPage() {
 
                   {visibleTypes.length > 0 && (
                     <div className="space-y-2">
-                      <p className="text-sm font-semibold text-gray-900">Filter by Campaign Type</p>
+                      <p className="text-sm font-semibold text-white">Filter by Campaign Type</p>
                       <div className="flex flex-wrap gap-2">
                         <button
                           type="button"
                           onClick={() => setFilterParams({ type: '' })}
                           className={
                             selectedType
-                              ? 'text-xs font-semibold text-gray-700 bg-white border border-gray-200 rounded-full px-3 py-1 hover:border-gray-300'
-                              : 'text-xs font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-600 border border-transparent rounded-full px-3 py-1'
+                              ? 'text-xs font-semibold text-white bg-white/10 border border-white/20 rounded-full px-3 py-1 hover:border-white/40'
+                              : 'text-xs font-semibold text-white bg-gradient-to-r from-[#0b0b0c] to-[#5b0d1b] border border-transparent rounded-full px-3 py-1'
                           }
                         >
                           All Types
@@ -403,8 +404,8 @@ export default function StateWorkPage() {
                             onClick={() => setFilterParams({ type: t.key })}
                             className={
                               selectedType === t.key
-                                ? 'text-xs font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-600 border border-transparent rounded-full px-3 py-1'
-                                : 'text-xs font-semibold text-gray-700 bg-white border border-gray-200 rounded-full px-3 py-1 hover:border-gray-300'
+                                ? 'text-xs font-semibold text-white bg-gradient-to-r from-[#0b0b0c] to-[#5b0d1b] border border-transparent rounded-full px-3 py-1'
+                                : 'text-xs font-semibold text-white/90 bg-white/10 border border-white/20 rounded-full px-3 py-1 hover:border-white/40'
                             }
                           >
                             {t.label}
@@ -438,32 +439,33 @@ export default function StateWorkPage() {
                     )
                     const imagesToUse = selectedDistrict || selectedType ? imagesFiltered : allImages
 
-                    const gallery = imagesToUse.slice(0, 5)
+                    const isExpanded = Boolean(expandedWorkGalleries[work.id])
+                    const gallery = isExpanded ? imagesToUse : imagesToUse.slice(0, 12)
                     const locations = extractLocationsFromImages(imagesToUse)
                     return (
                       <article key={work.id} className="rounded-2xl border border-gray-200 shadow-md hover:shadow-xl overflow-hidden transition-all duration-300 bg-white">
-                        <div className="p-5 md:p-6 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 border-b border-gray-200">
+                        <div className="p-5 md:p-6 bg-gradient-to-r from-[#0b0b0c] via-[#121214] to-[#5b0d1b] border-b border-gray-200 text-white">
                           <div className="flex items-start justify-between gap-4">
                             <div className="flex-1">
                               <div className="flex items-center gap-2 mb-2">
-                                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm">
+                                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#5b0d1b] to-black flex items-center justify-center text-white font-bold text-sm">
                                   {idx + 1}
                                 </div>
-                                <p className="text-xs font-semibold uppercase tracking-wide text-blue-700">
+                                <p className="text-xs font-semibold uppercase tracking-wide text-white/80">
                                   Campaign Work
                                 </p>
                               </div>
-                              <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
+                              <h3 className="text-xl md:text-2xl font-bold text-white mb-2">
                                 {work.title || `Campaign in ${stateName}`}
                               </h3>
                               {work.brand_client_id && (
                                 <div className="flex items-center gap-2 mt-2">
-                                  <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <svg className="w-4 h-4 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
                                   </svg>
-                                  <p className="text-sm text-gray-600">
+                                  <p className="text-sm text-white/80">
                                     Brand:{' '}
-                                    <span className="font-semibold text-gray-800">
+                                    <span className="font-semibold text-white">
                                       {clientsById[work.brand_client_id]?.name || 'Not specified'}
                                     </span>
                                   </p>
@@ -472,11 +474,11 @@ export default function StateWorkPage() {
                               {locations.length > 0 && (
                                 <div className="mt-4">
                                   <div className="flex items-center gap-2 mb-2">
-                                    <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg className="w-4 h-4 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 12.414a4 4 0 10-5.657 5.657l4.243 4.243a8 8 0 0011.314-11.314z" />
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                     </svg>
-                                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-600">
+                                    <p className="text-xs font-semibold uppercase tracking-wide text-white/70">
                                       Districts / Cities Covered
                                     </p>
                                   </div>
@@ -486,7 +488,7 @@ export default function StateWorkPage() {
                                         key={loc}
                                         type="button"
                                         onClick={() => setFilterParams({ district: loc })}
-                                        className="text-xs font-semibold text-gray-700 bg-white/70 border border-gray-200 rounded-full px-3 py-1"
+                                        className="text-xs font-semibold text-white bg-white/10 border border-white/20 rounded-full px-3 py-1 hover:border-white/40"
                                       >
                                         {loc}
                                       </button>
@@ -497,7 +499,7 @@ export default function StateWorkPage() {
                             </div>
                           </div>
                           {work.description && (
-                            <p className="text-gray-700 mt-4 text-sm md:text-base leading-relaxed bg-white/60 rounded-lg p-3 border border-gray-200">
+                            <p className="text-white/85 mt-4 text-sm md:text-base leading-relaxed bg-white/10 rounded-lg p-3 border border-white/10">
                               {work.description}
                             </p>
                           )}
@@ -530,10 +532,10 @@ export default function StateWorkPage() {
                             )}
                           </div>
 
-                          <div>
+                            <div>
                             <div className="flex items-center justify-between mb-4">
                               <div className="flex items-center gap-2">
-                                <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-5 h-5 text-[#5b0d1b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
                                 <h4 className="text-lg font-semibold text-gray-900">Photo Gallery</h4>
@@ -543,8 +545,9 @@ export default function StateWorkPage() {
                               </span>
                             </div>
                             {gallery.length > 0 ? (
-                              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                {gallery.map((img, index) => {
+                              <>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                  {gallery.map((img, index) => {
                                   // Handle both public folder paths and full URLs
                                   const imageSrc = img.startsWith('/') ? img : (img.startsWith('http') ? img : `/${img}`)
                                   return (
@@ -573,8 +576,26 @@ export default function StateWorkPage() {
                                       </div>
                                     </button>
                                   )
-                                })}
-                              </div>
+                                  })}
+                                </div>
+
+                                {imagesToUse.length > 12 && (
+                                  <div className="mt-4 flex justify-center">
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        setExpandedWorkGalleries((prev) => ({
+                                          ...prev,
+                                          [work.id]: !prev[work.id],
+                                        }))
+                                      }
+                                      className="text-sm font-semibold text-white bg-gradient-to-r from-[#0b0b0c] to-[#5b0d1b] rounded-xl px-4 py-2 shadow-md hover:shadow-lg"
+                                    >
+                                      {isExpanded ? 'Show less' : `Show all images (${imagesToUse.length})`}
+                                    </button>
+                                  </div>
+                                )}
+                              </>
                             ) : (
                               <p className="text-sm text-gray-500">
                                 No images for this filter. Try a different district/city or type.

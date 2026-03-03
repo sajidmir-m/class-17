@@ -9,6 +9,7 @@ export default function Home() {
   const [news, setNews] = useState([])
   const [clients, setClients] = useState([])
   const [stateWorks, setStateWorks] = useState([])
+  const [selectedGalleryImage, setSelectedGalleryImage] = useState(null)
 
   const featuredClients = [
     'Epson India Pvt Ltd',
@@ -246,25 +247,38 @@ export default function Home() {
   return (
     <PublicLayout>
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 text-white py-24 md:py-32">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIyIi8+PC9nPjwvZz48L3N2Zz4=')] opacity-20"></div>
+      <section className="relative overflow-hidden text-white py-24 md:py-32">
+        <div className="absolute inset-0">
+          <video
+            className="w-full h-full object-cover"
+            src="/video/home.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/60 to-[#5b0d1b]/70" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(91,13,27,0.45),transparent_50%),radial-gradient(circle_at_80%_40%,rgba(0,0,0,0.55),transparent_55%)]" />
+        </div>
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-sm uppercase tracking-[0.35em] text-white/70 mb-4">Class 17 Events</p>
           <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
-            Class 17 Events
-          </h1>
-          <p className="text-xl md:text-2xl mb-10 text-blue-100 font-light max-w-2xl mx-auto">
             Ideas That Speak Louder Than Words
+          </h1>
+          <p className="text-base md:text-xl mb-10 text-white/80 font-light max-w-3xl mx-auto">
+            Strategy-led activations, district-level execution, and on-ground experiences that move people — and brands.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/contact"
-              className="btn-modern bg-white text-blue-600 hover:bg-gray-100 shadow-xl"
+              className="btn-modern bg-white text-[#5b0d1b] hover:bg-gray-100 shadow-xl"
             >
               Get Started
             </Link>
             <Link
               to="/portfolio"
-              className="btn-modern bg-white/10 backdrop-blur-sm text-white border-2 border-white/30 hover:bg-white/20"
+              className="btn-modern bg-white/10 backdrop-blur-sm text-white border-2 border-white/20 hover:bg-white/15"
             >
               View Portfolio
             </Link>
@@ -550,26 +564,93 @@ export default function Home() {
               Photos from school activities, retail activations, sports engagements, and industrial demos.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((slot) => (
-              <div
-                key={slot}
-                className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl border border-dashed border-gray-300 flex items-center justify-center text-gray-500 text-sm text-center px-4"
-              >
-                Gallery image slot {slot} – you will provide images to replace these.
+
+          {(() => {
+            const images = (stateWorks || [])
+              .flatMap((w) => (Array.isArray(w.images) ? w.images : []))
+              .filter(Boolean)
+
+            const topImages = images.slice(0, 12)
+
+            if (topImages.length === 0) {
+              return (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {[1, 2, 3, 4, 5, 6].map((slot) => (
+                    <div
+                      key={slot}
+                      className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl border border-dashed border-gray-300 flex items-center justify-center text-gray-500 text-sm text-center px-4"
+                    >
+                      Gallery image slot {slot} – add state works with images to auto-fill this gallery.
+                    </div>
+                  ))}
+                </div>
+              )
+            }
+
+            return (
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                {topImages.map((img, idx) => {
+                  const src = img.startsWith('/') ? img : img.startsWith('http') ? img : `/${img}`
+                  return (
+                    <button
+                      key={`${src}-${idx}`}
+                      type="button"
+                      onClick={() => setSelectedGalleryImage(src)}
+                      className="group relative overflow-hidden rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+                      <img
+                        src={src}
+                        alt="Gallery"
+                        className="w-full h-36 sm:h-40 object-cover group-hover:scale-110 transition-transform duration-300"
+                        onError={(e) => {
+                          e.target.src = '/placeholder-image.svg'
+                        }}
+                      />
+                    </button>
+                  )
+                })}
               </div>
-            ))}
-          </div>
+            )
+          })()}
+
           <div className="mt-10 flex justify-center">
             <Link
               to="/portfolio"
-              className="btn-modern bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
+              className="btn-modern bg-gradient-to-r from-black to-[#5b0d1b] text-white shadow-lg"
             >
               View Portfolio
             </Link>
           </div>
         </div>
       </section>
+
+      {/* Gallery Lightbox */}
+      {selectedGalleryImage && (
+        <div
+          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
+          onClick={() => setSelectedGalleryImage(null)}
+        >
+          <button
+            onClick={() => setSelectedGalleryImage(null)}
+            className="absolute top-4 right-4 text-white hover:text-gray-300 text-3xl font-bold w-12 h-12 flex items-center justify-center bg-black/60 rounded-full hover:bg-black/80 transition-all duration-200 shadow-lg z-10"
+            aria-label="Close image"
+          >
+            ×
+          </button>
+          <div className="relative max-w-7xl max-h-[90vh] flex items-center justify-center">
+            <img
+              src={selectedGalleryImage}
+              alt="Full size view"
+              className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+              onError={(e) => {
+                e.target.src = '/placeholder-image.svg'
+              }}
+            />
+          </div>
+        </div>
+      )}
 
       {/* News Section */}
       <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
