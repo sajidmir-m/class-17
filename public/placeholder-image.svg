@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f3f4f6"/>
+      <stop offset="1" stop-color="#e5e7eb"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3b82f6"/>
+      <stop offset="1" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <rect x="70" y="70" width="1060" height="660" rx="32" fill="#ffffff" stroke="#d1d5db" stroke-width="4"/>
+
+  <rect x="140" y="140" width="920" height="440" rx="24" fill="#f9fafb" stroke="#e5e7eb" stroke-width="3"/>
+  <path d="M210 520 L430 340 L585 470 L720 360 L990 520" fill="none" stroke="url(#accent)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="365" cy="280" r="34" fill="url(#accent)" opacity="0.9"/>
+
+  <g fill="#6b7280" font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
+    <text x="600" y="650" font-size="34" font-weight="700">Image not available</text>
+    <text x="600" y="695" font-size="22">Please check the file path in public/Photos or Supabase URL</text>
+  </g>
+</svg>
+
+

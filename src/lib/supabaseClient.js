@@ -10,16 +10,40 @@ const createMockSupabase = () => {
     'Supabase is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to a .env file to enable backend features.'
   )
 
-  const mockSelectChain = async () => ({ data: [], error: null, count: 0 })
+  // Mimic the PostgREST query builder enough for our UI to keep working:
+  // - Reads return empty arrays instead of throwing (so public pages can load)
+  // - Writes return an explicit "Supabase not configured" error (so admin actions fail clearly)
+  const emptyReadResult = { data: [], error: null, count: 0 }
+
+  const makeReadableQuery = () => {
+    // A thenable chain so `await supabase.from().select().eq()` works like the real client
+    const chain = {
+      select: () => chain,
+      eq: () => chain,
+      in: () => chain,
+      order: () => chain,
+      limit: () => chain,
+      single: async () => ({ data: null, error: null }),
+      maybeSingle: async () => ({ data: null, error: null }),
+      then: (resolve, reject) => Promise.resolve(emptyReadResult).then(resolve, reject),
+      catch: (reject) => Promise.resolve(emptyReadResult).catch(reject),
+      finally: (cb) => Promise.resolve(emptyReadResult).finally(cb),
+    }
+    return chain
+  }
 
   const mockTable = () => ({
-    select: () => ({
-      order: mockSelectChain,
-    }),
+    // Read/query methods
+    select: () => makeReadableQuery(),
+
+    // Write methods (keep them as explicit errors)
     insert: async () => ({ data: null, error: new Error('Supabase not configured') }),
     update: async () => ({ data: null, error: new Error('Supabase not configured') }),
     delete: async () => ({ data: null, error: new Error('Supabase not configured') }),
-    eq: async () => ({ data: null, error: new Error('Supabase not configured') }),
+
+    // Some code may start chains from eq/in directly
+    eq: () => makeReadableQuery(),
+    in: () => makeReadableQuery(),
   })
 
   return {
