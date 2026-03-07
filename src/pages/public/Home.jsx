@@ -249,23 +249,31 @@ export default function Home() {
   return (
     <PublicLayout>
       {/* Hero Section */}
-      <section className="relative overflow-hidden text-white py-24 md:py-32 min-h-[70vh] flex items-end">
+      <section className="relative overflow-hidden text-white min-h-[70vh]">
         <div className="absolute inset-0 bg-black">
-          <img
-            src="/logo.png"
-            alt="Class 17 Events logo"
-            className="w-full h-full object-contain md:object-contain opacity-90 md:opacity-95 pointer-events-none select-none"
+          <video
+            src="/video/logo.mp4"
+            className="w-full h-full object-cover opacity-90 md:opacity-95"
+            autoPlay
+            loop
+            muted
+            playsInline
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-black/30 to-[#5b0d1b]/60" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(91,13,27,0.4),transparent_55%),radial-gradient(circle_at_80%_40%,rgba(0,0,0,0.5),transparent_60%)]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-black/40 to-[#5b0d1b]/70" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(91,13,27,0.45),transparent_55%),radial-gradient(circle_at_80%_40%,rgba(0,0,0,0.6),transparent_60%)]" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 md:pb-10">
-          <p className="text-sm uppercase tracking-[0.35em] text-white/70 mb-4 text-left">
-            Class 17 Events
-          </p>
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-            <p className="text-base md:text-xl text-white/80 font-light max-w-3xl md:max-w-xl text-left">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-between min-h-[70vh] py-10 md:py-14">
+          {/* Top center title */}
+          <div className="flex justify-center">
+            <p className="text-sm md:text-base uppercase tracking-[0.35em] text-white/80 text-center">
+              Class 17 Events
+            </p>
+          </div>
+
+          {/* Bottom content: left text, right buttons */}
+          <div className="mt-10 md:mt-0 flex flex-col md:flex-row md:items-end md:justify-between gap-6 pb-4 md:pb-8">
+            <p className="text-base md:text-xl text-white/85 font-light max-w-3xl md:max-w-xl text-left">
               Strategy-led activations, district-level execution, and on-ground experiences that move people — and brands.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-start md:justify-end">
@@ -396,11 +404,11 @@ export default function Home() {
       </section>
 
       {/* Cricket Activities Section (replaces Upcoming Events) */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gradient-to-br from-black via-[#2b0208] to-[#5b0d1b]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="section-title">Cricket Activities</h2>
-            <p className="section-subtitle">
+            <h2 className="section-title text-white">Cricket Activities</h2>
+            <p className="section-subtitle text-gray-200">
               Live cricket screenings, ground activations, and fan engagement moments captured across locations.
             </p>
           </div>
@@ -417,7 +425,7 @@ export default function Home() {
               return (
                 <div
                   key={`${src}-${idx}`}
-                  className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 card-hover group"
+                  className="bg-gradient-to-br from-black/80 via-[#33040c] to-[#5b0d1b] rounded-2xl shadow-2xl overflow-hidden border border-white/10 card-hover group transform hover:-translate-y-1 transition-all duration-300"
                 >
                   <div className="relative h-64 overflow-hidden">
                     <img
@@ -428,9 +436,11 @@ export default function Home() {
                         e.target.src = '/placeholder-image.svg'
                       }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                     <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-xs text-white/90">
-                      <span className="px-3 py-1 rounded-full bg-black/70 font-semibold">Cricket activity</span>
+                      <span className="px-3 py-1 rounded-full bg-black/80 font-semibold shadow-md">
+                        Cricket activity
+                      </span>
                       <span className="flex items-center gap-1 bg-white/10 px-2 py-1 rounded-full backdrop-blur-sm">
                         <span>📍</span>
                         <span>{location}</span>
