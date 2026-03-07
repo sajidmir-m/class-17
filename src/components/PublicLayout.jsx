@@ -20,8 +20,15 @@ export default function PublicLayout({ children }) {
       <nav className="bg-white/80 backdrop-blur-lg border-b border-gray-200 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            <Link to="/" className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-              Class 17 Events
+            <Link to="/" className="flex items-center gap-3">
+              <img
+                src="/logo.png"
+                alt="Class 17 Events logo"
+                className="h-10 w-auto object-contain"
+              />
+              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                Class 17 Events
+              </span>
             </Link>
             <div className="hidden md:flex items-center space-x-1">
               {navLinks.map((link) => (

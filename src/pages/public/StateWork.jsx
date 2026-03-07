@@ -10,6 +10,13 @@ const CAMPAIGN_TYPES = [
   { key: 'printer-challenge', label: 'Printer Challenge' },
 ]
 
+const ACTIVITY_FOCUS = [
+  { key: 'cricket', label: 'Cricket' },
+  { key: 'social', label: 'Social' },
+  { key: 'school', label: 'School' },
+  { key: 'brand', label: 'Brand / Other' },
+]
+
 function normalizeLocationName(input) {
   if (!input || typeof input !== 'string') return ''
 
@@ -31,6 +38,27 @@ function normalizeLocationName(input) {
   if (/^\d{4}$/.test(s)) return ''
 
   return s
+}
+
+function getImageActivityLabelFromPath(img) {
+  if (!img || typeof img !== 'string') return 'Brand activation'
+  const s = img.toLowerCase()
+
+  if (s.includes('cricket')) return 'Cricket activity'
+  if (s.includes('social activity')) return 'Social activity'
+  if (s.includes('school activity')) return 'School activity'
+  if (s.includes('epson for business')) return 'Business activation'
+  if (s.includes('epson for education')) return 'Education activation'
+  if (s.includes('epson for healthcare')) return 'Healthcare activation'
+  if (s.includes('epson for printer challenge')) return 'Printer challenge activation'
+
+  return 'Brand activation'
+}
+
+function formatActivityText(activity) {
+  if (!activity || typeof activity !== 'string') return activity
+  // Remove leading "Epson" / "EPSON" so copy feels less brand-heavy
+  return activity.replace(/^\s*epson\s+/i, '').trim()
 }
 
 function normalizeCampaignTypeFromFolder(folderName) {
@@ -141,6 +169,15 @@ function formatError(e) {
   }
 }
 
+function getActivityKeyFromPath(img) {
+  if (!img || typeof img !== 'string') return 'brand'
+  const s = img.toLowerCase()
+  if (s.includes('cricket')) return 'cricket'
+  if (s.includes('social activity')) return 'social'
+  if (s.includes('school activity')) return 'school'
+  return 'brand'
+}
+
 export default function StateWorkPage() {
   const { slug } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -153,6 +190,7 @@ export default function StateWorkPage() {
 
   const selectedDistrict = (searchParams.get('district') || '').trim()
   const selectedType = (searchParams.get('type') || '').trim()
+  const selectedActivity = (searchParams.get('activity') || '').trim()
 
   useEffect(() => {
     if (!slug) return
@@ -219,18 +257,23 @@ export default function StateWorkPage() {
   const primaryWork = works[0]
   const stateName = primaryWork?.state || (slug ? slug.replace(/-/g, ' ') : 'State')
 
-  const { allDistricts, allTypes } = useMemo(() => {
+  const { allDistricts, allTypes, allActivityKeys } = useMemo(() => {
     const districts = new Set()
     const types = new Set()
+    const activityKeys = new Set()
 
     works.forEach((w) => {
       extractLocationsFromImages(w.images).forEach((d) => districts.add(d))
       extractCampaignTypesFromImages(w.images).forEach((t) => types.add(t))
+      ;(Array.isArray(w.images) ? w.images : []).forEach((img) => {
+        activityKeys.add(getActivityKeyFromPath(img))
+      })
     })
 
     return {
       allDistricts: Array.from(districts).sort((a, b) => a.localeCompare(b)),
       allTypes: Array.from(types),
+      allActivityKeys: Array.from(activityKeys),
     }
   }, [works])
 
@@ -240,14 +283,28 @@ export default function StateWorkPage() {
     return CAMPAIGN_TYPES.filter((t) => present.has(t.key))
   }, [allTypes])
 
+  const visibleActivityFocus = useMemo(() => {
+    const present = new Set(allActivityKeys)
+    return ACTIVITY_FOCUS.filter((t) => present.has(t.key))
+  }, [allActivityKeys])
+
   const filteredWorks = useMemo(() => {
-    if (!selectedDistrict && !selectedType) return works
+    if (!selectedDistrict && !selectedType && !selectedActivity) return works
 
     return works.filter((w) => {
       const imgs = Array.isArray(w.images) ? w.images : []
-      return imgs.some((img) => imageMatchesDistrict(img, selectedDistrict) && imageMatchesType(img, selectedType))
+      return imgs.some((img) => {
+        const activityKey = getActivityKeyFromPath(img)
+        const matchesActivity =
+          !selectedActivity || (selectedActivity === 'brand' ? activityKey === 'brand' : activityKey === selectedActivity)
+        return (
+          imageMatchesDistrict(img, selectedDistrict) &&
+          imageMatchesType(img, selectedType) &&
+          matchesActivity
+        )
+      })
     })
-  }, [works, selectedDistrict, selectedType])
+  }, [works, selectedDistrict, selectedType, selectedActivity])
 
   const setFilterParams = (next) => {
     const params = new URLSearchParams(searchParams)
@@ -258,6 +315,10 @@ export default function StateWorkPage() {
     if (next.type !== undefined) {
       if (next.type) params.set('type', next.type)
       else params.delete('type')
+    }
+    if (next.activity !== undefined) {
+      if (next.activity) params.set('activity', next.activity)
+      else params.delete('activity')
     }
     setSearchParams(params, { replace: true })
   }
@@ -343,10 +404,10 @@ export default function StateWorkPage() {
                       <p className="text-sm font-semibold text-white">Filter by District / City</p>
                       <p className="text-xs text-white/70">Click a district to see only the work from that location.</p>
                     </div>
-                    {(selectedDistrict || selectedType) && (
+                    {(selectedDistrict || selectedType || selectedActivity) && (
                       <button
                         type="button"
-                        onClick={() => setFilterParams({ district: '', type: '' })}
+                        onClick={() => setFilterParams({ district: '', type: '', activity: '' })}
                         className="text-xs font-semibold text-white hover:text-white border border-white/20 hover:border-white/40 bg-white/10 rounded-full px-3 py-2 w-fit"
                       >
                         Clear filters
@@ -414,6 +475,39 @@ export default function StateWorkPage() {
                       </div>
                     </div>
                   )}
+
+                  {visibleActivityFocus.length > 0 && (
+                    <div className="space-y-2">
+                      <p className="text-sm font-semibold text-white">Filter by Activity Type</p>
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setFilterParams({ activity: '' })}
+                          className={
+                            selectedActivity
+                              ? 'text-xs font-semibold text-white bg-white/10 border border-white/20 rounded-full px-3 py-1 hover:border-white/40'
+                              : 'text-xs font-semibold text-white bg-gradient-to-r from-[#0b0b0c] to-[#5b0d1b] border border-transparent rounded-full px-3 py-1'
+                          }
+                        >
+                          All Activity Types
+                        </button>
+                        {visibleActivityFocus.map((t) => (
+                          <button
+                            key={t.key}
+                            type="button"
+                            onClick={() => setFilterParams({ activity: t.key })}
+                            className={
+                              selectedActivity === t.key
+                                ? 'text-xs font-semibold text-white bg-gradient-to-r from-[#0b0b0c] to-[#5b0d1b] border border-transparent rounded-full px-3 py-1'
+                                : 'text-xs font-semibold text-white/90 bg-white/10 border border-white/20 rounded-full px-3 py-1 hover:border-white/40'
+                            }
+                          >
+                            {t.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {filteredWorks.length === 0 ? (
@@ -434,9 +528,18 @@ export default function StateWorkPage() {
                 <div className="space-y-6">
                   {filteredWorks.map((work, idx) => {
                     const allImages = Array.isArray(work.images) ? work.images : []
-                    const imagesFiltered = allImages.filter(
-                      (img) => imageMatchesDistrict(img, selectedDistrict) && imageMatchesType(img, selectedType)
-                    )
+                    const imagesFiltered = allImages.filter((img) => {
+                      const activityKey = getActivityKeyFromPath(img)
+                      const matchesActivity =
+                        !selectedActivity ||
+                        (selectedActivity === 'brand' ? activityKey === 'brand' : activityKey === selectedActivity)
+
+                      return (
+                        imageMatchesDistrict(img, selectedDistrict) &&
+                        imageMatchesType(img, selectedType) &&
+                        matchesActivity
+                      )
+                    })
                     const imagesToUse = selectedDistrict || selectedType ? imagesFiltered : allImages
 
                     const isExpanded = Boolean(expandedWorkGalleries[work.id])
@@ -523,7 +626,7 @@ export default function StateWorkPage() {
                                     <div className="flex-shrink-0 mt-0.5">
                                       <div className="w-2 h-2 rounded-full bg-blue-600 group-hover:bg-blue-700 transition-colors"></div>
                                     </div>
-                                    <span className="flex-1 leading-relaxed">{activity}</span>
+                                    <span className="flex-1 leading-relaxed">{formatActivityText(activity)}</span>
                                   </li>
                                 ))}
                               </ul>
@@ -548,34 +651,40 @@ export default function StateWorkPage() {
                               <>
                                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                                   {gallery.map((img, index) => {
-                                  // Handle both public folder paths and full URLs
-                                  const imageSrc = img.startsWith('/') ? img : (img.startsWith('http') ? img : `/${img}`)
-                                  return (
-                                    <button
-                                      key={`${img}-${index}`}
-                                      type="button"
-                                      onClick={() => setSelectedImage(imageSrc)}
-                                      className="group relative rounded-xl overflow-hidden border-2 border-gray-200 hover:border-blue-400 shadow-sm hover:shadow-lg transition-all duration-300"
-                                    >
-                                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
-                                      <img
-                                        src={imageSrc}
-                                        alt={`Work image ${index + 1} in ${stateName}`}
-                                        className="w-full h-28 sm:h-32 object-cover group-hover:scale-110 transition-transform duration-300"
-                                        onError={(e) => {
-                                          // Fallback if image doesn't load
-                                          e.target.src = '/placeholder-image.svg'
-                                        }}
-                                      />
-                                      <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
-                                        <div className="bg-white/90 backdrop-blur-sm rounded-full p-1.5">
-                                          <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                                          </svg>
+                                    // Handle both public folder paths and full URLs
+                                    const imageSrc = img.startsWith('/') ? img : img.startsWith('http') ? img : `/${img}`
+                                    const label = getImageActivityLabelFromPath(img)
+                                    return (
+                                      <button
+                                        key={`${img}-${index}`}
+                                        type="button"
+                                        onClick={() => setSelectedImage(imageSrc)}
+                                        className="group relative rounded-xl overflow-hidden border-2 border-gray-200 hover:border-blue-400 shadow-sm hover:shadow-lg transition-all duration-300"
+                                      >
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
+                                        <img
+                                          src={imageSrc}
+                                          alt={`Work image ${index + 1} in ${stateName}`}
+                                          className="w-full h-28 sm:h-32 object-cover group-hover:scale-110 transition-transform duration-300"
+                                          onError={(e) => {
+                                            // Fallback if image doesn't load
+                                            e.target.src = '/placeholder-image.svg'
+                                          }}
+                                        />
+                                        <div className="absolute bottom-2 left-2 z-20">
+                                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-black/70 text-white shadow-sm">
+                                            {label}
+                                          </span>
                                         </div>
-                                      </div>
-                                    </button>
-                                  )
+                                        <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                                          <div className="bg-white/90 backdrop-blur-sm rounded-full p-1.5">
+                                            <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                                            </svg>
+                                          </div>
+                                        </div>
+                                      </button>
+                                    )
                                   })}
                                 </div>
 

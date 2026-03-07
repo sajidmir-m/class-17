@@ -7,6 +7,9 @@ const CAMPAIGN_TYPES = [
   { key: 'education', label: 'Education' },
   { key: 'healthcare', label: 'Healthcare' },
   { key: 'printer-challenge', label: 'Printer Challenge' },
+  { key: 'cricket', label: 'Cricket' },
+  { key: 'social', label: 'Social' },
+  { key: 'school', label: 'School' },
 ]
 
 function normalizeCampaignTypeFromFolder(folderName) {
@@ -22,6 +25,12 @@ function normalizeCampaignTypeFromFolder(folderName) {
 function extractTypeFromImagePath(img) {
   if (!img || typeof img !== 'string') return ''
   const parts = img.split('/').filter(Boolean)
+
+  const s = img.toLowerCase()
+  if (s.includes('cricket')) return 'cricket'
+  if (s.includes('social activity')) return 'social'
+  if (s.includes('school activity')) return 'school'
+
   const photosIdx = parts.findIndex((p) => p.toLowerCase() === 'photos')
   const campaignIdx = photosIdx >= 0 ? photosIdx + 1 : -1
   const campaignSegment = campaignIdx >= 0 ? parts[campaignIdx] : ''
@@ -154,30 +163,38 @@ export default function Portfolio() {
 
               {stateWorkImages.length > 0 ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {stateWorkImages.slice(0, 48).map((x, idx) => {
-                    const src = x.img.startsWith('/') ? x.img : x.img.startsWith('http') ? x.img : `/${x.img}`
-                    return (
-                      <button
-                        key={`${src}-${idx}`}
-                        type="button"
-                        onClick={() => setSelectedImage(src)}
-                        className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-sm hover:shadow-xl transition-all duration-300"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10" />
-                        <img
-                          src={src}
-                          alt={x.title || x.state || 'Portfolio image'}
-                          className="w-full h-36 sm:h-40 object-cover group-hover:scale-110 transition-transform duration-300"
-                          onError={(e) => {
-                            e.target.src = '/placeholder-image.svg'
-                          }}
-                        />
-                        <div className="absolute bottom-2 left-2 right-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <p className="text-[11px] text-white/90 font-semibold truncate">{x.state || 'State work'}</p>
-                        </div>
-                      </button>
-                    )
-                  })}
+              {stateWorkImages.slice(0, 48).map((x, idx) => {
+                const src = x.img.startsWith('/') ? x.img : x.img.startsWith('http') ? x.img : `/${x.img}`
+                const typeKey = extractTypeFromImagePath(x.img)
+                const typeLabel =
+                  CAMPAIGN_TYPES.find((t) => t.key === typeKey)?.label || 'Brand activation'
+                return (
+                  <button
+                    key={`${src}-${idx}`}
+                    type="button"
+                    onClick={() => setSelectedImage(src)}
+                    className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-sm hover:shadow-xl transition-all duration-300"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+                    <img
+                      src={src}
+                      alt={x.title || x.state || typeLabel || 'Portfolio image'}
+                      className="w-full h-36 sm:h-40 object-cover group-hover:scale-110 transition-transform duration-300"
+                      onError={(e) => {
+                        e.target.src = '/placeholder-image.svg'
+                      }}
+                    />
+                    <div className="absolute bottom-2 left-2 right-2 z-20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-between gap-2">
+                      <p className="text-[11px] text-white/90 font-semibold truncate">
+                        {x.state || 'State work'}
+                      </p>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-black/70 text-white">
+                        {typeLabel}
+                      </span>
+                    </div>
+                  </button>
+                )
+              })}
                 </div>
               ) : (
                 <div className="text-center py-12">

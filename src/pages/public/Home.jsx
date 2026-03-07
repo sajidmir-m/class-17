@@ -9,7 +9,9 @@ export default function Home() {
   const [news, setNews] = useState([])
   const [clients, setClients] = useState([])
   const [stateWorks, setStateWorks] = useState([])
+  const [showAllStatesHighlights, setShowAllStatesHighlights] = useState(false)
   const [selectedGalleryImage, setSelectedGalleryImage] = useState(null)
+  const [galleryActivityFilter, setGalleryActivityFilter] = useState('')
 
   const featuredClients = [
     'Epson India Pvt Ltd',
@@ -231,7 +233,7 @@ export default function Home() {
         supabase.from('events').select('*').order('created_at', { ascending: false }).limit(6),
         supabase.from('news').select('*').order('created_at', { ascending: false }).limit(3),
         supabase.from('clients').select('*').order('created_at', { ascending: false }).limit(6),
-        supabase.from('state_works').select('*').order('created_at', { ascending: false }).limit(6),
+        supabase.from('state_works').select('*').order('created_at', { ascending: false }),
       ])
 
       if (eventsRes.data) setEvents(eventsRes.data)
@@ -247,41 +249,39 @@ export default function Home() {
   return (
     <PublicLayout>
       {/* Hero Section */}
-      <section className="relative overflow-hidden text-white py-24 md:py-32">
-        <div className="absolute inset-0">
-          <video
-            className="w-full h-full object-cover"
-            src="/video/home.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
+      <section className="relative overflow-hidden text-white py-24 md:py-32 min-h-[70vh] flex items-end">
+        <div className="absolute inset-0 bg-black">
+          <img
+            src="/logo.png"
+            alt="Class 17 Events logo"
+            className="w-full h-full object-contain md:object-contain opacity-90 md:opacity-95 pointer-events-none select-none"
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/60 to-[#5b0d1b]/70" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(91,13,27,0.45),transparent_50%),radial-gradient(circle_at_80%_40%,rgba(0,0,0,0.55),transparent_55%)]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-black/20 via-black/30 to-[#5b0d1b]/60" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(91,13,27,0.4),transparent_55%),radial-gradient(circle_at_80%_40%,rgba(0,0,0,0.5),transparent_60%)]" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-sm uppercase tracking-[0.35em] text-white/70 mb-4">Class 17 Events</p>
-          <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
-            Ideas That Speak Louder Than Words
-          </h1>
-          <p className="text-base md:text-xl mb-10 text-white/80 font-light max-w-3xl mx-auto">
-            Strategy-led activations, district-level execution, and on-ground experiences that move people — and brands.
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 md:pb-10">
+          <p className="text-sm uppercase tracking-[0.35em] text-white/70 mb-4 text-left">
+            Class 17 Events
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/contact"
-              className="btn-modern bg-white text-[#5b0d1b] hover:bg-gray-100 shadow-xl"
-            >
-              Get Started
-            </Link>
-            <Link
-              to="/portfolio"
-              className="btn-modern bg-white/10 backdrop-blur-sm text-white border-2 border-white/20 hover:bg-white/15"
-            >
-              View Portfolio
-            </Link>
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+            <p className="text-base md:text-xl text-white/80 font-light max-w-3xl md:max-w-xl text-left">
+              Strategy-led activations, district-level execution, and on-ground experiences that move people — and brands.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-start md:justify-end">
+              <Link
+                to="/contact"
+                className="btn-modern bg-white text-[#5b0d1b] hover:bg-gray-100 shadow-xl"
+              >
+                Get Started
+              </Link>
+              <Link
+                to="/portfolio"
+                className="btn-modern bg-white/10 backdrop-blur-sm text-white border-2 border-white/20 hover:bg-white/15"
+              >
+                View Portfolio
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -395,63 +395,52 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Events Section */}
+      {/* Cricket Activities Section (replaces Upcoming Events) */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="section-title">Upcoming Events</h2>
-            <p className="section-subtitle">Discover our latest events and experiences</p>
+            <h2 className="section-title">Cricket Activities</h2>
+            <p className="section-subtitle">
+              Live cricket screenings, ground activations, and fan engagement moments captured across locations.
+            </p>
           </div>
-          {events.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {events.map((event) => (
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              '/cricket activities/cricket 1.png',
+              '/cricket activities/cricket 2.png',
+              '/cricket activities/kolkata/cricket 1.png',
+              '/cricket activities/kolkata/cricket 3.png',
+            ].map((src, idx) => {
+              const isKolkata = src.toLowerCase().includes('kolkata')
+              const location = isKolkata ? 'Kolkata' : 'Multi-city activation'
+              return (
                 <div
-                  key={event.id}
+                  key={`${src}-${idx}`}
                   className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 card-hover group"
                 >
-                  {event.image_url && (
-                    <div className="relative h-64 overflow-hidden">
-                      <img
-                        src={event.image_url}
-                        alt={event.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                      {event.category && (
-                        <span className="absolute top-4 right-4 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                          {event.category}
-                        </span>
-                      )}
-                    </div>
-                  )}
-                  <div className="p-6">
-                    <h3 className="text-2xl font-bold mb-3 text-gray-900 group-hover:text-blue-600 transition">
-                      {event.title}
-                    </h3>
-                    <p className="text-gray-600 mb-4 line-clamp-2">{event.description}</p>
-                    <div className="flex items-center gap-4 text-sm text-gray-500">
-                      {event.location && (
-                        <div className="flex items-center gap-1">
-                          <span>📍</span>
-                          <span>{event.location}</span>
-                        </div>
-                      )}
-                      {event.event_date && (
-                        <div className="flex items-center gap-1">
-                          <span>📅</span>
-                          <span>{new Date(event.event_date).toLocaleDateString()}</span>
-                        </div>
-                      )}
+                  <div className="relative h-64 overflow-hidden">
+                    <img
+                      src={src}
+                      alt="Cricket activity"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      onError={(e) => {
+                        e.target.src = '/placeholder-image.svg'
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-xs text-white/90">
+                      <span className="px-3 py-1 rounded-full bg-black/70 font-semibold">Cricket activity</span>
+                      <span className="flex items-center gap-1 bg-white/10 px-2 py-1 rounded-full backdrop-blur-sm">
+                        <span>📍</span>
+                        <span>{location}</span>
+                      </span>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">No events available at the moment. Check back soon!</p>
-            </div>
-          )}
+              )
+            })}
+          </div>
         </div>
       </section>
 
@@ -504,8 +493,9 @@ export default function Home() {
           </div>
 
           {stateWorks.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {stateWorks.map((work) => (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {(showAllStatesHighlights ? stateWorks : stateWorks.slice(0, 6)).map((work) => (
                 <Link
                   key={work.id}
                   to={`/states/${work.slug}`}
@@ -532,7 +522,7 @@ export default function Home() {
                   )}
                   <div className="p-6 flex-1 flex flex-col">
                     <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                      {work.title || 'On-ground activations'}
+                      {(work.title || 'On-ground activations').replace(/^\s*epson\s+/i, '')}
                     </h3>
                     {work.description && (
                       <p className="text-gray-600 text-sm mb-3 line-clamp-3">
@@ -544,8 +534,21 @@ export default function Home() {
                     </p>
                   </div>
                 </Link>
-              ))}
-            </div>
+                ))}
+              </div>
+
+              {stateWorks.length > 6 && (
+                <div className="mt-10 flex justify-center">
+                  <button
+                    type="button"
+                    onClick={() => setShowAllStatesHighlights((prev) => !prev)}
+                    className="btn-modern bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg text-sm"
+                  >
+                    {showAllStatesHighlights ? 'Show Top States Only' : 'View All States'}
+                  </button>
+                </div>
+              )}
+            </>
           ) : (
             <div className="bg-white border border-dashed border-gray-300 rounded-2xl p-8 text-center text-gray-500 text-sm">
               Once you add entries in the admin <span className="font-semibold">State Works</span> section,
@@ -558,19 +561,77 @@ export default function Home() {
       {/* Gallery Preview */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
+          <div className="text-center mb-10">
             <h2 className="section-title">Activation Gallery</h2>
             <p className="section-subtitle">
               Photos from school activities, retail activations, sports engagements, and industrial demos.
             </p>
           </div>
 
+          <div className="flex flex-wrap justify-center gap-2 mb-8">
+            {['', 'cricket', 'social', 'school', 'brand'].map((key) => {
+              const labelMap = {
+                '': 'All Activity Types',
+                cricket: 'Cricket',
+                social: 'Social',
+                school: 'School',
+                brand: 'Brand / Other',
+              }
+              const isActive = galleryActivityFilter === key
+              return (
+                <button
+                  key={key || 'all'}
+                  type="button"
+                  onClick={() => setGalleryActivityFilter(key)}
+                  className={
+                    isActive
+                      ? 'text-xs font-semibold text-white bg-gradient-to-r from-black to-[#5b0d1b] border border-transparent rounded-full px-3 py-1'
+                      : 'text-xs font-semibold text-gray-700 bg-white border border-gray-200 rounded-full px-3 py-1 hover:border-gray-400'
+                  }
+                >
+                  {labelMap[key]}
+                </button>
+              )
+            })}
+          </div>
+
           {(() => {
+            const getImageActivityLabelFromPath = (img) => {
+              if (!img || typeof img !== 'string') return 'Brand activation'
+              const s = img.toLowerCase()
+
+              if (s.includes('cricket')) return 'Cricket activity'
+              if (s.includes('social activity')) return 'Social activity'
+              if (s.includes('school activity')) return 'School activity'
+              if (s.includes('epson for business')) return 'Business activation'
+              if (s.includes('epson for education')) return 'Education activation'
+              if (s.includes('epson for healthcare')) return 'Healthcare activation'
+              if (s.includes('epson for printer challenge')) return 'Printer challenge activation'
+
+              return 'Brand activation'
+            }
+
+            const getActivityKeyFromPath = (img) => {
+              if (!img || typeof img !== 'string') return 'brand'
+              const s = img.toLowerCase()
+              if (s.includes('cricket')) return 'cricket'
+              if (s.includes('social activity')) return 'social'
+              if (s.includes('school activity')) return 'school'
+              return 'brand'
+            }
+
             const images = (stateWorks || [])
               .flatMap((w) => (Array.isArray(w.images) ? w.images : []))
               .filter(Boolean)
 
-            const topImages = images.slice(0, 12)
+            const filteredImages = images.filter((img) => {
+              if (!galleryActivityFilter) return true
+              const key = getActivityKeyFromPath(img)
+              if (galleryActivityFilter === 'brand') return key === 'brand'
+              return key === galleryActivityFilter
+            })
+
+            const topImages = filteredImages.slice(0, 12)
 
             if (topImages.length === 0) {
               return (
@@ -591,6 +652,7 @@ export default function Home() {
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                 {topImages.map((img, idx) => {
                   const src = img.startsWith('/') ? img : img.startsWith('http') ? img : `/${img}`
+                  const label = getImageActivityLabelFromPath(img)
                   return (
                     <button
                       key={`${src}-${idx}`}
@@ -601,12 +663,17 @@ export default function Home() {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10" />
                       <img
                         src={src}
-                        alt="Gallery"
+                        alt={label}
                         className="w-full h-36 sm:h-40 object-cover group-hover:scale-110 transition-transform duration-300"
                         onError={(e) => {
                           e.target.src = '/placeholder-image.svg'
                         }}
                       />
+                      <div className="absolute bottom-2 left-2 z-20">
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-black/70 text-white shadow-sm">
+                          {label}
+                        </span>
+                      </div>
                     </button>
                   )
                 })}
