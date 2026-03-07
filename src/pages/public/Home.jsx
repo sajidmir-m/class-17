@@ -251,14 +251,16 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative overflow-hidden text-white min-h-[70vh]">
         <div className="absolute inset-0 bg-black">
-          <video
-            src="/video/logo.mp4"
-            className="w-full h-full object-cover opacity-90 md:opacity-95"
-            autoPlay
-            loop
-            muted
-            playsInline
-          />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <video
+              src="/video/logo.mp4"
+              className="w-full h-full min-w-full min-h-full opacity-90 md:opacity-95 object-contain md:object-cover"
+              autoPlay
+              loop
+              muted
+              playsInline
+            />
+          </div>
           <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-black/40 to-[#5b0d1b]/70" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(91,13,27,0.45),transparent_55%),radial-gradient(circle_at_80%_40%,rgba(0,0,0,0.6),transparent_60%)]" />
         </div>
@@ -415,13 +417,16 @@ export default function Home() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              '/cricket activities/cricket 1.png',
-              '/cricket activities/cricket 2.png',
+            
               '/cricket activities/kolkata/cricket 1.png',
               '/cricket activities/kolkata/cricket 3.png',
+              '/cricket activities/jammu/cricket 1.png',
+              '/cricket activities/jammu/cricket 2.png',
             ].map((src, idx) => {
-              const isKolkata = src.toLowerCase().includes('kolkata')
-              const location = isKolkata ? 'Kolkata' : 'Multi-city activation'
+              const lower = src.toLowerCase()
+              const isJammu = lower.includes('jammu')
+              const isKolkata = lower.includes('kolkata')
+              const location = isJammu ? 'Jammu' : isKolkata ? 'Kolkata' : 'Multi-city activation'
               return (
                 <div
                   key={`${src}-${idx}`}
