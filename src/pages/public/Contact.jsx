@@ -3,6 +3,7 @@ import { supabase } from '../../lib/supabaseClient'
 import PublicLayout from '../../components/PublicLayout'
 
 export default function Contact() {
+  const contactEmail = 'contact@class17.in'
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -34,12 +35,18 @@ export default function Contact() {
 
   return (
     <PublicLayout>
-      <div className="py-20 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+      <div className="py-20 bg-gradient-to-br from-emerald-50 via-white to-teal-50">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h1 className="section-title">Get In Touch</h1>
             <p className="text-xl text-gray-600">
               We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+            </p>
+            <p className="text-sm text-gray-600 mt-3">
+              Email us directly at{' '}
+              <a className="font-semibold text-emerald-800 hover:underline" href={`mailto:${contactEmail}`}>
+                {contactEmail}
+              </a>
             </p>
           </div>
           
@@ -63,7 +70,7 @@ export default function Contact() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 required
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 transition outline-none"
                 placeholder="John Doe"
               />
             </div>
@@ -78,7 +85,7 @@ export default function Contact() {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 required
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 transition outline-none"
                 placeholder="john@example.com"
               />
             </div>
@@ -92,7 +99,7 @@ export default function Contact() {
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 transition outline-none"
                 placeholder="+1 (555) 123-4567"
               />
             </div>
@@ -107,7 +114,7 @@ export default function Contact() {
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 required
                 rows="6"
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none resize-none"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 transition outline-none resize-none"
                 placeholder="Tell us about your project or inquiry..."
               />
             </div>
@@ -115,7 +122,7 @@ export default function Contact() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full btn-modern bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-semibold py-4 rounded-xl shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full btn-modern bg-gradient-to-r from-emerald-700 via-green-700 to-teal-700 text-white font-semibold py-4 rounded-xl shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">

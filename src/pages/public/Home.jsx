@@ -259,25 +259,23 @@ export default function Home() {
   }
 
   return (
-    <PublicLayout>
+    <PublicLayout overlayNav>
       {/* Hero Section */}
-      <section className="relative overflow-hidden text-white min-h-screen">
+      <section className="relative overflow-hidden text-white h-screen min-h-[100svh] min-h-[100dvh]">
         <div className="absolute inset-0 bg-black">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <video
-              src="/video/logo.mp4"
-              className="w-full h-full opacity-95 object-cover"
-              autoPlay
-              loop
-              muted
-              playsInline
-            />
-          </div>
+          <video
+            src="/video/logo.mp4"
+            className="absolute inset-0 w-full h-full object-contain md:object-cover object-center opacity-95"
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
           <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-black/40 to-[#5b0d1b]/70" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(91,13,27,0.45),transparent_55%),radial-gradient(circle_at_80%_40%,rgba(0,0,0,0.6),transparent_60%)]" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-between min-h-screen py-10 md:py-16">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-between h-screen min-h-[100svh] min-h-[100dvh] pt-28 pb-10 md:pt-32 md:pb-16">
           {/* Top center title */}
           <div className="flex justify-center">
             <p className="text-sm md:text-base uppercase tracking-[0.35em] text-white/80 text-center">

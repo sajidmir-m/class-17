@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useState } from 'react'
 
-export default function PublicLayout({ children }) {
+export default function PublicLayout({ children, overlayNav = false }) {
   const location = useLocation()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
@@ -17,7 +17,13 @@ export default function PublicLayout({ children }) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
-      <nav className="bg-white/80 backdrop-blur-lg border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+      <nav
+        className={
+          overlayNav
+            ? 'fixed top-0 left-0 right-0 z-50 bg-black/25 backdrop-blur-md border-b border-white/10'
+            : 'bg-white/80 backdrop-blur-lg border-b border-gray-200 sticky top-0 z-50 shadow-sm'
+        }
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <Link to="/" className="flex items-center gap-3">
@@ -26,7 +32,7 @@ export default function PublicLayout({ children }) {
                 alt="Class 17 Events logo"
                 className="h-10 w-auto object-contain"
               />
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <span className={overlayNav ? 'text-2xl font-bold text-white' : 'text-2xl font-bold text-gradient'}>
                 Class 17 Events
               </span>
             </Link>
@@ -37,8 +43,12 @@ export default function PublicLayout({ children }) {
                   to={link.path}
                   className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
                     location.pathname === link.path
-                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md'
-                      : 'text-gray-700 hover:text-blue-600 hover:bg-gray-100'
+                      ? overlayNav
+                        ? 'bg-white/15 text-white shadow-md'
+                        : 'bg-gradient-to-r from-emerald-700 via-green-700 to-teal-700 text-white shadow-md'
+                      : overlayNav
+                        ? 'text-white/90 hover:text-white hover:bg-white/10'
+                        : 'text-gray-700 hover:text-emerald-700 hover:bg-emerald-50'
                   }`}
                 >
                   {link.label}
@@ -47,7 +57,7 @@ export default function PublicLayout({ children }) {
             </div>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-gray-700 hover:text-blue-600"
+              className={overlayNav ? 'md:hidden p-2 text-white/90 hover:text-white' : 'md:hidden p-2 text-gray-700 hover:text-emerald-700'}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {mobileMenuOpen ? (
@@ -67,8 +77,12 @@ export default function PublicLayout({ children }) {
                   onClick={() => setMobileMenuOpen(false)}
                   className={`block px-4 py-2 rounded-lg font-medium ${
                     location.pathname === link.path
-                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      ? overlayNav
+                        ? 'bg-white/15 text-white'
+                        : 'bg-gradient-to-r from-emerald-700 via-green-700 to-teal-700 text-white'
+                      : overlayNav
+                        ? 'text-white/90 hover:bg-white/10'
+                        : 'text-gray-700 hover:bg-emerald-50'
                   }`}
                 >
                   {link.label}
@@ -79,11 +93,11 @@ export default function PublicLayout({ children }) {
         </div>
       </nav>
       <main className="min-h-screen">{children}</main>
-      <footer className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-12 mt-20">
+      <footer className="bg-gradient-to-r from-[#071a12] via-[#0b2419] to-[#071a12] text-white py-12 mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div>
-              <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-emerald-300 via-green-300 to-teal-300 bg-clip-text text-transparent">
                 Class 17 Events
               </h3>
               <p className="text-gray-400 text-sm">Ideas That Speak Louder Than Words</p>
@@ -103,6 +117,12 @@ export default function PublicLayout({ children }) {
               <Link to="/contact" className="block text-gray-400 hover:text-white transition text-sm mb-2">
                 Get in Touch
               </Link>
+              <a
+                href="mailto:contact@class17.in"
+                className="block text-gray-400 hover:text-white transition text-sm mb-2"
+              >
+                contact@class17.in
+              </a>
               <Link to="/careers" className="block text-gray-400 hover:text-white transition text-sm">
                 Join Our Team
               </Link>

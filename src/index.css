@@ -24,7 +24,7 @@
 
 @layer utilities {
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-emerald-700 via-green-700 to-teal-700;
   }
   
   .card-hover {
