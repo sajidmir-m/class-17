@@ -12,6 +12,18 @@ export default function Home() {
   const [showAllStatesHighlights, setShowAllStatesHighlights] = useState(false)
   const [selectedGalleryImage, setSelectedGalleryImage] = useState(null)
   const [galleryActivityFilter, setGalleryActivityFilter] = useState('')
+  const [galleryStateFilter, setGalleryStateFilter] = useState('')
+
+  const activityFilterOptions = [
+    { key: '', label: 'All Activities' },
+    { key: 'cricket', label: 'Cricket' },
+    { key: 'social', label: 'Social' },
+    { key: 'school', label: 'School' },
+    { key: 'education', label: 'Education' },
+    { key: 'business', label: 'Business' },
+    { key: 'healthcare', label: 'Healthcare' },
+    { key: 'brand', label: 'Brand / Other' },
+  ]
 
   const featuredClients = [
     'Epson India Pvt Ltd',
@@ -254,7 +266,7 @@ export default function Home() {
           <div className="absolute inset-0 flex items-center justify-center">
             <video
               src="/video/logo.mp4"
-              className="w-full h-full min-w-full min-h-full opacity-90 md:opacity-95 object-contain md:object-cover"
+              className="w-full h-full opacity-95 object-cover"
               autoPlay
               loop
               muted
@@ -577,34 +589,27 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
-            <h2 className="section-title">Activation Gallery</h2>
+            <h2 className="section-title">All Activities</h2>
             <p className="section-subtitle">
-              Photos from school activities, retail activations, sports engagements, and industrial demos.
+              Click an activity type to see all related images with the state tag.
             </p>
           </div>
 
           <div className="flex flex-wrap justify-center gap-2 mb-8">
-            {['', 'cricket', 'social', 'school', 'brand'].map((key) => {
-              const labelMap = {
-                '': 'All Activity Types',
-                cricket: 'Cricket',
-                social: 'Social',
-                school: 'School',
-                brand: 'Brand / Other',
-              }
-              const isActive = galleryActivityFilter === key
+            {activityFilterOptions.map((opt) => {
+              const isActive = galleryActivityFilter === opt.key
               return (
                 <button
-                  key={key || 'all'}
+                  key={opt.key || 'all'}
                   type="button"
-                  onClick={() => setGalleryActivityFilter(key)}
+                  onClick={() => setGalleryActivityFilter(opt.key)}
                   className={
                     isActive
                       ? 'text-xs font-semibold text-white bg-gradient-to-r from-black to-[#5b0d1b] border border-transparent rounded-full px-3 py-1'
                       : 'text-xs font-semibold text-gray-700 bg-white border border-gray-200 rounded-full px-3 py-1 hover:border-gray-400'
                   }
                 >
-                  {labelMap[key]}
+                  {opt.label}
                 </button>
               )
             })}
@@ -632,21 +637,44 @@ export default function Home() {
               if (s.includes('cricket')) return 'cricket'
               if (s.includes('social activity')) return 'social'
               if (s.includes('school activity')) return 'school'
+              if (s.includes('epson for education')) return 'education'
+              if (s.includes('epson for business')) return 'business'
+              if (s.includes('epson for healthcare')) return 'healthcare'
               return 'brand'
             }
 
-            const images = (stateWorks || [])
-              .flatMap((w) => (Array.isArray(w.images) ? w.images : []))
-              .filter(Boolean)
+            const imagesFromStateWorks = (stateWorks || []).flatMap((w) =>
+              (Array.isArray(w.images) ? w.images : [])
+                .filter(Boolean)
+                .map((img) => ({
+                  img,
+                  state: w.state || '',
+                  slug: w.slug || '',
+                }))
+            )
 
-            const filteredImages = images.filter((img) => {
+            const staticCricket = [
+              { img: '/cricket activities/kolkata/cricket 1.png', state: 'West Bengal', slug: 'kolkata' },
+              { img: '/cricket activities/kolkata/cricket 3.png', state: 'West Bengal', slug: 'kolkata' },
+              { img: '/cricket activities/jammu/cricket 1.png', state: 'Jammu & Kashmir', slug: 'jammu' },
+              { img: '/cricket activities/jammu/cricket 2.png', state: 'Jammu & Kashmir', slug: 'jammu' },
+            ]
+
+            const allImageItems = [...staticCricket, ...imagesFromStateWorks]
+
+            const stateOptions = Array.from(
+              new Set(allImageItems.map((i) => (i.state || '').trim()).filter(Boolean))
+            ).sort((a, b) => a.localeCompare(b))
+
+            const filteredImages = allImageItems.filter(({ img, state }) => {
+              if (galleryStateFilter && (state || '').trim() !== galleryStateFilter) return false
               if (!galleryActivityFilter) return true
               const key = getActivityKeyFromPath(img)
               if (galleryActivityFilter === 'brand') return key === 'brand'
               return key === galleryActivityFilter
             })
 
-            const topImages = filteredImages.slice(0, 12)
+            const topImages = filteredImages
 
             if (topImages.length === 0) {
               return (
@@ -664,34 +692,73 @@ export default function Home() {
             }
 
             return (
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                {topImages.map((img, idx) => {
-                  const src = img.startsWith('/') ? img : img.startsWith('http') ? img : `/${img}`
-                  const label = getImageActivityLabelFromPath(img)
-                  return (
-                    <button
-                      key={`${src}-${idx}`}
-                      type="button"
-                      onClick={() => setSelectedGalleryImage(src)}
-                      className="group relative overflow-hidden rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300"
+              <div className="space-y-4">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
+                  <div className="w-full sm:w-auto">
+                    <label className="block text-xs font-semibold text-gray-600 mb-1">State</label>
+                    <select
+                      value={galleryStateFilter}
+                      onChange={(e) => setGalleryStateFilter(e.target.value)}
+                      className="w-full sm:w-64 px-4 py-2.5 rounded-2xl border border-gray-200 bg-white text-gray-800 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#5b0d1b]/30"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10" />
-                      <img
-                        src={src}
-                        alt={label}
-                        className="w-full h-36 sm:h-40 object-cover group-hover:scale-110 transition-transform duration-300"
-                        onError={(e) => {
-                          e.target.src = '/placeholder-image.svg'
+                      <option value="">All States</option>
+                      {stateOptions.map((s) => (
+                        <option key={s} value={s}>
+                          {s}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {(galleryStateFilter || galleryActivityFilter) ? (
+                    <div className="sm:pt-5">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setGalleryStateFilter('')
+                          setGalleryActivityFilter('')
                         }}
-                      />
-                      <div className="absolute bottom-2 left-2 z-20">
-                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-black/70 text-white shadow-sm">
-                          {label}
-                        </span>
-                      </div>
-                    </button>
-                  )
-                })}
+                        className="w-full sm:w-auto text-xs font-semibold px-4 py-2.5 rounded-2xl border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 shadow-sm"
+                      >
+                        Clear filters
+                      </button>
+                    </div>
+                  ) : null}
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {topImages.map(({ img, state }, idx) => {
+                    const src = img.startsWith('/') ? img : img.startsWith('http') ? img : `/${img}`
+                    const label = getImageActivityLabelFromPath(img)
+                    const stateLabel = state || 'Pan-India'
+                    return (
+                      <button
+                        key={`${src}-${idx}`}
+                        type="button"
+                        onClick={() => setSelectedGalleryImage(src)}
+                        className="group relative overflow-hidden rounded-2xl border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+                        <img
+                          src={src}
+                          alt={label}
+                          className="w-full h-36 sm:h-40 object-cover group-hover:scale-110 transition-transform duration-300"
+                          onError={(e) => {
+                            e.target.src = '/placeholder-image.svg'
+                          }}
+                        />
+                        <div className="absolute bottom-2 left-2 right-2 z-20 flex items-center justify-between gap-2">
+                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-black/70 text-white shadow-sm truncate">
+                            {label}
+                          </span>
+                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-white/15 text-white shadow-sm border border-white/20 backdrop-blur-sm truncate">
+                            📍 {stateLabel}
+                          </span>
+                        </div>
+                      </button>
+                    )
+                  })}
+                </div>
               </div>
             )
           })()}

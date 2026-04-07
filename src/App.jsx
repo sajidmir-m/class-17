@@ -12,6 +12,7 @@ import News from './pages/admin/News'
 import Messages from './pages/admin/Messages'
 import Settings from './pages/admin/Settings'
 import StateWorks from './pages/admin/StateWorks'
+import FounderAdmin from './pages/admin/Founder'
 
 // Public pages
 import Home from './pages/public/Home'
@@ -22,6 +23,7 @@ import ClientsPublic from './pages/public/Clients'
 import Careers from './pages/public/Careers'
 import Contact from './pages/public/Contact'
 import StateWorkPage from './pages/public/StateWork'
+import FounderPublic from './pages/public/Founder'
 
 function App() {
   return (
@@ -30,6 +32,7 @@ function App() {
         {/* Public routes */}
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/founder" element={<FounderPublic />} />
         <Route path="/services" element={<Services />} />
         <Route path="/portfolio" element={<Portfolio />} />
         <Route path="/clients" element={<ClientsPublic />} />
@@ -111,6 +114,14 @@ function App() {
           element={
             <ProtectedRoute>
               <StateWorks />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/founder"
+          element={
+            <ProtectedRoute>
+              <FounderAdmin />
             </ProtectedRoute>
           }
         />

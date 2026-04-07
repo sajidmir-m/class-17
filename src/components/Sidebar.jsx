@@ -9,6 +9,7 @@ const menuItems = [
   { path: '/admin/news', label: 'News', icon: '📰' },
   { path: '/admin/messages', label: 'Messages', icon: '✉️' },
   { path: '/admin/state-works', label: 'State Works', icon: '📍' },
+  { path: '/admin/founder', label: 'Founder Profile', icon: '👤' },
   { path: '/admin/settings', label: 'Settings', icon: '⚙️' },
 ]
 
