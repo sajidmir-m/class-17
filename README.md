@@ -31,6 +31,13 @@ A full-stack event management and marketing website built with React, Vite, Tail
      VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
      ```
 
+3. **(Recommended) Set your website URL for sitemap generation:**
+   Create/extend the same `.env` file:
+   ```
+   VITE_SITE_URL=https://your-domain.com
+   ```
+   This ensures `public/sitemap.xml` contains valid absolute URLs after deployment.
+
 3. **Set up database:**
    - Run the SQL scripts in `supabase/schema.sql` in your Supabase SQL editor
    - Run the SQL scripts in `supabase/rls_policies.sql` to set up security policies

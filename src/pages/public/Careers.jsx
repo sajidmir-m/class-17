@@ -22,7 +22,7 @@ export default function Careers() {
       'Hands-on internship focused on real on-ground marketing activities, brand activations, and campaign execution support.',
     location: 'On-ground / Field + Office coordination',
     type: 'Internship',
-    salary: 'Stipend up to ₹10,000 + Certificate',
+    salary: 'Stipend (Performance-based) + Certificate',
     isInternship: true,
   }
 
@@ -158,7 +158,7 @@ export default function Careers() {
                     <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div className="rounded-2xl bg-white border border-gray-100 p-5 shadow-sm">
                         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Stipend</p>
-                        <p className="text-xl font-bold text-gray-900 mt-1">Up to ₹10,000</p>
+                        <p className="text-xl font-bold text-gray-900 mt-1">Performance-based</p>
                         <p className="text-sm text-gray-600 mt-1">Based on performance & role</p>
                       </div>
                       <div className="rounded-2xl bg-white border border-gray-100 p-5 shadow-sm">
