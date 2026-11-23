@@ -14,7 +14,7 @@ const navLinks = [
 function Brand({ light = false }) {
   return (
     <Link to="/" className="flex items-center gap-3">
-      <img src="/logo.png" alt="Class 17 logo" className="h-11 w-11 rounded-full object-cover ring-1 ring-gold-400/50" />
+      <img src="/logo.svg" alt="Class 17 logo" className="h-12 w-12 shrink-0 rounded-full object-cover" />
       <span className="leading-none">
         <span
           className={`block font-display text-xl font-semibold tracking-wide transition-colors ${

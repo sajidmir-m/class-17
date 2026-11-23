@@ -1,0 +1,14 @@
+import sharp from 'sharp'
+import { writeFileSync } from 'node:fs'
+
+const svg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 512 512">
+  <circle cx="256" cy="256" r="256" fill="#070709"/>
+  <circle cx="256" cy="256" r="236" fill="none" stroke="#E0BB5C" stroke-width="2.2"/>
+  <path d="M358 158 C 272 78 112 118 112 256 C 112 394 272 434 358 354" fill="none" stroke="#E4C36A" stroke-width="30" stroke-linecap="round"/>
+  <text x="250" y="298" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="128" font-weight="700" fill="#F4E4B0" letter-spacing="-2">17</text>
+</svg>`
+
+writeFileSync('public/logo.svg', svg)
+await sharp(Buffer.from(svg)).png({ compressionLevel: 9 }).toFile('public/logo.png')
+console.log('wrote')
