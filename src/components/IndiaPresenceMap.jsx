@@ -130,7 +130,7 @@ function StateLabels({ locations, activeName, onSelect }) {
 
 export default function IndiaPresenceMap({ locations, activeName, onSelect }) {
   return (
-    <div className="h-[520px] w-full overflow-hidden rounded-2xl border border-white/10 md:h-[640px]">
+    <div className="h-[520px] w-full overflow-hidden rounded-2xl border border-zinc-200 bg-paper-100 shadow-sm md:h-[640px]">
       <MapContainer
         center={[22.5, 78.9]}
         zoom={5}
@@ -141,7 +141,7 @@ export default function IndiaPresenceMap({ locations, activeName, onSelect }) {
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-          className="map-tiles-dark"
+          className="map-tiles-soft"
         />
         <StateLabels locations={locations} activeName={activeName} onSelect={onSelect} />
       </MapContainer>

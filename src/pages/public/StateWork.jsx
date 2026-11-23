@@ -343,18 +343,18 @@ export default function StateWorkPage() {
           <Link to="/contact" className="btn-gold">
             Plan a campaign in {stateName}
           </Link>
-          <Link to="/" className="inline-flex items-center gap-2 text-sm font-medium text-zinc-400 hover:text-white">
+          <Link to="/" className="inline-flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-ink-950">
             ? Back to home
           </Link>
         </div>
       </PageHero>
 
-      <section className="bg-ink-950 py-16 md:py-24">
+      <section className="bg-white py-16 md:py-24">
         <div className="container-x space-y-10">
           {loading && (
             <div className="space-y-4">
-              <div className="h-40 animate-pulse rounded-2xl bg-ink-900" />
-              <div className="h-80 animate-pulse rounded-2xl bg-ink-900" />
+              <div className="h-40 animate-pulse rounded-2xl bg-paper-50" />
+              <div className="h-80 animate-pulse rounded-2xl bg-paper-50" />
             </div>
           )}
 
@@ -366,9 +366,9 @@ export default function StateWorkPage() {
 
           {!loading && !error && works.length === 0 && (
             <div className="card mx-auto max-w-2xl p-10 text-center">
-              <h2 className="text-2xl text-white">State work coming soon</h2>
-              <p className="mt-3 text-zinc-400">
-                Detailed work for <span className="capitalize text-white">{stateName}</span> has not been published yet.
+              <h2 className="text-2xl text-ink-950">State work coming soon</h2>
+              <p className="mt-3 text-zinc-600">
+                Detailed work for <span className="capitalize text-ink-950">{stateName}</span> has not been published yet.
                 Want to be our first campaign here?
               </p>
               <Link to="/contact" className="btn-gold mt-8">
@@ -382,14 +382,14 @@ export default function StateWorkPage() {
               <div className="card space-y-6 p-6 md:p-8">
                 <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                   <div>
-                    <h2 className="text-2xl text-white">Filter the work</h2>
+                    <h2 className="text-2xl text-ink-950">Filter the work</h2>
                     <p className="mt-1 text-sm text-zinc-500">Narrow down by district, campaign type or activity.</p>
                   </div>
                   {hasFilters && (
                     <button
                       type="button"
                       onClick={() => setFilterParams({ district: '', type: '', activity: '' })}
-                      className="text-xs font-semibold text-gold-300 hover:text-gold-200"
+                      className="text-xs font-semibold text-gold-700 hover:text-gold-600"
                     >
                       Clear all filters
                     </button>
@@ -447,8 +447,8 @@ export default function StateWorkPage() {
 
               {filteredWorks.length === 0 ? (
                 <div className="card p-10 text-center">
-                  <h3 className="text-xl text-white">No work matches these filters</h3>
-                  <p className="mt-2 text-sm text-zinc-400">Try a different district, campaign type or activity.</p>
+                  <h3 className="text-xl text-ink-950">No work matches these filters</h3>
+                  <p className="mt-2 text-sm text-zinc-600">Try a different district, campaign type or activity.</p>
                   <button
                     type="button"
                     onClick={() => setFilterParams({ district: '', type: '', activity: '' })}
@@ -476,29 +476,29 @@ export default function StateWorkPage() {
 
                     return (
                       <article key={work.id} className="card overflow-hidden">
-                        <header className="border-b border-white/[0.08] p-6 md:p-8">
+                        <header className="border-b border-zinc-200 p-6 md:p-8">
                           <div className="flex flex-wrap items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.2em]">
-                            <span className="text-gold-400">Campaign {String(idx + 1).padStart(2, '0')}</span>
+                            <span className="text-gold-600">Campaign {String(idx + 1).padStart(2, '0')}</span>
                             {brand ? (
                               <>
                                 <span className="h-1 w-1 rounded-full bg-zinc-600" />
-                                <span className="text-zinc-400">{brand}</span>
+                                <span className="text-zinc-600">{brand}</span>
                               </>
                             ) : null}
                           </div>
-                          <h3 className="mt-3 text-2xl text-white md:text-3xl">{work.title || `Campaign in ${stateName}`}</h3>
+                          <h3 className="mt-3 text-2xl text-ink-950 md:text-3xl">{work.title || `Campaign in ${stateName}`}</h3>
                           {work.description ? (
-                            <p className="mt-4 max-w-3xl leading-relaxed text-zinc-400">{work.description}</p>
+                            <p className="mt-4 max-w-3xl leading-relaxed text-zinc-600">{work.description}</p>
                           ) : null}
                           {locations.length > 0 ? (
                             <div className="mt-6 flex flex-wrap items-center gap-2">
-                              <Icon name="pin" className="h-4 w-4 text-gold-400" />
+                              <Icon name="pin" className="h-4 w-4 text-gold-600" />
                               {locations.map((loc) => (
                                 <button
                                   key={loc}
                                   type="button"
                                   onClick={() => setFilterParams({ district: loc })}
-                                  className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-300 transition hover:border-gold-400/50 hover:text-white"
+                                  className="rounded-full border border-zinc-200 px-3 py-1 text-xs text-zinc-600 transition hover:border-gold-400/50 hover:text-ink-950"
                                 >
                                   {loc}
                                 </button>
@@ -513,7 +513,7 @@ export default function StateWorkPage() {
                             {Array.isArray(work.activities) && work.activities.length > 0 ? (
                               <ul className="mt-5 space-y-3">
                                 {work.activities.map((activity, actIdx) => (
-                                  <li key={`${activity}-${actIdx}`} className="flex gap-3 text-sm leading-relaxed text-zinc-300">
+                                  <li key={`${activity}-${actIdx}`} className="flex gap-3 text-sm leading-relaxed text-zinc-600">
                                     <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-400" />
                                     {formatActivityText(activity)}
                                   </li>
@@ -541,8 +541,8 @@ export default function StateWorkPage() {
                                       <button
                                         key={`${img}-${index}`}
                                         type="button"
-                                        onClick={() => setLightbox({ src, caption: `${label} · ${stateName}` })}
-                                        className="group relative aspect-[4/3] overflow-hidden rounded-xl border border-white/[0.08] bg-ink-800"
+                                        onClick={() => setLightbox({ src, caption: `${label} ï¿½ ${stateName}` })}
+                                        className="group relative aspect-[4/3] overflow-hidden rounded-xl border border-zinc-200 bg-paper-100"
                                       >
                                         <img
                                           loading="lazy"

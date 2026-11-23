@@ -36,7 +36,7 @@ export default function HeroShowcase() {
   const current = slides[active]
 
   return (
-    <section className="relative isolate h-[100svh] min-h-[640px] overflow-hidden bg-ink-950 text-white">
+    <section className="on-dark relative isolate h-[100svh] min-h-[640px] overflow-hidden bg-ink-950 text-white">
       {slides.map((slide, i) => {
         const isActive = i === active
         return (

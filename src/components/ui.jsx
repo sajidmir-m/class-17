@@ -9,26 +9,25 @@ export const whatsappLink = (text = '') =>
 
 export function PageHero({ eyebrow, title, subtitle, image, children }) {
   return (
-    <section className="relative overflow-hidden border-b border-white/[0.06] bg-ink-950 pb-16 pt-36 md:pb-24 md:pt-44">
+    <section className="relative overflow-hidden border-b border-zinc-200 bg-paper-50 pb-16 pt-36 md:pb-24 md:pt-44">
       {image ? (
         <img
           src={image}
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 h-full w-full object-cover opacity-20"
+          className="absolute inset-0 h-full w-full object-cover opacity-[0.08] grayscale"
         />
       ) : null}
-      <div className="absolute inset-0 bg-gradient-to-b from-ink-950/60 via-ink-950/80 to-ink-950" />
-      <div className="absolute -top-40 left-1/2 h-[500px] w-[900px] -translate-x-1/2 rounded-full bg-gold-500/10 blur-[120px]" />
-      <div className="grain absolute inset-0 opacity-[0.04] mix-blend-overlay" />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-paper-50/80 to-paper-50" />
+      <div className="absolute -top-40 left-1/2 h-[500px] w-[900px] -translate-x-1/2 rounded-full bg-gold-300/25 blur-[120px]" />
 
       <div className="container-x relative">
         <div className="max-w-3xl animate-fade-up">
           {eyebrow ? <p className="eyebrow mb-6">{eyebrow}</p> : null}
-          <h1 className="font-display text-4xl font-semibold leading-[1.05] text-white sm:text-5xl md:text-6xl">
+          <h1 className="font-display text-4xl font-semibold leading-[1.05] text-ink-950 sm:text-5xl md:text-6xl">
             {title}
           </h1>
-          {subtitle ? <p className="mt-6 text-base leading-relaxed text-zinc-400 md:text-lg">{subtitle}</p> : null}
+          {subtitle ? <p className="mt-6 text-base leading-relaxed text-zinc-600 md:text-lg">{subtitle}</p> : null}
           {children ? <div className="mt-8">{children}</div> : null}
         </div>
       </div>
@@ -78,7 +77,7 @@ export function Lightbox({ src, caption, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center bg-ink-950/95 p-4 backdrop-blur-md"
+      className="on-dark fixed inset-0 z-[60] flex items-center justify-center bg-ink-950/95 p-4 backdrop-blur-md"
       onClick={onClose}
     >
       <button
@@ -109,9 +108,9 @@ export function CtaBand({
   subtitle = 'Tell us the brand, the audience and the cities. We will come back with a plan, timelines and costs.',
 }) {
   return (
-    <section className="bg-ink-950 py-20 md:py-28">
+    <section className="bg-white py-20 md:py-28">
       <div className="container-x">
-        <div className="relative overflow-hidden rounded-3xl border border-gold-400/25 bg-gradient-to-br from-ink-850 via-ink-900 to-ink-950 px-6 py-14 text-center md:px-16 md:py-20">
+        <div className="on-dark relative overflow-hidden rounded-3xl border border-gold-400/25 bg-gradient-to-br from-ink-850 via-ink-900 to-ink-950 px-6 py-14 text-center md:px-16 md:py-20">
           <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-gold-500/15 blur-[100px]" />
           <div className="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-gold-500/10 blur-[100px]" />
           <div className="relative">

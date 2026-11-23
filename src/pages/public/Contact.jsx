@@ -64,18 +64,18 @@ export default function Contact() {
         subtitle="Send us a message and we will respond as soon as possible. For anything urgent, WhatsApp is the fastest way to reach us."
       />
 
-      <section className="bg-ink-950 pb-24 md:pb-32">
+      <section className="bg-white pb-24 md:pb-32">
         <div className="container-x grid grid-cols-1 gap-12 lg:grid-cols-12">
           <div className="space-y-4 lg:col-span-5">
             {channels.map((c) => {
               const body = (
                 <>
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-gold-400/40 text-gold-400">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-gold-400/40 text-gold-600">
                     <Icon name={c.icon} className="h-5 w-5" />
                   </span>
                   <span>
                     <span className="block text-xs uppercase tracking-[0.2em] text-zinc-500">{c.label}</span>
-                    <span className="mt-1 block text-lg text-white">{c.value}</span>
+                    <span className="mt-1 block text-lg text-ink-950">{c.value}</span>
                   </span>
                 </>
               )
@@ -99,7 +99,7 @@ export default function Contact() {
 
           <form onSubmit={handleSubmit} className="card space-y-6 p-7 md:p-10 lg:col-span-7">
             {success ? (
-              <div className="flex items-center gap-3 rounded-xl border border-gold-400/40 bg-gold-400/10 px-5 py-4 text-sm text-gold-200">
+              <div className="flex items-center gap-3 rounded-xl border border-gold-400/40 bg-gold-400/10 px-5 py-4 text-sm text-gold-600">
                 <Icon name="check" className="h-5 w-5" />
                 Message sent. We will get back to you soon.
               </div>
@@ -118,7 +118,7 @@ export default function Contact() {
 
             <div>
               <label htmlFor="phone" className="label-dark">
-                Phone <span className="normal-case tracking-normal text-zinc-600">(optional)</span>
+                Phone <span className="normal-case tracking-normal text-zinc-400">(optional)</span>
               </label>
               <input id="phone" type="tel" value={formData.phone} onChange={update('phone')} className="input-dark" placeholder="+91" />
             </div>

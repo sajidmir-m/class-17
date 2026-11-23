@@ -92,13 +92,13 @@ export default function Home() {
       <HeroShowcase />
 
       {/* Trusted by */}
-      <section className="border-y border-white/[0.06] bg-ink-950 py-8">
+      <section className="border-y border-zinc-200 bg-white py-8">
         <div className="container-x flex flex-col items-center gap-6 md:flex-row">
           <p className="shrink-0 text-[11px] font-semibold uppercase tracking-[0.3em] text-zinc-500">Trusted by</p>
           <div className="relative w-full overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_10%,black_90%,transparent)]">
             <div className="flex w-max animate-marquee gap-12 motion-reduce:animate-none">
               {[...featuredClients, ...featuredClients].map((name, i) => (
-                <span key={`${name}-${i}`} className="flex items-center gap-12 whitespace-nowrap font-display text-lg text-zinc-400">
+                <span key={`${name}-${i}`} className="flex items-center gap-12 whitespace-nowrap font-display text-lg text-zinc-600">
                   {name}
                   <span className="h-1 w-1 rounded-full bg-gold-500" />
                 </span>
@@ -109,31 +109,31 @@ export default function Home() {
       </section>
 
       {/* Intro */}
-      <section className="bg-ink-950 py-24 md:py-32">
+      <section className="bg-white py-24 md:py-32">
         <div className="container-x grid grid-cols-1 gap-16 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <p className="eyebrow mb-6">Who we are</p>
             <h2 className="section-title">
               We turn brand briefs into <em className="text-gradient font-medium italic">moments</em> people remember.
             </h2>
-            <p className="mt-6 leading-relaxed text-zinc-400">
+            <p className="mt-6 leading-relaxed text-zinc-600">
               Class 17 Events plans and runs on-ground marketing for leading brands, from a single school session to
               multi-state rollouts. Strategy, people and reporting under one roof.
             </p>
-            <Link to="/about" className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-gold-300 hover:text-gold-200">
+            <Link to="/about" className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-gold-700 hover:text-gold-600">
               More about us <Icon name="arrow" className="h-4 w-4" />
             </Link>
           </div>
           <div className="lg:col-span-7 lg:pl-8">
-            <ol className="divide-y divide-white/[0.08] border-y border-white/[0.08]">
+            <ol className="divide-y divide-zinc-200 border-y border-zinc-200">
               {pillars.map((p, i) => (
                 <li key={p.title} className="group grid grid-cols-[auto_1fr] gap-6 py-8 md:gap-10">
-                  <span className="font-display text-3xl text-gold-500/70 transition group-hover:text-gold-300">
+                  <span className="font-display text-3xl text-gold-500/70 transition group-hover:text-gold-700">
                     0{i + 1}
                   </span>
                   <div>
-                    <h3 className="text-2xl text-white">{p.title}</h3>
-                    <p className="mt-2 leading-relaxed text-zinc-400">{p.desc}</p>
+                    <h3 className="text-2xl text-ink-950">{p.title}</h3>
+                    <p className="mt-2 leading-relaxed text-zinc-600">{p.desc}</p>
                   </div>
                 </li>
               ))}
@@ -143,7 +143,7 @@ export default function Home() {
       </section>
 
       {/* Clients */}
-      <section className="bg-ink-900 py-24 md:py-32">
+      <section className="bg-paper-50 py-24 md:py-32">
         <div className="container-x">
           <SectionHeading
             eyebrow="Our clients"
@@ -172,11 +172,11 @@ export default function Home() {
                   )}
                 </div>
                 <div className="p-7">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-400">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-600">
                     {c.details.sectors.join(' · ')}
                   </p>
-                  <h3 className="mt-3 text-xl text-white">{c.name}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-zinc-400 line-clamp-3">{c.details.highlight}</p>
+                  <h3 className="mt-3 text-xl text-ink-950">{c.name}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-zinc-600 line-clamp-3">{c.details.highlight}</p>
                 </div>
               </article>
             ))}
@@ -185,7 +185,7 @@ export default function Home() {
       </section>
 
       {/* Cricket feature */}
-      <section className="bg-ink-950 py-24 md:py-32">
+      <section className="bg-white py-24 md:py-32">
         <div className="container-x">
           <SectionHeading
             eyebrow="Featured"
@@ -198,7 +198,7 @@ export default function Home() {
                 key={img}
                 type="button"
                 onClick={() => setLightbox({ src: img, caption: `Cricket · ${state}` })}
-                className={`group relative overflow-hidden rounded-2xl border border-white/[0.08] ${
+                className={`group relative overflow-hidden rounded-2xl border border-zinc-200 ${
                   idx === 0 ? 'col-span-2 row-span-2 aspect-square md:aspect-auto' : idx === 3 ? 'col-span-2 aspect-[2/1]' : 'aspect-square'
                 }`}
               >
@@ -211,7 +211,7 @@ export default function Home() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-transparent to-transparent" />
                 <span className="absolute bottom-4 left-4 flex items-center gap-2 text-xs font-medium text-white">
-                  <Icon name="pin" className="h-3.5 w-3.5 text-gold-400" />
+                  <Icon name="pin" className="h-3.5 w-3.5 text-gold-600" />
                   {state}
                 </span>
               </button>
@@ -221,7 +221,7 @@ export default function Home() {
       </section>
 
       {/* Map */}
-      <section className="bg-ink-900 py-24 md:py-32">
+      <section className="bg-paper-50 py-24 md:py-32">
         <div className="container-x">
           <SectionHeading
             eyebrow="Pan-India presence"
@@ -229,7 +229,7 @@ export default function Home() {
             subtitle="Tap any state on the map to see the activities, photos and brands we have delivered there."
             align="center"
           />
-          <Suspense fallback={<div className="h-[520px] animate-pulse rounded-2xl bg-ink-800 md:h-[640px]" />}>
+          <Suspense fallback={<div className="h-[520px] animate-pulse rounded-2xl bg-paper-100 md:h-[640px]" />}>
             <IndiaPresenceMap
               locations={mapLocations}
               activeName={selectedState}
@@ -243,7 +243,7 @@ export default function Home() {
       </section>
 
       {/* State highlights */}
-      <section className="bg-ink-950 py-24 md:py-32">
+      <section className="bg-white py-24 md:py-32">
         <div className="container-x">
           <SectionHeading
             eyebrow="State highlights"
@@ -261,7 +261,7 @@ export default function Home() {
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {visibleStateWorks.map((work) => (
                   <Link key={work.id} to={`/states/${work.slug}`} className="card-interactive group flex flex-col overflow-hidden">
-                    <div className="relative h-52 overflow-hidden bg-ink-800">
+                    <div className="relative h-52 overflow-hidden bg-paper-100">
                       {Array.isArray(work.images) && work.images.length > 0 ? (
                         <img
                           loading="lazy"
@@ -271,19 +271,19 @@ export default function Home() {
                           className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                         />
                       ) : null}
-                      <div className="absolute inset-0 bg-gradient-to-t from-ink-900 via-ink-900/20 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-ink-950/10 to-transparent" />
                       <span className="absolute bottom-4 left-5 text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-300">
                         {work.state}
                       </span>
                     </div>
                     <div className="flex flex-1 flex-col p-6">
-                      <h3 className="text-xl text-white">
+                      <h3 className="text-xl text-ink-950">
                         {(work.title || 'On-ground activations').replace(/^\s*epson\s+/i, '')}
                       </h3>
                       {work.description ? (
-                        <p className="mt-3 text-sm leading-relaxed text-zinc-400 line-clamp-3">{work.description}</p>
+                        <p className="mt-3 text-sm leading-relaxed text-zinc-600 line-clamp-3">{work.description}</p>
                       ) : null}
-                      <span className="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-semibold text-gold-300">
+                      <span className="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-semibold text-gold-700">
                         View state work <Icon name="arrow" className="h-4 w-4 transition group-hover:translate-x-1" />
                       </span>
                     </div>
@@ -299,7 +299,7 @@ export default function Home() {
               ) : null}
             </>
           ) : (
-            <div className="card p-10 text-center text-sm text-zinc-400">
+            <div className="card p-10 text-center text-sm text-zinc-600">
               State campaigns appear here automatically once they are added in the admin State Works section.
             </div>
           )}
@@ -307,7 +307,7 @@ export default function Home() {
       </section>
 
       {/* Activities gallery */}
-      <section className="bg-ink-900 py-24 md:py-32">
+      <section className="bg-paper-50 py-24 md:py-32">
         <div className="container-x">
           <SectionHeading
             eyebrow="All activities"
@@ -344,7 +344,7 @@ export default function Home() {
                     setStateFilter('')
                     setActivityFilter('')
                   }}
-                  className="whitespace-nowrap text-xs font-semibold text-gold-300 hover:text-gold-200"
+                  className="whitespace-nowrap text-xs font-semibold text-gold-700 hover:text-gold-600"
                 >
                   Clear
                 </button>
@@ -364,7 +364,7 @@ export default function Home() {
                       key={`${src}-${idx}`}
                       type="button"
                       onClick={() => setLightbox({ src, caption: `${label} · ${place}` })}
-                      className="group relative aspect-[4/3] overflow-hidden rounded-xl border border-white/[0.08] bg-ink-800"
+                      className="group relative aspect-[4/3] overflow-hidden rounded-xl border border-zinc-200 bg-paper-100"
                     >
                       <img
                         loading="lazy"
@@ -379,7 +379,7 @@ export default function Home() {
                       <div className="absolute inset-0 bg-gradient-to-t from-ink-950/85 via-transparent to-transparent" />
                       <div className="absolute inset-x-3 bottom-3 flex items-end justify-between gap-2 text-left">
                         <span className="text-[11px] font-semibold uppercase tracking-wider text-gold-300">{label}</span>
-                        <span className="flex items-center gap-1 truncate text-[11px] text-zinc-300">
+                        <span className="flex items-center gap-1 truncate text-[11px] text-zinc-200">
                           <Icon name="pin" className="h-3 w-3 shrink-0" />
                           <span className="truncate">{place}</span>
                         </span>
@@ -397,14 +397,14 @@ export default function Home() {
               ) : null}
             </>
           ) : (
-            <div className="card p-10 text-center text-sm text-zinc-400">No photos match this filter yet.</div>
+            <div className="card p-10 text-center text-sm text-zinc-600">No photos match this filter yet.</div>
           )}
         </div>
       </section>
 
       {/* News */}
       {news.length > 0 ? (
-        <section className="bg-ink-950 py-24 md:py-32">
+        <section className="bg-white py-24 md:py-32">
           <div className="container-x">
             <SectionHeading eyebrow="Latest news" title="Updates & announcements" />
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -419,8 +419,8 @@ export default function Home() {
                     <p className="text-[11px] uppercase tracking-[0.2em] text-zinc-500">
                       {item.created_at ? new Date(item.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : ''}
                     </p>
-                    <h3 className="mt-3 text-xl text-white">{item.title}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-zinc-400 line-clamp-3">{item.content}</p>
+                    <h3 className="mt-3 text-xl text-ink-950">{item.title}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-zinc-600 line-clamp-3">{item.content}</p>
                   </div>
                 </article>
               ))}

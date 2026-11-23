@@ -11,13 +11,25 @@ const navLinks = [
   { path: '/careers', label: 'Careers' },
 ]
 
-function Brand() {
+function Brand({ light = false }) {
   return (
     <Link to="/" className="flex items-center gap-3">
-      <img src="/logo.png" alt="Class 17 Events logo" className="h-10 w-10 rounded-full object-cover ring-1 ring-gold-400/40" />
+      <img src="/logo.png" alt="Class 17 logo" className="h-10 w-10 rounded-full object-cover ring-1 ring-gold-400/40" />
       <span className="leading-none">
-        <span className="block font-display text-xl font-semibold tracking-wide text-white">Class 17</span>
-        <span className="mt-1 block text-[10px] font-medium uppercase tracking-[0.35em] text-gold-400">Events</span>
+        <span
+          className={`block font-display text-xl font-semibold tracking-wide transition-colors ${
+            light ? 'text-white' : 'text-ink-950'
+          }`}
+        >
+          Class 17
+        </span>
+        <span
+          className={`mt-1 block text-[10px] font-medium uppercase tracking-[0.35em] ${
+            light ? 'text-gold-400' : 'text-gold-600'
+          }`}
+        >
+          Events
+        </span>
       </span>
     </Link>
   )
@@ -41,16 +53,17 @@ export default function PublicLayout({ children }) {
   }, [location.pathname])
 
   const solid = scrolled || menuOpen
+  const overPhoto = location.pathname === '/' && !solid
 
   return (
-    <div className="min-h-screen bg-ink-950 text-zinc-300">
+    <div className="min-h-screen bg-white text-zinc-600">
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-          solid ? 'border-b border-white/[0.06] bg-ink-950/85 backdrop-blur-xl' : 'bg-transparent'
+          solid ? 'border-b border-zinc-200 bg-white/90 shadow-[0_8px_30px_-20px_rgba(16,16,20,0.3)] backdrop-blur-xl' : 'bg-transparent'
         }`}
       >
         <div className="container-x flex h-20 items-center justify-between">
-          <Brand />
+          <Brand light={overPhoto} />
 
           <nav className="hidden items-center gap-1 lg:flex">
             {navLinks.map((link) => (
@@ -60,7 +73,13 @@ export default function PublicLayout({ children }) {
                 end={link.path === '/'}
                 className={({ isActive }) =>
                   `relative px-4 py-2 text-sm font-medium transition-colors ${
-                    isActive ? 'text-gold-300' : 'text-zinc-300 hover:text-white'
+                    isActive
+                      ? overPhoto
+                        ? 'text-gold-300'
+                        : 'text-gold-700'
+                      : overPhoto
+                        ? 'text-white/85 hover:text-white'
+                        : 'text-zinc-700 hover:text-ink-950'
                   }`
                 }
               >
@@ -86,7 +105,9 @@ export default function PublicLayout({ children }) {
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
               aria-label="Toggle menu"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white lg:hidden"
+              className={`flex h-11 w-11 items-center justify-center rounded-full border lg:hidden ${
+                overPhoto ? 'border-white/25 text-white' : 'border-zinc-300 text-ink-950'
+              }`}
             >
               <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
                 {menuOpen ? (
@@ -100,7 +121,7 @@ export default function PublicLayout({ children }) {
         </div>
 
         {menuOpen && (
-          <div className="border-t border-white/[0.06] bg-ink-950 lg:hidden">
+          <div className="border-t border-zinc-200 bg-white lg:hidden">
             <nav className="container-x flex flex-col py-4">
               {[...navLinks, { path: '/contact', label: 'Contact' }].map((link) => (
                 <NavLink
@@ -108,8 +129,8 @@ export default function PublicLayout({ children }) {
                   to={link.path}
                   end={link.path === '/'}
                   className={({ isActive }) =>
-                    `border-b border-white/[0.05] py-4 font-display text-2xl ${
-                      isActive ? 'text-gold-300' : 'text-white'
+                    `border-b border-zinc-100 py-4 font-display text-2xl ${
+                      isActive ? 'text-gold-700' : 'text-ink-950'
                     }`
                   }
                 >
@@ -126,11 +147,11 @@ export default function PublicLayout({ children }) {
 
       <main>{children}</main>
 
-      <footer className="relative border-t border-white/[0.06] bg-ink-950">
+      <footer className="on-dark relative bg-ink-950 text-zinc-300">
         <div className="gold-hairline absolute inset-x-0 top-0 h-px" />
         <div className="container-x grid grid-cols-1 gap-12 py-16 md:grid-cols-2 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <Brand />
+            <Brand light />
             <p className="mt-6 max-w-sm font-display text-2xl italic leading-snug text-zinc-200">
               Ideas that speak louder than words.
             </p>

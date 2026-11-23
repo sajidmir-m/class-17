@@ -45,7 +45,7 @@ export default function Clients() {
         image="/cricket activities/kolkata/cricket 1.png"
       />
 
-      <section className="bg-ink-950 py-24 md:py-32">
+      <section className="bg-white py-24 md:py-32">
         <div className="container-x grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {cards.map((c) => (
             <article key={c.name} className="card-interactive group flex flex-col overflow-hidden">
@@ -63,15 +63,15 @@ export default function Clients() {
                 )}
               </div>
               <div className="flex flex-1 flex-col p-7">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-400">{c.details.sectors.join(' · ')}</p>
-                <h3 className="mt-3 text-2xl text-white">{c.name}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-zinc-400">{c.details.highlight}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-600">{c.details.sectors.join(' · ')}</p>
+                <h3 className="mt-3 text-2xl text-ink-950">{c.name}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-zinc-600">{c.details.highlight}</p>
                 {c.website ? (
                   <a
                     href={c.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-semibold text-gold-300 hover:text-gold-200"
+                    className="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-semibold text-gold-700 hover:text-gold-600"
                   >
                     Visit website <Icon name="arrow" className="h-4 w-4" />
                   </a>
@@ -83,7 +83,7 @@ export default function Clients() {
       </section>
 
       {gallery.length > 0 ? (
-        <section className="bg-ink-900 py-24 md:py-32">
+        <section className="bg-paper-50 py-24 md:py-32">
           <div className="container-x">
             <SectionHeading
               eyebrow="In the field"
@@ -99,7 +99,7 @@ export default function Clients() {
                     key={`${src}-${idx}`}
                     type="button"
                     onClick={() => setLightbox({ src, caption })}
-                    className="group relative aspect-square overflow-hidden rounded-xl border border-white/[0.08]"
+                    className="group relative aspect-square overflow-hidden rounded-xl border border-zinc-200"
                   >
                     <img
                       loading="lazy"
@@ -109,7 +109,7 @@ export default function Clients() {
                       className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-transparent to-transparent" />
-                    <span className="absolute bottom-3 left-3 text-[11px] text-zinc-200">{caption}</span>
+                    <span className="absolute bottom-3 left-3 text-[11px] text-zinc-100">{caption}</span>
                   </button>
                 )
               })}

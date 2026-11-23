@@ -19,6 +19,11 @@ export default {
           700: '#232329',
           600: '#2e2e36',
         },
+        paper: {
+          50: '#fbfaf7',
+          100: '#f5f3ee',
+          200: '#ebe7de',
+        },
         gold: {
           100: '#faf3dc',
           200: '#f3e3b0',

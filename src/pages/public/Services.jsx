@@ -57,26 +57,26 @@ export default function Services() {
         image="/Photos/EPSON FOR BUSINESS/Pune- Jan 2025/Picture1.jpg"
       />
 
-      <section className="bg-ink-950 py-24 md:py-32">
+      <section className="bg-white py-24 md:py-32">
         <div className="container-x">
-          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.08] md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-200 md:grid-cols-2 lg:grid-cols-3">
             {services.map((service, i) => (
-              <div key={service.title} className="group relative bg-ink-950 p-8 transition duration-300 hover:bg-ink-900 md:p-10">
+              <div key={service.title} className="group relative bg-white p-8 transition duration-300 hover:bg-paper-50 md:p-10">
                 <div className="flex items-start justify-between">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-full border border-gold-400/40 text-gold-400 transition group-hover:bg-gold-400 group-hover:text-ink-950">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full border border-gold-400/40 text-gold-600 transition group-hover:bg-gold-400 group-hover:text-ink-950">
                     <Icon name={service.icon} className="h-5 w-5" />
                   </span>
-                  <span className="font-display text-sm text-zinc-600">0{i + 1}</span>
+                  <span className="font-display text-sm text-zinc-400">0{i + 1}</span>
                 </div>
-                <h3 className="mt-8 text-2xl text-white">{service.title}</h3>
-                <p className="mt-3 leading-relaxed text-zinc-400">{service.description}</p>
+                <h3 className="mt-8 text-2xl text-ink-950">{service.title}</h3>
+                <p className="mt-3 leading-relaxed text-zinc-600">{service.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-ink-900 py-24 md:py-32">
+      <section className="bg-paper-50 py-24 md:py-32">
         <div className="container-x">
           <SectionHeading
             eyebrow="Our process"
@@ -92,8 +92,8 @@ export default function Services() {
                   </span>
                   {i < process.length - 1 ? <span className="hidden h-px flex-1 bg-gradient-to-r from-gold-400/60 to-transparent md:block" /> : null}
                 </div>
-                <h3 className="mt-6 text-2xl text-white">{step.title}</h3>
-                <p className="mt-2 leading-relaxed text-zinc-400">{step.desc}</p>
+                <h3 className="mt-6 text-2xl text-ink-950">{step.title}</h3>
+                <p className="mt-2 leading-relaxed text-zinc-600">{step.desc}</p>
               </li>
             ))}
           </ol>

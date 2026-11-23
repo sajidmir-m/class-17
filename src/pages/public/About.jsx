@@ -28,13 +28,13 @@ export default function About() {
         image="/Social activity/social activity in kolkata/social activity kol 2.png"
       />
 
-      <section className="bg-ink-950 py-24 md:py-32">
+      <section className="bg-white py-24 md:py-32">
         <div className="container-x grid grid-cols-1 gap-16 lg:grid-cols-2">
           <div>
             <p className="eyebrow mb-6">Our story</p>
             <h2 className="section-title">Ideas that speak louder than words.</h2>
           </div>
-          <div className="space-y-6 text-lg leading-relaxed text-zinc-400">
+          <div className="space-y-6 text-lg leading-relaxed text-zinc-600">
             <p>
               We are an event management and marketing company dedicated to creating experiences that leave a lasting
               impact. Our team brings your vision to life, combining creativity with careful attention to detail.
@@ -47,7 +47,7 @@ export default function About() {
         </div>
 
         <div className="container-x mt-20">
-          <dl className="grid grid-cols-1 divide-y divide-white/[0.08] border-y border-white/[0.08] sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+          <dl className="grid grid-cols-1 divide-y divide-zinc-200 border-y border-zinc-200 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
             {stats.map((s) => (
               <div key={s.label} className="py-10 text-center">
                 <dt className="font-display text-5xl text-gradient md:text-6xl">{s.value}</dt>
@@ -59,13 +59,13 @@ export default function About() {
       </section>
 
       {/* Founder */}
-      <section className="relative overflow-hidden bg-ink-900 py-24 md:py-32">
+      <section className="relative overflow-hidden bg-paper-50 py-24 md:py-32">
         <div className="absolute right-0 top-1/2 h-[500px] w-[500px] -translate-y-1/2 rounded-full bg-gold-500/10 blur-[140px]" />
         <div className="container-x relative grid grid-cols-1 items-center gap-16 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <div className="relative mx-auto w-full max-w-md">
               <div className="absolute -bottom-5 -right-5 h-full w-full rounded-2xl border border-gold-400/50" />
-              <div className="relative aspect-square overflow-hidden rounded-2xl bg-ink-800 shadow-2xl">
+              <div className="relative aspect-square overflow-hidden rounded-2xl bg-paper-100 shadow-2xl">
                 <img
                   src="/ashiq.jpeg"
                   alt="MD Ashique Sidique, Founder & Chairman"
@@ -79,8 +79,8 @@ export default function About() {
           </div>
           <div className="lg:col-span-7">
             <p className="eyebrow mb-6">Founder &amp; Chairman</p>
-            <h2 className="font-display text-4xl font-semibold text-white md:text-6xl">MD Ashique Sidique</h2>
-            <blockquote className="mt-8 border-l-2 border-gold-400 pl-6 font-display text-xl italic leading-relaxed text-zinc-200 md:text-2xl">
+            <h2 className="font-display text-4xl font-semibold text-ink-950 md:text-6xl">MD Ashique Sidique</h2>
+            <blockquote className="mt-8 border-l-2 border-gold-400 pl-6 font-display text-xl italic leading-relaxed text-zinc-700 md:text-2xl">
               Best-in-class leadership behind strategy-led activations and on-ground execution across India, with
               disciplined operations, trained teams and measurable reporting.
             </blockquote>
@@ -91,7 +91,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className="bg-ink-950 py-24 md:py-32">
+      <section className="bg-white py-24 md:py-32">
         <div className="container-x">
           <p className="eyebrow mb-6">How we work</p>
           <h2 className="section-title max-w-2xl">Three promises on every project.</h2>
@@ -99,8 +99,8 @@ export default function About() {
             {values.map((v, i) => (
               <div key={v.title} className="card p-8">
                 <span className="font-display text-4xl text-gold-500/60">0{i + 1}</span>
-                <h3 className="mt-6 text-2xl text-white">{v.title}</h3>
-                <p className="mt-3 leading-relaxed text-zinc-400">{v.desc}</p>
+                <h3 className="mt-6 text-2xl text-ink-950">{v.title}</h3>
+                <p className="mt-3 leading-relaxed text-zinc-600">{v.desc}</p>
               </div>
             ))}
           </div>

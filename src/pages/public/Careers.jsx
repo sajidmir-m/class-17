@@ -145,34 +145,34 @@ export default function Careers() {
       />
 
       {/* Internship */}
-      <section className="bg-ink-950 pb-24 md:pb-32">
+      <section className="bg-white pb-24 md:pb-32">
         <div className="container-x">
-          <div className="relative overflow-hidden rounded-3xl border border-gold-400/25 bg-gradient-to-br from-ink-850 via-ink-900 to-ink-950">
-            <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-gold-500/10 blur-[120px]" />
+          <div className="relative overflow-hidden rounded-3xl border border-gold-400/40 bg-gradient-to-br from-gold-100/60 via-white to-paper-50 shadow-[0_30px_80px_-40px_rgba(16,16,20,0.25)]">
+            <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-gold-300/30 blur-[120px]" />
             <div className="relative grid grid-cols-1 gap-12 p-7 md:p-12 lg:grid-cols-12">
               <div className="lg:col-span-7">
                 <p className="eyebrow mb-6">Internship opportunity</p>
-                <h2 className="font-display text-3xl font-semibold text-white md:text-5xl">{internshipRole.title}</h2>
-                <p className="mt-5 text-lg leading-relaxed text-zinc-400">
+                <h2 className="font-display text-3xl font-semibold text-ink-950 md:text-5xl">{internshipRole.title}</h2>
+                <p className="mt-5 text-lg leading-relaxed text-zinc-600">
                   Real field exposure across cricket, social, school and brand activations, with mentors who run these
                   campaigns every week.
                 </p>
 
                 <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
                   {internshipPerks.map((p) => (
-                    <div key={p.label} className="rounded-2xl border border-white/[0.08] bg-ink-950/60 p-5">
+                    <div key={p.label} className="rounded-2xl border border-zinc-200 bg-white/80 p-5">
                       <p className="text-[11px] uppercase tracking-[0.2em] text-zinc-500">{p.label}</p>
-                      <p className="mt-2 font-display text-xl text-gold-200">{p.value}</p>
+                      <p className="mt-2 font-display text-xl text-gold-600">{p.value}</p>
                       <p className="mt-1 text-xs text-zinc-500">{p.note}</p>
                     </div>
                   ))}
                 </div>
 
-                <h3 className="mt-12 text-2xl text-white">What you will do</h3>
+                <h3 className="mt-12 text-2xl text-ink-950">What you will do</h3>
                 <ul className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
                   {internshipTasks.map((t) => (
-                    <li key={t} className="flex gap-3 text-sm leading-relaxed text-zinc-300">
-                      <Icon name="check" className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
+                    <li key={t} className="flex gap-3 text-sm leading-relaxed text-zinc-600">
+                      <Icon name="check" className="mt-0.5 h-4 w-4 shrink-0 text-gold-600" />
                       {t}
                     </li>
                   ))}
@@ -180,9 +180,9 @@ export default function Careers() {
               </div>
 
               <aside className="lg:col-span-5">
-                <div className="rounded-2xl border border-white/10 bg-ink-950 p-7 lg:sticky lg:top-28">
-                  <h3 className="text-2xl text-white">Apply via WhatsApp</h3>
-                  <p className="mt-3 text-sm text-zinc-400">
+                <div className="rounded-2xl border border-zinc-200 bg-white p-7 lg:sticky lg:top-28">
+                  <h3 className="text-2xl text-ink-950">Apply via WhatsApp</h3>
+                  <p className="mt-3 text-sm text-zinc-600">
                     Fill a short form and we open WhatsApp with your details ready to send.
                   </p>
                   <dl className="mt-7 space-y-4 text-sm">
@@ -192,8 +192,8 @@ export default function Careers() {
                       ['sparkle', internshipRole.salary],
                       ['phone', '+91 91495 59393'],
                     ].map(([icon, text]) => (
-                      <div key={text} className="flex items-center gap-3 text-zinc-300">
-                        <Icon name={icon} className="h-4 w-4 text-gold-400" />
+                      <div key={text} className="flex items-center gap-3 text-zinc-600">
+                        <Icon name={icon} className="h-4 w-4 text-gold-600" />
                         {text}
                       </div>
                     ))}
@@ -210,22 +210,22 @@ export default function Careers() {
       </section>
 
       {/* Open roles */}
-      <section className="bg-ink-900 py-24 md:py-32">
+      <section className="bg-paper-50 py-24 md:py-32">
         <div className="container-x">
           <SectionHeading eyebrow="Open roles" title="Current openings" />
           {jobs.length > 0 ? (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               {jobs.map((job) => (
                 <article key={job.id} className="card flex flex-col p-8">
-                  <h3 className="text-2xl text-white">{job.title}</h3>
+                  <h3 className="text-2xl text-ink-950">{job.title}</h3>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {[job.location, job.type, job.salary].filter(Boolean).map((tag) => (
-                      <span key={tag} className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-300">
+                      <span key={tag} className="rounded-full border border-zinc-200 px-3 py-1 text-xs text-zinc-600">
                         {tag}
                       </span>
                     ))}
                   </div>
-                  <p className="mt-5 leading-relaxed text-zinc-400">{job.description}</p>
+                  <p className="mt-5 leading-relaxed text-zinc-600">{job.description}</p>
                   <div className="mt-auto grid grid-cols-1 gap-3 pt-8 sm:grid-cols-2">
                     <button type="button" onClick={() => openForm(job)} className="btn-gold">
                       Apply now
@@ -238,7 +238,7 @@ export default function Careers() {
               ))}
             </div>
           ) : (
-            <div className="card p-10 text-center text-zinc-400">
+            <div className="card p-10 text-center text-zinc-600">
               No full-time openings right now. The internship above is open, and new roles are posted here first.
             </div>
           )}
@@ -248,26 +248,26 @@ export default function Careers() {
       {showForm && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-ink-950/90 p-4 backdrop-blur-md" onClick={closeForm}>
           <div
-            className="max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-white/10 bg-ink-900 p-7 shadow-2xl md:p-9"
+            className="max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-zinc-200 bg-white p-7 shadow-2xl md:p-9"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="eyebrow mb-3">Apply</p>
-                <h2 className="text-2xl text-white md:text-3xl">{selectedJob?.title}</h2>
+                <h2 className="text-2xl text-ink-950 md:text-3xl">{selectedJob?.title}</h2>
               </div>
               <button
                 type="button"
                 onClick={closeForm}
                 aria-label="Close"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 text-xl text-white hover:border-gold-400"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-zinc-300 text-xl text-ink-950 hover:border-gold-400"
               >
                 ×
               </button>
             </div>
 
             {isInternship ? (
-              <p className="mt-5 rounded-xl border border-gold-400/30 bg-gold-400/10 px-4 py-3 text-sm text-gold-200">
+              <p className="mt-5 rounded-xl border border-gold-400/30 bg-gold-400/10 px-4 py-3 text-sm text-gold-700">
                 After you submit, WhatsApp opens with your details ready to send.
               </p>
             ) : null}
