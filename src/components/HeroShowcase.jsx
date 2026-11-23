@@ -4,11 +4,10 @@ import { Link } from 'react-router-dom'
 const SLIDE_MS = 6500
 
 const slides = [
-  { src: '/cricket activities/jammu/cricket 2.png', activity: 'Cricket', place: 'Jammu & Kashmir', position: 'center 30%' },
-  { src: '/cricket activities/kolkata/cricket 1.png', activity: 'Sports', place: 'Kolkata, West Bengal', position: 'center 40%' },
-  { src: '/Social activity/social activity in kolkata/social activity kol 2.png', activity: 'Social', place: 'Kolkata, West Bengal', position: 'center 35%' },
-  { src: '/Photos/EPSON FOR EDUCATION/Indore- Feb 2026/WhatsApp Image 2026-02-23 at 06.40.11.jpeg', activity: 'Education', place: 'Indore, Madhya Pradesh', position: 'center' },
-  { src: '/school activity/kolkata/school.png', activity: 'School', place: 'Kolkata, West Bengal', position: 'center' },
+  { src: '/hero/cricket.webp', activity: 'Cricket & sports', place: 'Stadium fan engagement', position: '65% center' },
+  { src: '/hero/school.webp', activity: 'School programs', place: 'Campus activations', position: '70% center' },
+  { src: '/hero/retail.webp', activity: 'Brand activations', place: 'Retail & mall demos', position: '72% center' },
+  { src: '/hero/event.webp', activity: 'Live events', place: 'Stage & experiential', position: '70% center' },
 ]
 
 const stats = [
@@ -36,7 +35,7 @@ export default function HeroShowcase() {
   const current = slides[active]
 
   return (
-    <section className="on-dark relative isolate h-[100svh] min-h-[640px] overflow-hidden bg-ink-950 text-white">
+    <section className="on-dark relative isolate flex min-h-[100svh] overflow-hidden bg-ink-950 text-white">
       {slides.map((slide, i) => {
         const isActive = i === active
         return (
@@ -67,7 +66,7 @@ export default function HeroShowcase() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_15%_60%,rgba(201,160,63,0.18),transparent_55%)]" />
       <div className="grain pointer-events-none absolute inset-0 opacity-[0.06] mix-blend-overlay" />
 
-      <div className="container-x relative flex h-full flex-col justify-end pb-10 pt-28 md:pb-14">
+      <div className="container-x relative flex flex-col justify-end pb-10 pt-32 md:pb-14 md:pt-36">
         <div className="max-w-3xl">
           <p className="eyebrow mb-7 animate-fade-up">
             Marketing &amp; Advertising<span className="hidden sm:inline"> · Pan-India</span>
@@ -102,10 +101,10 @@ export default function HeroShowcase() {
             ))}
           </dl>
 
-          <div className="w-full md:w-72">
-            <div className="mb-3 flex items-baseline justify-between text-xs">
-              <span className="font-semibold uppercase tracking-[0.2em] text-gold-300">{current.activity}</span>
-              <span className="text-zinc-400">{current.place}</span>
+          <div className="w-full md:w-96">
+            <div className="mb-3 flex items-baseline justify-between gap-4 text-xs">
+              <span className="whitespace-nowrap font-semibold uppercase tracking-[0.2em] text-gold-300">{current.activity}</span>
+              <span className="truncate text-zinc-400">{current.place}</span>
             </div>
             <div className="flex gap-1.5">
               {slides.map((slide, i) => (
