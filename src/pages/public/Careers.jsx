@@ -145,7 +145,7 @@ export default function Careers() {
       />
 
       {/* Internship */}
-      <section className="bg-white pb-24 md:pb-32">
+      <section className="bg-white pb-16 md:pb-24">
         <div className="container-x">
           <div className="relative overflow-hidden rounded-3xl border border-gold-400/40 bg-gradient-to-br from-gold-100/60 via-white to-paper-50 shadow-[0_30px_80px_-40px_rgba(16,16,20,0.25)]">
             <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-gold-300/30 blur-[120px]" />
@@ -210,7 +210,7 @@ export default function Careers() {
       </section>
 
       {/* Open roles */}
-      <section className="bg-paper-50 py-24 md:py-32">
+      <section className="bg-paper-50 py-16 md:py-24">
         <div className="container-x">
           <SectionHeading eyebrow="Open roles" title="Current openings" />
           {jobs.length > 0 ? (

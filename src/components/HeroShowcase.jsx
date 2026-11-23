@@ -66,22 +66,22 @@ export default function HeroShowcase() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_15%_60%,rgba(201,160,63,0.18),transparent_55%)]" />
       <div className="grain pointer-events-none absolute inset-0 opacity-[0.06] mix-blend-overlay" />
 
-      <div className="container-x relative flex flex-col justify-end pb-10 pt-32 md:pb-14 md:pt-36">
+      <div className="container-x relative flex w-full flex-col justify-end pb-8 pt-24 sm:pb-10 sm:pt-28 md:pb-12 md:pt-32">
         <div className="max-w-3xl">
-          <p className="eyebrow mb-7 animate-fade-up">
+          <p className="eyebrow mb-4 animate-fade-up sm:mb-6">
             Marketing &amp; Advertising<span className="hidden sm:inline"> · Pan-India</span>
           </p>
-          <h1 className="font-display text-[2.6rem] font-semibold leading-[1.02] sm:text-6xl md:text-7xl lg:text-[5.5rem]">
+          <h1 className="font-display text-[2.05rem] font-semibold leading-[1.05] sm:text-5xl md:text-6xl lg:text-[4.15rem]">
             <span className="block animate-fade-up [animation-delay:120ms]">Ideas that speak</span>
             <span className="block animate-fade-up [animation-delay:240ms]">
               <em className="text-gradient pr-2 font-medium italic">louder</em> than words.
             </span>
           </h1>
-          <p className="mt-7 max-w-xl animate-fade-up text-base leading-relaxed text-zinc-300 [animation-delay:360ms] md:text-lg">
+          <p className="mt-4 max-w-xl animate-fade-up text-sm leading-relaxed text-zinc-300 [animation-delay:360ms] sm:mt-6 sm:text-base md:text-lg">
             Printers, projectors, school programs, dealer meets and cricket match activations, planned with
             strategy and executed across India.
           </p>
-          <div className="mt-9 flex animate-fade-up flex-col gap-4 [animation-delay:480ms] sm:flex-row">
+          <div className="mt-6 flex animate-fade-up flex-col gap-3 [animation-delay:480ms] sm:mt-8 sm:flex-row sm:gap-4">
             <Link to="/contact" className="btn-gold">
               Plan a campaign
             </Link>
@@ -91,8 +91,8 @@ export default function HeroShowcase() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-8 border-t border-white/10 pt-6 md:mt-16 md:flex-row md:items-end md:justify-between">
-          <dl className="grid grid-cols-3 gap-4 md:gap-12">
+        <div className="mt-8 flex flex-col gap-6 border-t border-white/10 pt-5 sm:mt-10 md:mt-12 md:flex-row md:items-end md:justify-between">
+          <dl className="grid grid-cols-3 gap-3 sm:gap-6 md:gap-12">
             {stats.map((s) => (
               <div key={s.label}>
                 <dt className="whitespace-nowrap font-display text-xl text-white sm:text-2xl md:text-3xl">{s.value}</dt>

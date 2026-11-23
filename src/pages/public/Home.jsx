@@ -109,7 +109,7 @@ export default function Home() {
       </section>
 
       {/* Intro */}
-      <section className="bg-white py-24 md:py-32">
+      <section className="bg-white py-16 md:py-24">
         <div className="container-x grid grid-cols-1 gap-16 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <p className="eyebrow mb-6">Who we are</p>
@@ -143,7 +143,7 @@ export default function Home() {
       </section>
 
       {/* Clients */}
-      <section className="bg-paper-50 py-24 md:py-32">
+      <section className="bg-paper-50 py-16 md:py-24">
         <div className="container-x">
           <SectionHeading
             eyebrow="Our clients"
@@ -185,7 +185,7 @@ export default function Home() {
       </section>
 
       {/* Cricket feature */}
-      <section className="bg-white py-24 md:py-32">
+      <section className="bg-white py-16 md:py-24">
         <div className="container-x">
           <SectionHeading
             eyebrow="Featured"
@@ -221,7 +221,7 @@ export default function Home() {
       </section>
 
       {/* Map */}
-      <section className="bg-paper-50 py-24 md:py-32">
+      <section className="bg-paper-50 py-16 md:py-24">
         <div className="container-x">
           <SectionHeading
             eyebrow="Pan-India presence"
@@ -243,7 +243,7 @@ export default function Home() {
       </section>
 
       {/* State highlights */}
-      <section className="bg-white py-24 md:py-32">
+      <section className="bg-white py-16 md:py-24">
         <div className="container-x">
           <SectionHeading
             eyebrow="State highlights"
@@ -307,7 +307,7 @@ export default function Home() {
       </section>
 
       {/* Activities gallery */}
-      <section className="bg-paper-50 py-24 md:py-32">
+      <section className="bg-paper-50 py-16 md:py-24">
         <div className="container-x">
           <SectionHeading
             eyebrow="All activities"
@@ -404,7 +404,7 @@ export default function Home() {
 
       {/* News */}
       {news.length > 0 ? (
-        <section className="bg-white py-24 md:py-32">
+        <section className="bg-white py-16 md:py-24">
           <div className="container-x">
             <SectionHeading eyebrow="Latest news" title="Updates & announcements" />
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">

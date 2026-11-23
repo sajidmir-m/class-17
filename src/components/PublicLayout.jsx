@@ -56,13 +56,13 @@ export default function PublicLayout({ children }) {
   const overPhoto = location.pathname === '/' && !solid
 
   return (
-    <div className="min-h-screen bg-white text-zinc-600">
+    <div className="min-h-screen overflow-x-clip bg-white text-zinc-600">
       <header
         className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
           solid ? 'border-b border-zinc-200 bg-white/90 shadow-[0_8px_30px_-20px_rgba(16,16,20,0.3)] backdrop-blur-xl' : 'bg-transparent'
         }`}
       >
-        <div className="container-x flex h-20 items-center justify-between">
+        <div className="container-x flex h-16 items-center justify-between sm:h-[4.25rem]">
           <Brand light={overPhoto} />
 
           <nav className="hidden items-center gap-1 lg:flex">
@@ -72,7 +72,7 @@ export default function PublicLayout({ children }) {
                 to={link.path}
                 end={link.path === '/'}
                 className={({ isActive }) =>
-                  `relative px-4 py-2 text-sm font-medium transition-colors ${
+                  `relative px-2.5 py-2 text-[13px] font-medium transition-colors xl:px-4 ${
                     isActive
                       ? overPhoto
                         ? 'text-gold-300'

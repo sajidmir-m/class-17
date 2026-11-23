@@ -111,7 +111,7 @@ export default function Founder() {
 
   return (
     <PublicLayout>
-      <section className="relative overflow-hidden bg-paper-50 pb-24 pt-36 md:pb-32 md:pt-44">
+      <section className="relative overflow-hidden bg-paper-50 pb-16 pt-28 sm:pb-24 sm:pt-32 md:pb-28 md:pt-36">
         <div className="absolute -left-40 top-20 h-[520px] w-[520px] rounded-full bg-gold-300/25 blur-[140px]" />
 
         <div className="container-x relative grid grid-cols-1 items-center gap-16 lg:grid-cols-12">
@@ -133,7 +133,7 @@ export default function Founder() {
 
           <div className="animate-fade-up [animation-delay:150ms] lg:col-span-7">
             <p className="eyebrow mb-6">{profile.title}</p>
-            <h1 className="font-display text-5xl font-semibold leading-[1.05] text-ink-950 md:text-7xl">{profile.name}</h1>
+            <h1 className="font-display text-4xl font-semibold leading-[1.08] text-ink-950 sm:text-5xl md:text-6xl">{profile.name}</h1>
             <blockquote className="mt-8 border-l-2 border-gold-400 pl-6 font-display text-xl italic leading-relaxed text-zinc-700 md:text-2xl">
               {profile.brief_intro}
             </blockquote>
@@ -172,7 +172,7 @@ export default function Founder() {
         </div>
       </section>
 
-      <section className="bg-paper-50 py-24 md:py-32">
+      <section className="bg-paper-50 py-16 md:py-24">
         <div className="container-x grid grid-cols-1 gap-16 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <p className="eyebrow mb-6">About</p>

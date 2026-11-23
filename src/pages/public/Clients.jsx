@@ -45,7 +45,7 @@ export default function Clients() {
         image="/cricket activities/kolkata/cricket 1.png"
       />
 
-      <section className="bg-white py-24 md:py-32">
+      <section className="bg-white py-16 md:py-24">
         <div className="container-x grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {cards.map((c) => (
             <article key={c.name} className="card-interactive group flex flex-col overflow-hidden">
@@ -83,7 +83,7 @@ export default function Clients() {
       </section>
 
       {gallery.length > 0 ? (
-        <section className="bg-paper-50 py-24 md:py-32">
+        <section className="bg-paper-50 py-16 md:py-24">
           <div className="container-x">
             <SectionHeading
               eyebrow="In the field"

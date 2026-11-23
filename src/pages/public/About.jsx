@@ -28,7 +28,7 @@ export default function About() {
         image="/Social activity/social activity in kolkata/social activity kol 2.png"
       />
 
-      <section className="bg-white py-24 md:py-32">
+      <section className="bg-white py-16 md:py-24">
         <div className="container-x grid grid-cols-1 gap-16 lg:grid-cols-2">
           <div>
             <p className="eyebrow mb-6">Our story</p>
@@ -59,7 +59,7 @@ export default function About() {
       </section>
 
       {/* Founder */}
-      <section className="relative overflow-hidden bg-paper-50 py-24 md:py-32">
+      <section className="relative overflow-hidden bg-paper-50 py-16 md:py-24">
         <div className="absolute right-0 top-1/2 h-[500px] w-[500px] -translate-y-1/2 rounded-full bg-gold-500/10 blur-[140px]" />
         <div className="container-x relative grid grid-cols-1 items-center gap-16 lg:grid-cols-12">
           <div className="lg:col-span-5">
@@ -91,7 +91,7 @@ export default function About() {
         </div>
       </section>
 
-      <section className="bg-white py-24 md:py-32">
+      <section className="bg-white py-16 md:py-24">
         <div className="container-x">
           <p className="eyebrow mb-6">How we work</p>
           <h2 className="section-title max-w-2xl">Three promises on every project.</h2>

@@ -57,7 +57,7 @@ export default function Services() {
         image="/Photos/EPSON FOR BUSINESS/Pune- Jan 2025/Picture1.jpg"
       />
 
-      <section className="bg-white py-24 md:py-32">
+      <section className="bg-white py-16 md:py-24">
         <div className="container-x">
           <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-200 md:grid-cols-2 lg:grid-cols-3">
             {services.map((service, i) => (
@@ -76,7 +76,7 @@ export default function Services() {
         </div>
       </section>
 
-      <section className="bg-paper-50 py-24 md:py-32">
+      <section className="bg-paper-50 py-16 md:py-24">
         <div className="container-x">
           <SectionHeading
             eyebrow="Our process"

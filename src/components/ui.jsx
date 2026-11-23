@@ -9,7 +9,7 @@ export const whatsappLink = (text = '') =>
 
 export function PageHero({ eyebrow, title, subtitle, image, children }) {
   return (
-    <section className="relative overflow-hidden border-b border-zinc-200 bg-paper-50 pb-16 pt-36 md:pb-24 md:pt-44">
+    <section className="relative overflow-hidden border-b border-zinc-200 bg-paper-50 pb-12 pt-28 sm:pb-16 sm:pt-32 md:pb-20 md:pt-36">
       {image ? (
         <img
           src={image}
@@ -24,7 +24,7 @@ export function PageHero({ eyebrow, title, subtitle, image, children }) {
       <div className="container-x relative">
         <div className="max-w-3xl animate-fade-up">
           {eyebrow ? <p className="eyebrow mb-6">{eyebrow}</p> : null}
-          <h1 className="font-display text-4xl font-semibold leading-[1.05] text-ink-950 sm:text-5xl md:text-6xl">
+          <h1 className="font-display text-3xl font-semibold leading-[1.08] text-ink-950 sm:text-4xl md:text-5xl">
             {title}
           </h1>
           {subtitle ? <p className="mt-6 text-base leading-relaxed text-zinc-600 md:text-lg">{subtitle}</p> : null}
@@ -108,7 +108,7 @@ export function CtaBand({
   subtitle = 'Tell us the brand, the audience and the cities. We will come back with a plan, timelines and costs.',
 }) {
   return (
-    <section className="bg-white py-20 md:py-28">
+    <section className="bg-white py-14 md:py-20">
       <div className="container-x">
         <div className="on-dark relative overflow-hidden rounded-3xl border border-gold-400/25 bg-gradient-to-br from-ink-850 via-ink-900 to-ink-950 px-6 py-14 text-center md:px-16 md:py-20">
           <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-gold-500/15 blur-[100px]" />

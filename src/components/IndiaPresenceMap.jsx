@@ -130,7 +130,7 @@ function StateLabels({ locations, activeName, onSelect }) {
 
 export default function IndiaPresenceMap({ locations, activeName, onSelect }) {
   return (
-    <div className="h-[520px] w-full overflow-hidden rounded-2xl border border-zinc-200 bg-paper-100 shadow-sm md:h-[640px]">
+    <div className="h-[360px] w-full overflow-hidden rounded-2xl border border-zinc-200 bg-paper-100 shadow-sm sm:h-[440px] md:h-[540px]">
       <MapContainer
         center={[22.5, 78.9]}
         zoom={5}
