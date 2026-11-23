@@ -1,5 +1,5 @@
 -- Founder profile table (single record: key = 'main')
--- Run this in Supabase SQL editor.
+-- Run this in Supabase SQL editor, then run security_hardening.sql for its RLS policies.
 
 create table if not exists public.founder_profile (
   key text primary key,
@@ -16,10 +16,4 @@ create table if not exists public.founder_profile (
   updated_at timestamptz default now()
 );
 
--- Optional: allow public read access (adjust based on your RLS policy)
--- alter table public.founder_profile enable row level security;
--- create policy "public read founder profile"
--- on public.founder_profile
--- for select
--- using (true);
-
+alter table public.founder_profile enable row level security;

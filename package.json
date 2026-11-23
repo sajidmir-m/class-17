@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "generate:sitemap": "node scripts/generate-sitemap.mjs",
+    "optimize:images": "node scripts/optimize-images.mjs",
     "build": "npm run generate:sitemap && vite build",
     "preview": "vite preview"
   },
@@ -23,6 +24,7 @@
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.32",
+    "sharp": "^0.35.5",
     "tailwindcss": "^3.3.6",
     "vite": "^5.0.8"
   }

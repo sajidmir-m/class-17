@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
 import PublicLayout from '../../components/PublicLayout'
+import { Chip, CtaBand, Icon, Lightbox, PageHero } from '../../components/ui'
+import { toSrc } from '../../data/activities'
 
 const CAMPAIGN_TYPES = [
   { key: 'business', label: 'Business' },
@@ -185,7 +187,7 @@ export default function StateWorkPage() {
   const [clientsById, setClientsById] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [selectedImage, setSelectedImage] = useState(null)
+  const [lightbox, setLightbox] = useState(null)
   const [expandedWorkGalleries, setExpandedWorkGalleries] = useState({})
 
   const selectedDistrict = (searchParams.get('district') || '').trim()
@@ -323,209 +325,140 @@ export default function StateWorkPage() {
     setSearchParams(params, { replace: true })
   }
 
+  const hasFilters = Boolean(selectedDistrict || selectedType || selectedActivity)
+
   return (
     <PublicLayout>
-      <section className="bg-gradient-to-br from-[#0b0b0c] via-[#1a0b10] to-[#5b0d1b] text-white py-16 md:py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-            <div>
-              <p className="text-sm uppercase tracking-[0.2em] text-white/70 mb-3">
-                State Work
-              </p>
-              <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
-                Brand Activations in {stateName}
-              </h1>
-              <p className="text-blue-100 max-w-2xl text-sm md:text-base">
-                Explore our person-to-person engagement activities, face-to-face consultations, and hands-on demonstrations 
-                that Class 17 Events has executed across {stateName}. Each campaign focuses on direct customer interactions 
-                and personalized solutions.
-              </p>
-            </div>
-            <div className="flex flex-col items-start md:items-end gap-3">
-              <Link
-                to="/"
-                className="inline-flex items-center text-sm font-medium text-white/90 hover:text-white underline-offset-2 hover:underline"
-              >
-                ← Back to Home
-              </Link>
-              <Link
-                to="/contact"
-                className="btn-modern bg-white text-[#5b0d1b] hover:bg-gray-100 shadow-lg text-sm"
-              >
-                Plan a Campaign in {stateName}
-              </Link>
-            </div>
-          </div>
+      <PageHero
+        eyebrow="State work"
+        title={
+          <>
+            Brand activations in <em className="text-gradient font-medium italic capitalize">{stateName}</em>
+          </>
+        }
+        subtitle={`Person-to-person engagement, face-to-face consultations and hands-on demonstrations delivered across ${stateName}.`}
+        image={primaryWork?.images?.[0] ? toSrc(primaryWork.images[0]) : undefined}
+      >
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+          <Link to="/contact" className="btn-gold">
+            Plan a campaign in {stateName}
+          </Link>
+          <Link to="/" className="inline-flex items-center gap-2 text-sm font-medium text-zinc-400 hover:text-white">
+            ? Back to home
+          </Link>
         </div>
-      </section>
+      </PageHero>
 
-      <section className="py-16 md:py-20 bg-gradient-to-br from-gray-50 via-white to-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <section className="bg-ink-950 py-16 md:py-24">
+        <div className="container-x space-y-10">
           {loading && (
-            <div className="text-center py-16">
-              <p className="text-gray-500 text-lg">Loading state work...</p>
+            <div className="space-y-4">
+              <div className="h-40 animate-pulse rounded-2xl bg-ink-900" />
+              <div className="h-80 animate-pulse rounded-2xl bg-ink-900" />
             </div>
           )}
 
           {!loading && error && (
-            <div className="max-w-3xl mx-auto bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-2xl text-sm">
+            <div className="mx-auto max-w-3xl whitespace-pre-line rounded-2xl border border-red-500/30 bg-red-500/10 px-6 py-4 text-sm text-red-200">
               {error}
             </div>
           )}
 
           {!loading && !error && works.length === 0 && (
-            <div className="max-w-3xl mx-auto bg-white border border-gray-200 rounded-2xl shadow-sm p-8 text-center space-y-3">
-              <h2 className="text-xl font-semibold text-gray-900 mb-1">
-                State work coming soon
-              </h2>
-              <p className="text-gray-600 text-sm md:text-base">
-                We have not added detailed work for <span className="font-semibold">{stateName}</span> yet.
-                Your admin panel lets you create state-wise work with images, activities, and brand mapping —
-                once added, it will appear here automatically.
+            <div className="card mx-auto max-w-2xl p-10 text-center">
+              <h2 className="text-2xl text-white">State work coming soon</h2>
+              <p className="mt-3 text-zinc-400">
+                Detailed work for <span className="capitalize text-white">{stateName}</span> has not been published yet.
+                Want to be our first campaign here?
               </p>
-              <p className="text-gray-500 text-xs">
-                Tip: Use the admin &quot;State Works&quot; section to create an entry for this state.
-              </p>
+              <Link to="/contact" className="btn-gold mt-8">
+                Talk to us
+              </Link>
             </div>
           )}
 
           {!loading && !error && works.length > 0 && (
             <>
-              <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 md:p-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Our Work in {stateName}</h2>
-                <p className="text-gray-600 text-sm md:text-base mb-6">
-                  All state work is shown below as multiple cards inside this section.
-                </p>
-
-                {/* Filters */}
-                <div className="rounded-2xl border border-gray-200 bg-gradient-to-br from-[#0b0b0c] via-[#121214] to-[#1a0b10] p-5 md:p-6 mb-8 space-y-5 text-white">
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                    <div>
-                      <p className="text-sm font-semibold text-white">Filter by District / City</p>
-                      <p className="text-xs text-white/70">Click a district to see only the work from that location.</p>
-                    </div>
-                    {(selectedDistrict || selectedType || selectedActivity) && (
-                      <button
-                        type="button"
-                        onClick={() => setFilterParams({ district: '', type: '', activity: '' })}
-                        className="text-xs font-semibold text-white hover:text-white border border-white/20 hover:border-white/40 bg-white/10 rounded-full px-3 py-2 w-fit"
-                      >
-                        Clear filters
-                      </button>
-                    )}
+              <div className="card space-y-6 p-6 md:p-8">
+                <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                  <div>
+                    <h2 className="text-2xl text-white">Filter the work</h2>
+                    <p className="mt-1 text-sm text-zinc-500">Narrow down by district, campaign type or activity.</p>
                   </div>
-
-                  <div className="flex flex-wrap gap-2">
+                  {hasFilters && (
                     <button
                       type="button"
-                      onClick={() => setFilterParams({ district: '' })}
-                      className={
-                        selectedDistrict
-                          ? 'text-xs font-semibold text-white bg-white/10 border border-white/20 rounded-full px-3 py-1 hover:border-white/40'
-                          : 'text-xs font-semibold text-white bg-gradient-to-r from-[#5b0d1b] to-[#0b0b0c] border border-transparent rounded-full px-3 py-1'
-                      }
+                      onClick={() => setFilterParams({ district: '', type: '', activity: '' })}
+                      className="text-xs font-semibold text-gold-300 hover:text-gold-200"
                     >
-                      All Districts
+                      Clear all filters
                     </button>
-                    {allDistricts.map((d) => (
-                      <button
-                        key={d}
-                        type="button"
-                        onClick={() => setFilterParams({ district: d })}
-                        className={
-                          selectedDistrict === d
-                            ? 'text-xs font-semibold text-white bg-gradient-to-r from-[#5b0d1b] to-[#0b0b0c] border border-transparent rounded-full px-3 py-1'
-                            : 'text-xs font-semibold text-white/90 bg-white/10 border border-white/20 rounded-full px-3 py-1 hover:border-white/40'
-                        }
-                      >
-                        {d}
-                      </button>
-                    ))}
-                  </div>
-
-                  {visibleTypes.length > 0 && (
-                    <div className="space-y-2">
-                      <p className="text-sm font-semibold text-white">Filter by Campaign Type</p>
-                      <div className="flex flex-wrap gap-2">
-                        <button
-                          type="button"
-                          onClick={() => setFilterParams({ type: '' })}
-                          className={
-                            selectedType
-                              ? 'text-xs font-semibold text-white bg-white/10 border border-white/20 rounded-full px-3 py-1 hover:border-white/40'
-                              : 'text-xs font-semibold text-white bg-gradient-to-r from-[#0b0b0c] to-[#5b0d1b] border border-transparent rounded-full px-3 py-1'
-                          }
-                        >
-                          All Types
-                        </button>
-                        {visibleTypes.map((t) => (
-                          <button
-                            key={t.key}
-                            type="button"
-                            onClick={() => setFilterParams({ type: t.key })}
-                            className={
-                              selectedType === t.key
-                                ? 'text-xs font-semibold text-white bg-gradient-to-r from-[#0b0b0c] to-[#5b0d1b] border border-transparent rounded-full px-3 py-1'
-                                : 'text-xs font-semibold text-white/90 bg-white/10 border border-white/20 rounded-full px-3 py-1 hover:border-white/40'
-                            }
-                          >
-                            {t.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {visibleActivityFocus.length > 0 && (
-                    <div className="space-y-2">
-                      <p className="text-sm font-semibold text-white">Filter by Activity Type</p>
-                      <div className="flex flex-wrap gap-2">
-                        <button
-                          type="button"
-                          onClick={() => setFilterParams({ activity: '' })}
-                          className={
-                            selectedActivity
-                              ? 'text-xs font-semibold text-white bg-white/10 border border-white/20 rounded-full px-3 py-1 hover:border-white/40'
-                              : 'text-xs font-semibold text-white bg-gradient-to-r from-[#0b0b0c] to-[#5b0d1b] border border-transparent rounded-full px-3 py-1'
-                          }
-                        >
-                          All Activity Types
-                        </button>
-                        {visibleActivityFocus.map((t) => (
-                          <button
-                            key={t.key}
-                            type="button"
-                            onClick={() => setFilterParams({ activity: t.key })}
-                            className={
-                              selectedActivity === t.key
-                                ? 'text-xs font-semibold text-white bg-gradient-to-r from-[#0b0b0c] to-[#5b0d1b] border border-transparent rounded-full px-3 py-1'
-                                : 'text-xs font-semibold text-white/90 bg-white/10 border border-white/20 rounded-full px-3 py-1 hover:border-white/40'
-                            }
-                          >
-                            {t.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
                   )}
                 </div>
 
-                {filteredWorks.length === 0 ? (
-                  <div className="rounded-2xl border border-gray-200 bg-white p-8 text-center">
-                    <h3 className="text-lg font-bold text-gray-900">No work found for this filter</h3>
-                    <p className="text-sm text-gray-600 mt-2">
-                      Try selecting a different district/city or campaign type.
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => setFilterParams({ district: '', type: '' })}
-                      className="mt-4 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl px-4 py-2"
-                    >
-                      Clear filters
-                    </button>
+                {allDistricts.length > 0 && (
+                  <div>
+                    <p className="label-dark">District / city</p>
+                    <div className="flex flex-wrap gap-2">
+                      <Chip active={!selectedDistrict} onClick={() => setFilterParams({ district: '' })}>
+                        All districts
+                      </Chip>
+                      {allDistricts.map((d) => (
+                        <Chip key={d} active={selectedDistrict === d} onClick={() => setFilterParams({ district: d })}>
+                          {d}
+                        </Chip>
+                      ))}
+                    </div>
                   </div>
-                ) : (
-                <div className="space-y-6">
+                )}
+
+                {visibleTypes.length > 0 && (
+                  <div>
+                    <p className="label-dark">Campaign type</p>
+                    <div className="flex flex-wrap gap-2">
+                      <Chip active={!selectedType} onClick={() => setFilterParams({ type: '' })}>
+                        All types
+                      </Chip>
+                      {visibleTypes.map((t) => (
+                        <Chip key={t.key} active={selectedType === t.key} onClick={() => setFilterParams({ type: t.key })}>
+                          {t.label}
+                        </Chip>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {visibleActivityFocus.length > 1 && (
+                  <div>
+                    <p className="label-dark">Activity</p>
+                    <div className="flex flex-wrap gap-2">
+                      <Chip active={!selectedActivity} onClick={() => setFilterParams({ activity: '' })}>
+                        All activities
+                      </Chip>
+                      {visibleActivityFocus.map((t) => (
+                        <Chip key={t.key} active={selectedActivity === t.key} onClick={() => setFilterParams({ activity: t.key })}>
+                          {t.label}
+                        </Chip>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {filteredWorks.length === 0 ? (
+                <div className="card p-10 text-center">
+                  <h3 className="text-xl text-white">No work matches these filters</h3>
+                  <p className="mt-2 text-sm text-zinc-400">Try a different district, campaign type or activity.</p>
+                  <button
+                    type="button"
+                    onClick={() => setFilterParams({ district: '', type: '', activity: '' })}
+                    className="btn-outline mt-6"
+                  >
+                    Clear filters
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-8">
                   {filteredWorks.map((work, idx) => {
                     const allImages = Array.isArray(work.images) ? work.images : []
                     const imagesFiltered = allImages.filter((img) => {
@@ -533,182 +466,116 @@ export default function StateWorkPage() {
                       const matchesActivity =
                         !selectedActivity ||
                         (selectedActivity === 'brand' ? activityKey === 'brand' : activityKey === selectedActivity)
-
-                      return (
-                        imageMatchesDistrict(img, selectedDistrict) &&
-                        imageMatchesType(img, selectedType) &&
-                        matchesActivity
-                      )
+                      return imageMatchesDistrict(img, selectedDistrict) && imageMatchesType(img, selectedType) && matchesActivity
                     })
-                    const imagesToUse = selectedDistrict || selectedType ? imagesFiltered : allImages
-
+                    const imagesToUse = hasFilters ? imagesFiltered : allImages
                     const isExpanded = Boolean(expandedWorkGalleries[work.id])
                     const gallery = isExpanded ? imagesToUse : imagesToUse.slice(0, 12)
                     const locations = extractLocationsFromImages(imagesToUse)
-                    return (
-                      <article key={work.id} className="rounded-2xl border border-gray-200 shadow-md hover:shadow-xl overflow-hidden transition-all duration-300 bg-white">
-                        <div className="p-5 md:p-6 bg-gradient-to-r from-[#0b0b0c] via-[#121214] to-[#5b0d1b] border-b border-gray-200 text-white">
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-2">
-                                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#5b0d1b] to-black flex items-center justify-center text-white font-bold text-sm">
-                                  {idx + 1}
-                                </div>
-                                <p className="text-xs font-semibold uppercase tracking-wide text-white/80">
-                                  Campaign Work
-                                </p>
-                              </div>
-                              <h3 className="text-xl md:text-2xl font-bold text-white mb-2">
-                                {work.title || `Campaign in ${stateName}`}
-                              </h3>
-                              {work.brand_client_id && (
-                                <div className="flex items-center gap-2 mt-2">
-                                  <svg className="w-4 h-4 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                                  </svg>
-                                  <p className="text-sm text-white/80">
-                                    Brand:{' '}
-                                    <span className="font-semibold text-white">
-                                      {clientsById[work.brand_client_id]?.name || 'Not specified'}
-                                    </span>
-                                  </p>
-                                </div>
-                              )}
-                              {locations.length > 0 && (
-                                <div className="mt-4">
-                                  <div className="flex items-center gap-2 mb-2">
-                                    <svg className="w-4 h-4 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 12.414a4 4 0 10-5.657 5.657l4.243 4.243a8 8 0 0011.314-11.314z" />
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    </svg>
-                                    <p className="text-xs font-semibold uppercase tracking-wide text-white/70">
-                                      Districts / Cities Covered
-                                    </p>
-                                  </div>
-                                  <div className="flex flex-wrap gap-2">
-                                    {locations.map((loc) => (
-                                      <button
-                                        key={loc}
-                                        type="button"
-                                        onClick={() => setFilterParams({ district: loc })}
-                                        className="text-xs font-semibold text-white bg-white/10 border border-white/20 rounded-full px-3 py-1 hover:border-white/40"
-                                      >
-                                        {loc}
-                                      </button>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                          {work.description && (
-                            <p className="text-white/85 mt-4 text-sm md:text-base leading-relaxed bg-white/10 rounded-lg p-3 border border-white/10">
-                              {work.description}
-                            </p>
-                          )}
-                        </div>
+                    const brand = work.brand_client_id ? clientsById[work.brand_client_id]?.name : ''
 
-                        <div className="p-5 md:p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
-                          <div>
-                            <div className="flex items-center gap-2 mb-4">
-                              <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                              </svg>
-                              <h4 className="text-lg font-semibold text-gray-900">Person-to-Person Activities</h4>
+                    return (
+                      <article key={work.id} className="card overflow-hidden">
+                        <header className="border-b border-white/[0.08] p-6 md:p-8">
+                          <div className="flex flex-wrap items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.2em]">
+                            <span className="text-gold-400">Campaign {String(idx + 1).padStart(2, '0')}</span>
+                            {brand ? (
+                              <>
+                                <span className="h-1 w-1 rounded-full bg-zinc-600" />
+                                <span className="text-zinc-400">{brand}</span>
+                              </>
+                            ) : null}
+                          </div>
+                          <h3 className="mt-3 text-2xl text-white md:text-3xl">{work.title || `Campaign in ${stateName}`}</h3>
+                          {work.description ? (
+                            <p className="mt-4 max-w-3xl leading-relaxed text-zinc-400">{work.description}</p>
+                          ) : null}
+                          {locations.length > 0 ? (
+                            <div className="mt-6 flex flex-wrap items-center gap-2">
+                              <Icon name="pin" className="h-4 w-4 text-gold-400" />
+                              {locations.map((loc) => (
+                                <button
+                                  key={loc}
+                                  type="button"
+                                  onClick={() => setFilterParams({ district: loc })}
+                                  className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-300 transition hover:border-gold-400/50 hover:text-white"
+                                >
+                                  {loc}
+                                </button>
+                              ))}
                             </div>
+                          ) : null}
+                        </header>
+
+                        <div className="grid grid-cols-1 gap-8 p-6 md:p-8 lg:grid-cols-12">
+                          <div className="lg:col-span-4">
+                            <h4 className="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Activities</h4>
                             {Array.isArray(work.activities) && work.activities.length > 0 ? (
-                              <ul className="space-y-3">
+                              <ul className="mt-5 space-y-3">
                                 {work.activities.map((activity, actIdx) => (
-                                  <li 
-                                    key={`${activity}-${actIdx}`} 
-                                    className="group flex items-start gap-3 text-sm text-gray-700 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-100 rounded-xl px-4 py-3 hover:shadow-md hover:border-blue-200 transition-all duration-200"
-                                  >
-                                    <div className="flex-shrink-0 mt-0.5">
-                                      <div className="w-2 h-2 rounded-full bg-blue-600 group-hover:bg-blue-700 transition-colors"></div>
-                                    </div>
-                                    <span className="flex-1 leading-relaxed">{formatActivityText(activity)}</span>
+                                  <li key={`${activity}-${actIdx}`} className="flex gap-3 text-sm leading-relaxed text-zinc-300">
+                                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-400" />
+                                    {formatActivityText(activity)}
                                   </li>
                                 ))}
                               </ul>
                             ) : (
-                              <p className="text-sm text-gray-500">No activities added yet.</p>
+                              <p className="mt-5 text-sm text-zinc-500">No activities listed yet.</p>
                             )}
                           </div>
 
-                            <div>
-                            <div className="flex items-center justify-between mb-4">
-                              <div className="flex items-center gap-2">
-                                <svg className="w-5 h-5 text-[#5b0d1b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                <h4 className="text-lg font-semibold text-gray-900">Photo Gallery</h4>
-                              </div>
-                              <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                          <div className="lg:col-span-8">
+                            <div className="flex items-center justify-between">
+                              <h4 className="font-sans text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">Gallery</h4>
+                              <span className="text-xs text-zinc-500">
                                 {gallery.length} of {imagesToUse.length}
                               </span>
                             </div>
                             {gallery.length > 0 ? (
                               <>
-                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
                                   {gallery.map((img, index) => {
-                                    // Handle both public folder paths and full URLs
-                                    const imageSrc = img.startsWith('/') ? img : img.startsWith('http') ? img : `/${img}`
+                                    const src = toSrc(img)
                                     const label = getImageActivityLabelFromPath(img)
                                     return (
                                       <button
                                         key={`${img}-${index}`}
                                         type="button"
-                                        onClick={() => setSelectedImage(imageSrc)}
-                                        className="group relative rounded-xl overflow-hidden border-2 border-gray-200 hover:border-blue-400 shadow-sm hover:shadow-lg transition-all duration-300"
+                                        onClick={() => setLightbox({ src, caption: `${label} � ${stateName}` })}
+                                        className="group relative aspect-[4/3] overflow-hidden rounded-xl border border-white/[0.08] bg-ink-800"
                                       >
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10"></div>
                                         <img
-                                          src={imageSrc}
-                                          alt={`Work image ${index + 1} in ${stateName}`}
-                                          className="w-full h-28 sm:h-32 object-cover group-hover:scale-110 transition-transform duration-300"
+                                          loading="lazy"
+                                          decoding="async"
+                                          src={src}
+                                          alt={`${label} in ${stateName}`}
+                                          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                                           onError={(e) => {
-                                            // Fallback if image doesn't load
-                                            e.target.src = '/placeholder-image.svg'
+                                            e.currentTarget.src = '/placeholder-image.svg'
                                           }}
                                         />
-                                        <div className="absolute bottom-2 left-2 z-20">
-                                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-black/70 text-white shadow-sm">
-                                            {label}
-                                          </span>
-                                        </div>
-                                        <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
-                                          <div className="bg-white/90 backdrop-blur-sm rounded-full p-1.5">
-                                            <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                                            </svg>
-                                          </div>
-                                        </div>
+                                        <div className="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
+                                        <span className="absolute bottom-2 left-2 text-[10px] font-semibold uppercase tracking-wider text-gold-300 opacity-0 transition group-hover:opacity-100">
+                                          {label}
+                                        </span>
                                       </button>
                                     )
                                   })}
                                 </div>
-
-                                {imagesToUse.length > 12 && (
-                                  <div className="mt-4 flex justify-center">
+                                {imagesToUse.length > 12 ? (
+                                  <div className="mt-6 flex justify-center">
                                     <button
                                       type="button"
-                                      onClick={() =>
-                                        setExpandedWorkGalleries((prev) => ({
-                                          ...prev,
-                                          [work.id]: !prev[work.id],
-                                        }))
-                                      }
-                                      className="text-sm font-semibold text-white bg-gradient-to-r from-[#0b0b0c] to-[#5b0d1b] rounded-xl px-4 py-2 shadow-md hover:shadow-lg"
+                                      onClick={() => setExpandedWorkGalleries((prev) => ({ ...prev, [work.id]: !prev[work.id] }))}
+                                      className="btn-outline"
                                     >
-                                      {isExpanded ? 'Show less' : `Show all images (${imagesToUse.length})`}
+                                      {isExpanded ? 'Show less' : `Show all ${imagesToUse.length} photos`}
                                     </button>
                                   </div>
-                                )}
+                                ) : null}
                               </>
                             ) : (
-                              <p className="text-sm text-gray-500">
-                                No images for this filter. Try a different district/city or type.
-                              </p>
+                              <p className="mt-5 text-sm text-zinc-500">No photos for this filter.</p>
                             )}
                           </div>
                         </div>
@@ -716,41 +583,14 @@ export default function StateWorkPage() {
                     )
                   })}
                 </div>
-                )}
-              </div>
+              )}
             </>
           )}
         </div>
       </section>
 
-      {/* Image Modal/Lightbox */}
-      {selectedImage && (
-        <div
-          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
-          onClick={() => setSelectedImage(null)}
-        >
-          <button
-            onClick={() => setSelectedImage(null)}
-            className="absolute top-4 right-4 text-white hover:text-gray-300 text-3xl font-bold w-12 h-12 flex items-center justify-center bg-black/60 rounded-full hover:bg-black/80 transition-all duration-200 shadow-lg z-10"
-            aria-label="Close image"
-          >
-            ×
-          </button>
-          <div className="relative max-w-7xl max-h-[90vh] flex items-center justify-center">
-            <img
-              src={selectedImage}
-              alt="Full size view"
-              className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-              onError={(e) => {
-                e.target.src = '/placeholder-image.svg'
-              }}
-            />
-          </div>
-        </div>
-      )}
+      <CtaBand title={`Planning something in ${stateName}?`} />
+      <Lightbox src={lightbox?.src} caption={lightbox?.caption} onClose={() => setLightbox(null)} />
     </PublicLayout>
   )
 }
-
-

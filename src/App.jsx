@@ -1,18 +1,25 @@
+import { lazy, Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import ProtectedRoute from './components/ProtectedRoute'
 
 // Admin pages
-import Login from './pages/admin/Login'
-import Dashboard from './pages/admin/Dashboard'
-import Events from './pages/admin/Events'
-import Clients from './pages/admin/Clients'
-import Jobs from './pages/admin/Jobs'
-import Applications from './pages/admin/Applications'
-import News from './pages/admin/News'
-import Messages from './pages/admin/Messages'
-import Settings from './pages/admin/Settings'
-import StateWorks from './pages/admin/StateWorks'
-import FounderAdmin from './pages/admin/Founder'
+const Login = lazy(() => import('./pages/admin/Login'))
+const Dashboard = lazy(() => import('./pages/admin/Dashboard'))
+const Events = lazy(() => import('./pages/admin/Events'))
+const Clients = lazy(() => import('./pages/admin/Clients'))
+const Jobs = lazy(() => import('./pages/admin/Jobs'))
+const Applications = lazy(() => import('./pages/admin/Applications'))
+const News = lazy(() => import('./pages/admin/News'))
+const Messages = lazy(() => import('./pages/admin/Messages'))
+const Settings = lazy(() => import('./pages/admin/Settings'))
+const StateWorks = lazy(() => import('./pages/admin/StateWorks'))
+const FounderAdmin = lazy(() => import('./pages/admin/Founder'))
+
+const pageFallback = (
+  <div className="min-h-screen flex items-center justify-center bg-gray-900">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500" />
+  </div>
+)
 
 // Public pages
 import Home from './pages/public/Home'
@@ -28,6 +35,7 @@ import FounderPublic from './pages/public/Founder'
 function App() {
   return (
     <Router>
+      <Suspense fallback={pageFallback}>
       <Routes>
         {/* Public routes */}
         <Route path="/" element={<Home />} />
@@ -129,6 +137,7 @@ function App() {
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      </Suspense>
     </Router>
   )
 }

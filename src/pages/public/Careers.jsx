@@ -1,113 +1,112 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabaseClient'
 import PublicLayout from '../../components/PublicLayout'
+import { Icon, PageHero, SectionHeading, whatsappLink } from '../../components/ui'
+
+const emptyForm = { name: '', email: '', phone: '', city: '', interest: '', message: '', resume: null }
+
+const internshipRole = {
+  title: 'Marketing & Advertising Internship',
+  location: 'On-ground / field + office coordination',
+  type: 'Internship',
+  salary: 'Stipend (performance-based) + certificate',
+  isInternship: true,
+}
+
+const internshipPerks = [
+  { label: 'Stipend', value: 'Performance-based', note: 'Based on performance and role' },
+  { label: 'Certificate', value: 'Internship certificate', note: 'On successful completion' },
+  { label: 'Work', value: 'Real activities', note: 'On-ground execution and reporting' },
+]
+
+const internshipTasks = [
+  'Support on-ground promotions and brand activations',
+  'Engage audiences, explain products and offers, capture feedback',
+  'Coordinate with team leads for setup and execution',
+  'Photo and video documentation with daily reporting',
+  'Basic social content coordination when needed',
+  'Learn field discipline, communication and campaign operations',
+]
+
+const openWhatsApp = (text) => window.open(whatsappLink(text), '_blank', 'noopener,noreferrer')
 
 export default function Careers() {
   const [jobs, setJobs] = useState([])
-  const [showApplicationForm, setShowApplicationForm] = useState(false)
+  const [showForm, setShowForm] = useState(false)
   const [selectedJob, setSelectedJob] = useState(null)
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    city: '',
-    interest: '',
-    message: '',
-    resume: null,
-  })
-
-  const internshipRole = {
-    title: 'Marketing & Advertising Internship',
-    description:
-      'Hands-on internship focused on real on-ground marketing activities, brand activations, and campaign execution support.',
-    location: 'On-ground / Field + Office coordination',
-    type: 'Internship',
-    salary: 'Stipend (Performance-based) + Certificate',
-    isInternship: true,
-  }
+  const [formData, setFormData] = useState(emptyForm)
 
   useEffect(() => {
-    fetchJobs()
-  }, [])
-
-  const fetchJobs = async () => {
-    const { data } = await supabase
+    supabase
       .from('jobs')
       .select('*')
       .order('created_at', { ascending: false })
+      .then(({ data }) => data && setJobs(data))
+  }, [])
 
-    if (data) setJobs(data)
-  }
+  const update = (field) => (e) => setFormData({ ...formData, [field]: e.target.value })
 
-  const handleApply = (job) => {
+  const openForm = (job) => {
     setSelectedJob(job)
-    setShowApplicationForm(true)
+    setFormData(emptyForm)
+    setShowForm(true)
   }
 
-  const openInternshipForm = () => {
-    setSelectedJob(internshipRole)
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      city: '',
-      interest: '',
-      message: '',
-      resume: null,
-    })
-    setShowApplicationForm(true)
+  const closeForm = () => {
+    setShowForm(false)
+    setSelectedJob(null)
   }
 
-  const openWhatsApp = (text) => {
-    const phone = '919149559393'
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`
-    window.open(url, '_blank', 'noopener,noreferrer')
-  }
+  const applyOnWhatsApp = (job) =>
+    openWhatsApp(
+      [
+        'Hello Class 17 Events, I want to apply for this job.',
+        '',
+        `Job Title: ${job.title || '-'}`,
+        `Location: ${job.location || '-'}`,
+        `Type: ${job.type || '-'}`,
+        '',
+        'My Details:',
+        'Name: ',
+        'Phone: ',
+        'Email: ',
+        'City: ',
+        '',
+        'Message: ',
+      ].join('\n')
+    )
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     try {
       if (selectedJob?.isInternship) {
-        const whatsappText = [
-          'Hello Class 17 Events, I want to apply for the Marketing & Advertising Internship.',
-          '',
-          `Name: ${formData.name || '-'}`,
-          `Phone: ${formData.phone || '-'}`,
-          `Email: ${formData.email || '-'}`,
-          `City: ${formData.city || '-'}`,
-          `Interested in: ${formData.interest || '-'}`,
-          '',
-          `Message: ${formData.message || '-'}`,
-          '',
-          'Note: I can share my resume on WhatsApp if needed.',
-        ].join('\n')
-
-        openWhatsApp(whatsappText)
-        setShowApplicationForm(false)
-        setFormData({ name: '', email: '', phone: '', city: '', interest: '', message: '', resume: null })
-        setSelectedJob(null)
+        openWhatsApp(
+          [
+            'Hello Class 17 Events, I want to apply for the Marketing & Advertising Internship.',
+            '',
+            `Name: ${formData.name || '-'}`,
+            `Phone: ${formData.phone || '-'}`,
+            `Email: ${formData.email || '-'}`,
+            `City: ${formData.city || '-'}`,
+            `Interested in: ${formData.interest || '-'}`,
+            '',
+            `Message: ${formData.message || '-'}`,
+            '',
+            'Note: I can share my resume on WhatsApp if needed.',
+          ].join('\n')
+        )
+        closeForm()
         return
       }
 
       let resumeUrl = ''
-
       if (formData.resume) {
         const fileExt = formData.resume.name.split('.').pop()
-        const fileName = `${Math.random()}.${fileExt}`
-        const filePath = `resumes/${fileName}`
-
-        const { error: uploadError } = await supabase.storage
-          .from('resumes')
-          .upload(filePath, formData.resume)
-
+        const filePath = `resumes/${Math.random()}.${fileExt}`
+        const { error: uploadError } = await supabase.storage.from('resumes').upload(filePath, formData.resume)
         if (uploadError) throw uploadError
-
-        const { data: urlData } = supabase.storage
-          .from('resumes')
-          .getPublicUrl(filePath)
-
-        resumeUrl = urlData.publicUrl
+        resumeUrl = filePath
       }
 
       const { error } = await supabase.from('applications').insert([
@@ -120,315 +119,230 @@ export default function Careers() {
           resume_url: resumeUrl,
         },
       ])
-
       if (error) throw error
 
       alert('Application submitted successfully!')
-      setShowApplicationForm(false)
-      setFormData({ name: '', email: '', phone: '', city: '', interest: '', message: '', resume: null })
-      setSelectedJob(null)
+      closeForm()
     } catch (error) {
       console.error('Error submitting application:', error)
       alert('Error submitting application: ' + error.message)
     }
   }
 
+  const isInternship = Boolean(selectedJob?.isInternship)
+
   return (
     <PublicLayout>
-      <div className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h1 className="section-title">Join Our Team</h1>
-            <p className="section-subtitle">Explore exciting career opportunities and grow with us</p>
-          </div>
+      <PageHero
+        eyebrow="Careers"
+        title={
+          <>
+            Do work you can <em className="text-gradient font-medium italic">see</em>.
+          </>
+        }
+        subtitle="Join a team that runs real campaigns for real brands, in schools, markets, stadiums and streets across India."
+        image="/school activity/kolkata/school.png"
+      />
 
-          {/* Internship Highlight */}
-          <div className="mb-12">
-            <div className="bg-gradient-to-br from-emerald-50 via-white to-cyan-50 rounded-3xl border border-emerald-100 shadow-xl overflow-hidden">
-              <div className="p-8 md:p-10">
-                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
-                  <div className="max-w-3xl">
-                    <p className="text-sm font-semibold text-emerald-700 uppercase tracking-wider">Internship Opportunity</p>
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mt-2">{internshipRole.title}</h2>
-                    <p className="text-gray-700 mt-3 leading-relaxed text-base md:text-lg">
-                      We provide marketing and advertisement internships with real field exposure across activities like
-                      <span className="font-semibold"> cricket, social, school, brand activations</span> and more.
-                    </p>
+      {/* Internship */}
+      <section className="bg-ink-950 pb-24 md:pb-32">
+        <div className="container-x">
+          <div className="relative overflow-hidden rounded-3xl border border-gold-400/25 bg-gradient-to-br from-ink-850 via-ink-900 to-ink-950">
+            <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-gold-500/10 blur-[120px]" />
+            <div className="relative grid grid-cols-1 gap-12 p-7 md:p-12 lg:grid-cols-12">
+              <div className="lg:col-span-7">
+                <p className="eyebrow mb-6">Internship opportunity</p>
+                <h2 className="font-display text-3xl font-semibold text-white md:text-5xl">{internshipRole.title}</h2>
+                <p className="mt-5 text-lg leading-relaxed text-zinc-400">
+                  Real field exposure across cricket, social, school and brand activations, with mentors who run these
+                  campaigns every week.
+                </p>
 
-                    <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div className="rounded-2xl bg-white border border-gray-100 p-5 shadow-sm">
-                        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Stipend</p>
-                        <p className="text-xl font-bold text-gray-900 mt-1">Performance-based</p>
-                        <p className="text-sm text-gray-600 mt-1">Based on performance & role</p>
-                      </div>
-                      <div className="rounded-2xl bg-white border border-gray-100 p-5 shadow-sm">
-                        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Certificate</p>
-                        <p className="text-xl font-bold text-gray-900 mt-1">Internship Certificate</p>
-                        <p className="text-sm text-gray-600 mt-1">On successful completion</p>
-                      </div>
-                      <div className="rounded-2xl bg-white border border-gray-100 p-5 shadow-sm">
-                        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Work</p>
-                        <p className="text-xl font-bold text-gray-900 mt-1">Real Activities</p>
-                        <p className="text-sm text-gray-600 mt-1">On-ground + reporting</p>
-                      </div>
+                <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                  {internshipPerks.map((p) => (
+                    <div key={p.label} className="rounded-2xl border border-white/[0.08] bg-ink-950/60 p-5">
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-zinc-500">{p.label}</p>
+                      <p className="mt-2 font-display text-xl text-gold-200">{p.value}</p>
+                      <p className="mt-1 text-xs text-zinc-500">{p.note}</p>
                     </div>
-
-                    <div className="mt-6 rounded-2xl border border-emerald-100 bg-white/70 p-6">
-                      <h3 className="text-lg font-bold text-gray-900 mb-3">What you will do</h3>
-                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-700">
-                        {[
-                          'Support on-ground promotions and brand activations',
-                          'Engage audience, explain product/offer, and capture feedback',
-                          'Coordinate with team leads for setup and execution',
-                          'Photo/video documentation and daily reporting',
-                          'Basic social content coordination (when needed)',
-                          'Learn field discipline, communication, and campaign operations',
-                        ].map((t) => (
-                          <li key={t} className="flex gap-2">
-                            <span className="text-emerald-600 mt-0.5">✓</span>
-                            <span>{t}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div className="lg:w-[360px] w-full">
-                    <div className="rounded-3xl bg-gradient-to-br from-gray-900 via-gray-900 to-black text-white p-7 shadow-2xl border border-black/20">
-                      <h3 className="text-xl font-bold">Apply via WhatsApp</h3>
-                      <p className="text-white/80 text-sm mt-2">
-                        Fill the form and it will redirect you to WhatsApp with your details.
-                      </p>
-                      <div className="mt-5 space-y-3 text-sm">
-                        <div className="flex items-center gap-2">
-                          <span>📍</span>
-                          <span className="font-semibold">{internshipRole.location}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span>💼</span>
-                          <span className="font-semibold">{internshipRole.type}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span>💰</span>
-                          <span className="font-semibold">{internshipRole.salary}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span>📲</span>
-                          <span className="font-semibold">+91 9149559393</span>
-                        </div>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={openInternshipForm}
-                        className="mt-6 w-full btn-modern bg-[#25D366] hover:bg-[#1DB954] text-black font-extrabold shadow-lg"
-                      >
-                        Apply for Internship
-                      </button>
-                      <p className="text-xs text-white/70 mt-3">
-                        Tip: Keep your resume ready to share on WhatsApp.
-                      </p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
+
+                <h3 className="mt-12 text-2xl text-white">What you will do</h3>
+                <ul className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+                  {internshipTasks.map((t) => (
+                    <li key={t} className="flex gap-3 text-sm leading-relaxed text-zinc-300">
+                      <Icon name="check" className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
               </div>
+
+              <aside className="lg:col-span-5">
+                <div className="rounded-2xl border border-white/10 bg-ink-950 p-7 lg:sticky lg:top-28">
+                  <h3 className="text-2xl text-white">Apply via WhatsApp</h3>
+                  <p className="mt-3 text-sm text-zinc-400">
+                    Fill a short form and we open WhatsApp with your details ready to send.
+                  </p>
+                  <dl className="mt-7 space-y-4 text-sm">
+                    {[
+                      ['pin', internshipRole.location],
+                      ['chart', internshipRole.type],
+                      ['sparkle', internshipRole.salary],
+                      ['phone', '+91 91495 59393'],
+                    ].map(([icon, text]) => (
+                      <div key={text} className="flex items-center gap-3 text-zinc-300">
+                        <Icon name={icon} className="h-4 w-4 text-gold-400" />
+                        {text}
+                      </div>
+                    ))}
+                  </dl>
+                  <button type="button" onClick={() => openForm(internshipRole)} className="btn-gold mt-8 w-full">
+                    Apply for internship
+                  </button>
+                  <p className="mt-4 text-center text-xs text-zinc-500">Keep your resume ready to share on WhatsApp.</p>
+                </div>
+              </aside>
             </div>
           </div>
+        </div>
+      </section>
 
+      {/* Open roles */}
+      <section className="bg-ink-900 py-24 md:py-32">
+        <div className="container-x">
+          <SectionHeading eyebrow="Open roles" title="Current openings" />
           {jobs.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               {jobs.map((job) => (
-                <div
-                  key={job.id}
-                  className="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-lg p-8 border border-gray-100 card-hover"
-                >
-                  <h3 className="text-2xl font-bold mb-3 text-gray-900">{job.title}</h3>
-                  <p className="text-gray-600 mb-6 leading-relaxed">{job.description}</p>
-                  <div className="space-y-2 text-sm text-gray-600 mb-6">
-                    {job.location && (
-                      <div className="flex items-center gap-2">
-                        <span>📍</span>
-                        <span className="font-medium">{job.location}</span>
-                      </div>
-                    )}
-                    {job.type && (
-                      <div className="flex items-center gap-2">
-                        <span>💼</span>
-                        <span className="font-medium">{job.type}</span>
-                      </div>
-                    )}
-                    {job.salary && (
-                      <div className="flex items-center gap-2">
-                        <span>💰</span>
-                        <span className="font-medium">{job.salary}</span>
-                      </div>
-                    )}
+                <article key={job.id} className="card flex flex-col p-8">
+                  <h3 className="text-2xl text-white">{job.title}</h3>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {[job.location, job.type, job.salary].filter(Boolean).map((tag) => (
+                      <span key={tag} className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-300">
+                        {tag}
+                      </span>
+                    ))}
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <button
-                      onClick={() => handleApply(job)}
-                      className="btn-modern bg-gradient-to-r from-blue-600 to-purple-600 text-white w-full shadow-lg"
-                    >
-                      Apply Now
+                  <p className="mt-5 leading-relaxed text-zinc-400">{job.description}</p>
+                  <div className="mt-auto grid grid-cols-1 gap-3 pt-8 sm:grid-cols-2">
+                    <button type="button" onClick={() => openForm(job)} className="btn-gold">
+                      Apply now
                     </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const whatsappText = [
-                          'Hello Class 17 Events, I want to apply for this job.',
-                          '',
-                          `Job Title: ${job.title || '-'}`,
-                          `Location: ${job.location || '-'}`,
-                          `Type: ${job.type || '-'}`,
-                          '',
-                          'My Details:',
-                          'Name: ',
-                          'Phone: ',
-                          'Email: ',
-                          'City: ',
-                          '',
-                          'Message: ',
-                        ].join('\n')
-                        openWhatsApp(whatsappText)
-                      }}
-                      className="btn-modern bg-[#25D366] hover:bg-[#1DB954] text-black w-full shadow-lg font-extrabold"
-                    >
+                    <button type="button" onClick={() => applyOnWhatsApp(job)} className="btn-outline">
                       Apply on WhatsApp
                     </button>
                   </div>
-                </div>
+                </article>
               ))}
             </div>
           ) : (
-            <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">No job openings available at the moment. Check back soon!</p>
-            </div>
-          )}
-
-          {showApplicationForm && (
-            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-              <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full max-h-[90vh] overflow-y-auto border border-gray-100">
-                <h2 className="text-3xl font-bold mb-6 text-gray-900">Apply for {selectedJob?.title}</h2>
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  {selectedJob?.isInternship ? (
-                    <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
-                      This internship application will redirect to WhatsApp after submit.
-                    </div>
-                  ) : null}
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
-                    <input
-                      type="text"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      required
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none"
-                      placeholder="John Doe"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
-                    <input
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      required
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none"
-                      placeholder="john@example.com"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
-                    <input
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none"
-                      placeholder="+1 (555) 123-4567"
-                    />
-                  </div>
-                  {selectedJob?.isInternship ? (
-                    <>
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">City</label>
-                        <input
-                          type="text"
-                          value={formData.city}
-                          onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition outline-none"
-                          placeholder="Your city"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">Interested In</label>
-                        <select
-                          value={formData.interest}
-                          onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
-                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition outline-none bg-white"
-                        >
-                          <option value="">Select an activity</option>
-                          <option value="Cricket activity">Cricket activity</option>
-                          <option value="Social activity">Social activity</option>
-                          <option value="School activity">School activity</option>
-                          <option value="Brand activation / Retail">Brand activation / Retail</option>
-                          <option value="Any (open to all)">Any (open to all)</option>
-                        </select>
-                      </div>
-                    </>
-                  ) : null}
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Cover Letter</label>
-                    <textarea
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      rows="4"
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none resize-none"
-                      placeholder="Tell us why you're interested in this position..."
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Resume (PDF, DOC, DOCX)</label>
-                    <input
-                      type="file"
-                      accept=".pdf,.doc,.docx"
-                      onChange={(e) => setFormData({ ...formData, resume: e.target.files[0] })}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition outline-none"
-                      disabled={!!selectedJob?.isInternship}
-                    />
-                    {selectedJob?.isInternship ? (
-                      <p className="text-xs text-gray-500 mt-2">
-                        Resume upload is disabled for WhatsApp applications. You can attach your resume in WhatsApp.
-                      </p>
-                    ) : null}
-                  </div>
-                  <div className="flex justify-end gap-4 mt-8">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setShowApplicationForm(false)
-                        setSelectedJob(null)
-                      }}
-                      className="px-6 py-3 bg-gray-200 hover:bg-gray-300 rounded-xl font-semibold transition"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className={
-                        selectedJob?.isInternship
-                          ? 'px-6 py-3 bg-[#25D366] hover:bg-[#1DB954] text-black rounded-xl font-extrabold shadow-lg hover:shadow-xl transition transform hover:scale-105'
-                          : 'px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition transform hover:scale-105'
-                      }
-                    >
-                      {selectedJob?.isInternship ? 'Continue on WhatsApp' : 'Submit Application'}
-                    </button>
-                  </div>
-                </form>
-              </div>
+            <div className="card p-10 text-center text-zinc-400">
+              No full-time openings right now. The internship above is open, and new roles are posted here first.
             </div>
           )}
         </div>
-      </div>
+      </section>
+
+      {showForm && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-ink-950/90 p-4 backdrop-blur-md" onClick={closeForm}>
+          <div
+            className="max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-white/10 bg-ink-900 p-7 shadow-2xl md:p-9"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="eyebrow mb-3">Apply</p>
+                <h2 className="text-2xl text-white md:text-3xl">{selectedJob?.title}</h2>
+              </div>
+              <button
+                type="button"
+                onClick={closeForm}
+                aria-label="Close"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 text-xl text-white hover:border-gold-400"
+              >
+                ×
+              </button>
+            </div>
+
+            {isInternship ? (
+              <p className="mt-5 rounded-xl border border-gold-400/30 bg-gold-400/10 px-4 py-3 text-sm text-gold-200">
+                After you submit, WhatsApp opens with your details ready to send.
+              </p>
+            ) : null}
+
+            <form onSubmit={handleSubmit} className="mt-7 space-y-5">
+              <div>
+                <label className="label-dark">Full name</label>
+                <input type="text" required value={formData.name} onChange={update('name')} className="input-dark" placeholder="Your name" />
+              </div>
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <div>
+                  <label className="label-dark">Email</label>
+                  <input type="email" required value={formData.email} onChange={update('email')} className="input-dark" placeholder="you@email.com" />
+                </div>
+                <div>
+                  <label className="label-dark">Phone</label>
+                  <input type="tel" value={formData.phone} onChange={update('phone')} className="input-dark" placeholder="+91" />
+                </div>
+              </div>
+
+              {isInternship ? (
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                  <div>
+                    <label className="label-dark">City</label>
+                    <input type="text" value={formData.city} onChange={update('city')} className="input-dark" placeholder="Your city" />
+                  </div>
+                  <div>
+                    <label className="label-dark">Interested in</label>
+                    <select value={formData.interest} onChange={update('interest')} className="input-dark">
+                      <option value="">Select an activity</option>
+                      <option value="Cricket activity">Cricket activity</option>
+                      <option value="Social activity">Social activity</option>
+                      <option value="School activity">School activity</option>
+                      <option value="Brand activation / Retail">Brand activation / Retail</option>
+                      <option value="Any (open to all)">Any (open to all)</option>
+                    </select>
+                  </div>
+                </div>
+              ) : null}
+
+              <div>
+                <label className="label-dark">{isInternship ? 'Message' : 'Cover letter'}</label>
+                <textarea
+                  rows="4"
+                  value={formData.message}
+                  onChange={update('message')}
+                  className="input-dark resize-none"
+                  placeholder={isInternship ? 'Tell us a little about yourself' : 'Why are you interested in this role?'}
+                />
+              </div>
+
+              {!isInternship ? (
+                <div>
+                  <label className="label-dark">Resume (PDF, DOC, DOCX)</label>
+                  <input
+                    type="file"
+                    accept=".pdf,.doc,.docx"
+                    onChange={(e) => setFormData({ ...formData, resume: e.target.files[0] })}
+                    className="input-dark file:mr-4 file:rounded-full file:border-0 file:bg-gold-400 file:px-4 file:py-1.5 file:text-xs file:font-semibold file:text-ink-950"
+                  />
+                </div>
+              ) : null}
+
+              <div className="flex flex-col-reverse gap-3 pt-3 sm:flex-row sm:justify-end">
+                <button type="button" onClick={closeForm} className="btn-outline">
+                  Cancel
+                </button>
+                <button type="submit" className="btn-gold">
+                  {isInternship ? 'Continue on WhatsApp' : 'Submit application'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </PublicLayout>
   )
 }
-

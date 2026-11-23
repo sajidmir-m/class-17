@@ -59,31 +59,35 @@ function StateLabels({ locations, activeName, onSelect }) {
           label.style.top = `${point.y}px`
           label.style.transform = 'translate(-50%, -50%)'
           label.style.padding = isActive ? '8px 14px' : '6px 10px'
-          label.style.backgroundColor = isActive ? 'rgba(30, 64, 175, 0.96)' : 'rgba(37, 99, 235, 0.88)'
-          label.style.color = 'white'
+          label.style.backgroundColor = isActive ? 'rgba(224, 187, 92, 1)' : 'rgba(14, 14, 17, 0.88)'
+          label.style.color = isActive ? '#08080a' : '#f3e3b0'
           label.style.borderRadius = '20px'
           label.style.fontSize = isActive ? '12px' : '11px'
           label.style.fontWeight = '600'
+          label.style.fontFamily = 'Inter, system-ui, sans-serif'
+          label.style.letterSpacing = '0.02em'
           label.style.cursor = 'pointer'
           label.style.whiteSpace = 'nowrap'
           label.style.boxShadow = '0 2px 10px rgba(0,0,0,0.25)'
           label.style.transition = 'all 0.2s ease'
           label.style.pointerEvents = 'auto'
           label.style.userSelect = 'none'
-          label.style.border = isActive ? '2px solid rgba(255,255,255,0.7)' : '1px solid rgba(255,255,255,0.35)'
+          label.style.border = isActive ? '1px solid rgba(243, 227, 176, 0.9)' : '1px solid rgba(224, 187, 92, 0.45)'
           
           label.addEventListener('mouseenter', () => {
-            label.style.backgroundColor = 'rgba(37, 99, 235, 1)'
+            label.style.backgroundColor = 'rgba(224, 187, 92, 1)'
+            label.style.color = '#08080a'
             label.style.transform = 'translate(-50%, -50%) scale(1.15)'
             label.style.boxShadow = '0 4px 16px rgba(0,0,0,0.35)'
-            label.style.borderColor = 'rgba(255,255,255,0.5)'
+            label.style.borderColor = 'rgba(243, 227, 176, 0.9)'
           })
           
           label.addEventListener('mouseleave', () => {
-            label.style.backgroundColor = 'rgba(37, 99, 235, 0.92)'
+            label.style.backgroundColor = isActive ? 'rgba(224, 187, 92, 1)' : 'rgba(14, 14, 17, 0.88)'
+            label.style.color = isActive ? '#08080a' : '#f3e3b0'
             label.style.transform = 'translate(-50%, -50%) scale(1)'
             label.style.boxShadow = '0 2px 10px rgba(0,0,0,0.25)'
-            label.style.borderColor = 'rgba(255,255,255,0.3)'
+            label.style.borderColor = isActive ? 'rgba(243, 227, 176, 0.9)' : 'rgba(224, 187, 92, 0.45)'
           })
           
           label.addEventListener('click', (e) => {
@@ -126,17 +130,18 @@ function StateLabels({ locations, activeName, onSelect }) {
 
 export default function IndiaPresenceMap({ locations, activeName, onSelect }) {
   return (
-    <div className="w-full h-[600px] md:h-[700px] rounded-2xl overflow-hidden border border-gray-200 shadow-lg">
+    <div className="h-[520px] w-full overflow-hidden rounded-2xl border border-white/10 md:h-[640px]">
       <MapContainer
         center={[22.5, 78.9]}
         zoom={5}
-        scrollWheelZoom={true}
+        scrollWheelZoom={false}
         className="w-full h-full"
         style={{ height: '100%', width: '100%' }}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+          className="map-tiles-dark"
         />
         <StateLabels locations={locations} activeName={activeName} onSelect={onSelect} />
       </MapContainer>

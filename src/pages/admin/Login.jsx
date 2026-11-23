@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
+import { isStaff } from '../../lib/auth'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -15,7 +16,7 @@ export default function Login() {
 
   const checkSession = async () => {
     const { data: { session } } = await supabase.auth.getSession()
-    if (session) {
+    if (session && (await isStaff(session.user.id))) {
       navigate('/admin/dashboard')
     }
   }
@@ -34,15 +35,21 @@ export default function Login() {
       setError(error.message)
       setLoading(false)
     } else if (data.user) {
-      navigate('/admin/dashboard')
+      if (await isStaff(data.user.id)) {
+        navigate('/admin/dashboard')
+      } else {
+        await supabase.auth.signOut()
+        setError('This account does not have admin access.')
+        setLoading(false)
+      }
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-4">
-      <div className="max-w-md w-full bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl shadow-2xl p-8 md:p-10 border border-gray-700/50">
+    <div className="min-h-screen flex items-center justify-center bg-ink-950 p-4">
+      <div className="max-w-md w-full bg-ink-900 rounded-2xl shadow-2xl p-8 md:p-10 border border-white/10">
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-3">
+          <h1 className="text-4xl font-bold text-gradient mb-3">
             Class 17 Events
           </h1>
           <p className="text-gray-400 font-light">Ideas That Speak Louder Than Words</p>
@@ -68,7 +75,7 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-gray-700/50 border-2 border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              className="w-full px-4 py-3 bg-gray-700/50 border-2 border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-gold-400 transition"
               placeholder="admin@example.com"
             />
           </div>
@@ -83,7 +90,7 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 bg-gray-700/50 border-2 border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+              className="w-full px-4 py-3 bg-gray-700/50 border-2 border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-gold-400 transition"
               placeholder="••••••••"
             />
           </div>
@@ -91,7 +98,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full bg-gold-400 hover:bg-gold-300 text-ink-950 font-semibold py-3 px-4 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]"
           >
             {loading ? (
               <span className="flex items-center justify-center gap-2">

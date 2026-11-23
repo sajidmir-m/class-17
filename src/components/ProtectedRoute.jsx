@@ -1,27 +1,33 @@
 import { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
+import { isStaff } from '../lib/auth'
 
 export default function ProtectedRoute({ children }) {
   const [loading, setLoading] = useState(true)
-  const [user, setUser] = useState(null)
+  const [allowed, setAllowed] = useState(false)
 
   useEffect(() => {
-    checkUser()
-    
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
+    let mounted = true
+
+    const verify = async (session) => {
+      const ok = await isStaff(session?.user?.id)
+      if (!mounted) return
+      setAllowed(ok)
       setLoading(false)
+    }
+
+    supabase.auth.getSession().then(({ data: { session } }) => verify(session))
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      verify(session)
     })
 
-    return () => subscription.unsubscribe()
+    return () => {
+      mounted = false
+      subscription.unsubscribe()
+    }
   }, [])
-
-  const checkUser = async () => {
-    const { data: { session } } = await supabase.auth.getSession()
-    setUser(session?.user ?? null)
-    setLoading(false)
-  }
 
   if (loading) {
     return (
@@ -31,10 +37,9 @@ export default function ProtectedRoute({ children }) {
     )
   }
 
-  if (!user) {
+  if (!allowed) {
     return <Navigate to="/admin/login" replace />
   }
 
   return children
 }
-

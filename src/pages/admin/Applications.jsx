@@ -31,10 +31,17 @@ export default function Applications() {
     }
   }
 
-  const downloadResume = (url) => {
-    if (url) {
-      window.open(url, '_blank')
+  const downloadResume = async (stored) => {
+    if (!stored) return
+    const marker = '/object/public/resumes/'
+    const path = stored.includes(marker) ? stored.split(marker)[1] : stored
+
+    const { data, error } = await supabase.storage.from('resumes').createSignedUrl(path, 60)
+    if (error || !data?.signedUrl) {
+      alert('Could not open resume: ' + (error?.message || 'file not found'))
+      return
     }
+    window.open(data.signedUrl, '_blank', 'noopener,noreferrer')
   }
 
   return (

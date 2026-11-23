@@ -17,9 +17,9 @@ export default function Sidebar({ onLogout }) {
   const location = useLocation()
 
   return (
-    <div className="w-64 bg-gradient-to-b from-gray-800 via-gray-800 to-gray-900 min-h-screen text-white flex flex-col shadow-2xl border-r border-gray-700">
+    <div className="w-64 bg-ink-900 min-h-screen text-white flex flex-col shadow-2xl border-r border-white/10">
       <div className="p-6 border-b border-gray-700/50">
-        <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+        <h1 className="text-2xl font-bold text-gradient font-display">
           Class 17 Events
         </h1>
         <p className="text-xs text-gray-400 mt-1 font-light">Ideas That Speak Louder Than Words</p>
@@ -33,8 +33,8 @@ export default function Sidebar({ onLogout }) {
               to={item.path}
               className={`flex items-center px-4 py-3 mb-1 rounded-xl transition-all duration-200 ${
                 isActive
-                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg transform scale-105'
-                  : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'
+                  ? 'bg-gold-400 text-ink-950 shadow-lg'
+                  : 'text-zinc-300 hover:bg-white/5 hover:text-white'
               }`}
             >
               <span className="mr-3 text-xl">{item.icon}</span>

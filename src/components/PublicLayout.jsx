@@ -1,139 +1,204 @@
-import { Link, useLocation } from 'react-router-dom'
-import { useState } from 'react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { CONTACT_EMAIL, Icon, whatsappLink } from './ui'
 
-export default function PublicLayout({ children, overlayNav = false }) {
+const navLinks = [
+  { path: '/', label: 'Home' },
+  { path: '/about', label: 'About' },
+  { path: '/services', label: 'Services' },
+  { path: '/portfolio', label: 'Work' },
+  { path: '/clients', label: 'Clients' },
+  { path: '/careers', label: 'Careers' },
+]
+
+function Brand() {
+  return (
+    <Link to="/" className="flex items-center gap-3">
+      <img src="/logo.png" alt="Class 17 Events logo" className="h-10 w-10 rounded-full object-cover ring-1 ring-gold-400/40" />
+      <span className="leading-none">
+        <span className="block font-display text-xl font-semibold tracking-wide text-white">Class 17</span>
+        <span className="mt-1 block text-[10px] font-medium uppercase tracking-[0.35em] text-gold-400">Events</span>
+      </span>
+    </Link>
+  )
+}
+
+export default function PublicLayout({ children }) {
   const location = useLocation()
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
-  const navLinks = [
-    { path: '/', label: 'Home' },
-    { path: '/about', label: 'About' },
-    { path: '/services', label: 'Services' },
-    { path: '/portfolio', label: 'Portfolio' },
-    { path: '/clients', label: 'Clients' },
-    { path: '/careers', label: 'Careers' },
-    { path: '/contact', label: 'Contact' },
-  ]
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  useEffect(() => {
+    setMenuOpen(false)
+    window.scrollTo(0, 0)
+  }, [location.pathname])
+
+  const solid = scrolled || menuOpen
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
-      <nav
-        className={
-          overlayNav
-            ? 'fixed top-0 left-0 right-0 z-50 bg-black/25 backdrop-blur-md border-b border-white/10'
-            : 'bg-white/80 backdrop-blur-lg border-b border-gray-200 sticky top-0 z-50 shadow-sm'
-        }
+    <div className="min-h-screen bg-ink-950 text-zinc-300">
+      <header
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+          solid ? 'border-b border-white/[0.06] bg-ink-950/85 backdrop-blur-xl' : 'bg-transparent'
+        }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <Link to="/" className="flex items-center gap-3">
-              <img
-                src="/logo.png"
-                alt="Class 17 Events logo"
-                className="h-10 w-auto object-contain"
-              />
-              <span className={overlayNav ? 'text-2xl font-bold text-white' : 'text-2xl font-bold text-gradient'}>
-                Class 17 Events
-              </span>
+        <div className="container-x flex h-20 items-center justify-between">
+          <Brand />
+
+          <nav className="hidden items-center gap-1 lg:flex">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.path}
+                to={link.path}
+                end={link.path === '/'}
+                className={({ isActive }) =>
+                  `relative px-4 py-2 text-sm font-medium transition-colors ${
+                    isActive ? 'text-gold-300' : 'text-zinc-300 hover:text-white'
+                  }`
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    {link.label}
+                    <span
+                      className={`absolute inset-x-4 -bottom-0.5 h-px bg-gold-400 transition-transform duration-300 ${
+                        isActive ? 'scale-x-100' : 'scale-x-0'
+                      }`}
+                    />
+                  </>
+                )}
+              </NavLink>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-3">
+            <Link to="/contact" className="btn-gold hidden px-5 py-2.5 sm:inline-flex">
+              Let&apos;s talk
             </Link>
-            <div className="hidden md:flex items-center space-x-1">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-                    location.pathname === link.path
-                      ? overlayNav
-                        ? 'bg-white/15 text-white shadow-md'
-                        : 'bg-gradient-to-r from-emerald-700 via-green-700 to-teal-700 text-white shadow-md'
-                      : overlayNav
-                        ? 'text-white/90 hover:text-white hover:bg-white/10'
-                        : 'text-gray-700 hover:text-emerald-700 hover:bg-emerald-50'
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={overlayNav ? 'md:hidden p-2 text-white/90 hover:text-white' : 'md:hidden p-2 text-gray-700 hover:text-emerald-700'}
+              type="button"
+              onClick={() => setMenuOpen((v) => !v)}
+              aria-label="Toggle menu"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-white/15 text-white lg:hidden"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {mobileMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
+                {menuOpen ? (
+                  <path strokeLinecap="round" d="M6 18L18 6M6 6l12 12" />
                 ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  <path strokeLinecap="round" d="M4 8h16M4 16h16" />
                 )}
               </svg>
             </button>
           </div>
-          {mobileMenuOpen && (
-            <div className="md:hidden py-4 space-y-2">
-              {navLinks.map((link) => (
-                <Link
+        </div>
+
+        {menuOpen && (
+          <div className="border-t border-white/[0.06] bg-ink-950 lg:hidden">
+            <nav className="container-x flex flex-col py-4">
+              {[...navLinks, { path: '/contact', label: 'Contact' }].map((link) => (
+                <NavLink
                   key={link.path}
                   to={link.path}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`block px-4 py-2 rounded-lg font-medium ${
-                    location.pathname === link.path
-                      ? overlayNav
-                        ? 'bg-white/15 text-white'
-                        : 'bg-gradient-to-r from-emerald-700 via-green-700 to-teal-700 text-white'
-                      : overlayNav
-                        ? 'text-white/90 hover:bg-white/10'
-                        : 'text-gray-700 hover:bg-emerald-50'
-                  }`}
+                  end={link.path === '/'}
+                  className={({ isActive }) =>
+                    `border-b border-white/[0.05] py-4 font-display text-2xl ${
+                      isActive ? 'text-gold-300' : 'text-white'
+                    }`
+                  }
                 >
                   {link.label}
-                </Link>
+                </NavLink>
               ))}
-            </div>
-          )}
-        </div>
-      </nav>
-      <main className="min-h-screen">{children}</main>
-      <footer className="bg-gradient-to-r from-[#071a12] via-[#0b2419] to-[#071a12] text-white py-12 mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            <div>
-              <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-emerald-300 via-green-300 to-teal-300 bg-clip-text text-transparent">
-                Class 17 Events
-              </h3>
-              <p className="text-gray-400 text-sm">Ideas That Speak Louder Than Words</p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Quick Links</h4>
-              <div className="space-y-2">
-                {navLinks.slice(0, 4).map((link) => (
-                  <Link key={link.path} to={link.path} className="block text-gray-400 hover:text-white transition text-sm">
+              <Link to="/contact" className="btn-gold mt-6">
+                Let&apos;s talk
+              </Link>
+            </nav>
+          </div>
+        )}
+      </header>
+
+      <main>{children}</main>
+
+      <footer className="relative border-t border-white/[0.06] bg-ink-950">
+        <div className="gold-hairline absolute inset-x-0 top-0 h-px" />
+        <div className="container-x grid grid-cols-1 gap-12 py-16 md:grid-cols-2 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <Brand />
+            <p className="mt-6 max-w-sm font-display text-2xl italic leading-snug text-zinc-200">
+              Ideas that speak louder than words.
+            </p>
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-zinc-500">
+              A pan-India marketing and advertising company delivering brand activations, school programs, sports
+              engagement and on-ground events.
+            </p>
+          </div>
+
+          <div className="lg:col-span-2">
+            <h4 className="mb-5 font-sans text-xs font-semibold uppercase tracking-[0.25em] text-zinc-500">Explore</h4>
+            <ul className="space-y-3 text-sm">
+              {navLinks.slice(1).map((link) => (
+                <li key={link.path}>
+                  <Link to={link.path} className="text-zinc-300 transition hover:text-gold-300">
                     {link.label}
                   </Link>
-                ))}
-              </div>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Contact</h4>
-              <Link to="/contact" className="block text-gray-400 hover:text-white transition text-sm mb-2">
-                Get in Touch
-              </Link>
-              <a
-                href="mailto:contact@class17.in"
-                className="block text-gray-400 hover:text-white transition text-sm mb-2"
-              >
-                contact@class17.in
-              </a>
-              <Link to="/careers" className="block text-gray-400 hover:text-white transition text-sm">
-                Join Our Team
-              </Link>
-            </div>
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="border-t border-gray-700 pt-8 text-center">
-            <p className="text-gray-400 text-sm">© 2024 Class 17 Events. All rights reserved.</p>
+
+          <div className="lg:col-span-2">
+            <h4 className="mb-5 font-sans text-xs font-semibold uppercase tracking-[0.25em] text-zinc-500">Company</h4>
+            <ul className="space-y-3 text-sm">
+              <li>
+                <Link to="/founder" className="text-zinc-300 transition hover:text-gold-300">Founder</Link>
+              </li>
+              <li>
+                <Link to="/careers" className="text-zinc-300 transition hover:text-gold-300">Internships</Link>
+              </li>
+              <li>
+                <Link to="/contact" className="text-zinc-300 transition hover:text-gold-300">Contact</Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="lg:col-span-3">
+            <h4 className="mb-5 font-sans text-xs font-semibold uppercase tracking-[0.25em] text-zinc-500">Get in touch</h4>
+            <ul className="space-y-4 text-sm">
+              <li>
+                <a href={`mailto:${CONTACT_EMAIL}`} className="flex items-center gap-3 text-zinc-300 transition hover:text-gold-300">
+                  <Icon name="mail" className="h-4 w-4 text-gold-400" />
+                  {CONTACT_EMAIL}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={whatsappLink()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-zinc-300 transition hover:text-gold-300"
+                >
+                  <Icon name="phone" className="h-4 w-4 text-gold-400" />
+                  +91 91495 59393 (WhatsApp)
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="border-t border-white/[0.06]">
+          <div className="container-x flex flex-col items-center justify-between gap-3 py-6 text-xs text-zinc-500 sm:flex-row">
+            <p>© {new Date().getFullYear()} Class 17. All rights reserved.</p>
+            <p className="tracking-[0.2em] uppercase">Marketing &amp; Advertising</p>
           </div>
         </div>
       </footer>
     </div>
   )
 }
-

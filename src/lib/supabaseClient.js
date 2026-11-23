@@ -67,6 +67,7 @@ const createMockSupabase = () => {
       from: () => ({
         upload: async () => ({ data: null, error: new Error('Supabase not configured') }),
         getPublicUrl: () => ({ data: { publicUrl: '' } }),
+        createSignedUrl: async () => ({ data: null, error: new Error('Supabase not configured') }),
       }),
     },
     channel: () => ({

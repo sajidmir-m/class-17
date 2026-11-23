@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,40 +8,107 @@
   * {
     @apply box-border;
   }
-  
+
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply m-0 font-sans antialiased;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    @apply m-0 bg-ink-950 font-sans text-zinc-300 antialiased;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Poppins', sans-serif;
-    @apply font-bold;
+    @apply font-display font-semibold tracking-tight;
+  }
+
+  ::selection {
+    @apply bg-gold-400 text-ink-950;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.3em] text-gold-400;
+  }
+  .eyebrow::before {
+    content: '';
+    @apply h-px w-8 bg-gold-400;
+  }
+
+  .section-title {
+    @apply font-display text-4xl font-semibold leading-[1.1] tracking-tight text-white md:text-5xl;
+  }
+
+  .section-subtitle {
+    @apply max-w-2xl text-base leading-relaxed text-zinc-400 md:text-lg;
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-gold-400 px-7 py-3.5 text-sm font-semibold text-ink-950
+           shadow-[0_10px_40px_-12px_rgba(224,187,92,0.6)] transition duration-300 hover:bg-gold-300 active:scale-[0.98];
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-7 py-3.5 text-sm font-semibold text-white
+           transition duration-300 hover:border-gold-400 hover:text-gold-300 active:scale-[0.98];
+  }
+
+  .card {
+    @apply rounded-2xl border border-white/[0.08] bg-ink-900 transition duration-300;
+  }
+
+  .card-interactive {
+    @apply card hover:-translate-y-1 hover:border-gold-400/40 hover:shadow-[0_20px_60px_-25px_rgba(224,187,92,0.35)];
+  }
+
+  .chip {
+    @apply rounded-full border border-white/10 bg-white/[0.03] px-4 py-1.5 text-xs font-medium text-zinc-300 transition
+           hover:border-gold-400/50 hover:text-white;
+  }
+
+  .chip-active {
+    @apply rounded-full border border-gold-400 bg-gold-400 px-4 py-1.5 text-xs font-semibold text-ink-950;
+  }
+
+  .input-dark {
+    @apply w-full rounded-xl border border-white/10 bg-ink-850 px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none transition
+           focus:border-gold-400 focus:ring-1 focus:ring-gold-400;
+  }
+
+  .label-dark {
+    @apply mb-2 block text-xs font-semibold uppercase tracking-wider text-zinc-400;
   }
 }
 
 @layer utilities {
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-emerald-700 via-green-700 to-teal-700;
+    @apply bg-gradient-to-r from-gold-200 via-gold-400 to-gold-600 bg-clip-text text-transparent;
   }
-  
+
+  .gold-hairline {
+    background: linear-gradient(90deg, transparent, rgba(224, 187, 92, 0.6), transparent);
+  }
+
+  .grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+
+  .map-tiles-dark {
+    filter: invert(1) hue-rotate(180deg) grayscale(0.85) brightness(0.75) contrast(1.15);
+  }
+
+  /* Kept for admin pages */
   .card-hover {
-    @apply transition-all duration-300 hover:shadow-2xl hover:-translate-y-1;
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl;
   }
-  
+
   .btn-modern {
-    @apply px-6 py-3 rounded-xl font-semibold transition-all duration-300 
-           transform hover:scale-105 hover:shadow-lg active:scale-95;
-  }
-  
-  .section-title {
-    @apply text-4xl md:text-5xl font-bold mb-4 text-gray-900;
-  }
-  
-  .section-subtitle {
-    @apply text-lg md:text-xl text-gray-600 mb-12;
+    @apply rounded-xl px-6 py-3 font-semibold transition-all duration-300 hover:shadow-lg active:scale-95;
   }
 }
-

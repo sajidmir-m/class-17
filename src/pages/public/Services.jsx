@@ -1,75 +1,106 @@
 import PublicLayout from '../../components/PublicLayout'
+import { CtaBand, Icon, PageHero, SectionHeading } from '../../components/ui'
+
+const services = [
+  {
+    title: 'School activities & campus programs',
+    description:
+      'End-to-end school activation campaigns, interactive sessions and engagement activities designed for students and educators.',
+    icon: 'school',
+  },
+  {
+    title: 'Face-to-face product demonstrations',
+    description:
+      'High-impact, on-ground demos that put your products directly in consumers’ hands for real-time feedback and experience.',
+    icon: 'handshake',
+  },
+  {
+    title: 'Industrial product showcases',
+    description: 'Specialised presentations and demonstrations for industrial audiences, decision makers and trade partners.',
+    icon: 'factory',
+  },
+  {
+    title: 'Experiential event planning',
+    description: 'Concept, design and execution of events that create immersive brand stories and memorable experiences.',
+    icon: 'sparkle',
+  },
+  {
+    title: 'Retail & channel activations',
+    description: 'In-store promotions, dealer meets and channel programs that drive visibility and conversions.',
+    icon: 'cart',
+  },
+  {
+    title: 'Brand & marketing strategy',
+    description: 'Integrated campaigns combining on-ground, digital and content to amplify your brand message.',
+    icon: 'megaphone',
+  },
+]
+
+const process = [
+  { title: 'Brief', desc: 'We understand your product, audience, cities and the outcome you need.' },
+  { title: 'Plan', desc: 'Locations, approvals, manpower, materials and timelines, signed off before day one.' },
+  { title: 'Execute', desc: 'Trained teams deliver on the ground with supervisors tracking quality every day.' },
+  { title: 'Report', desc: 'Daily photo and video updates, footfall counts and a closing report with learnings.' },
+]
 
 export default function Services() {
-  const services = [
-    {
-      title: 'School Activities & Campus Programs',
-      description:
-        'End-to-end school activation campaigns, interactive sessions, and engagement activities designed for students and educators.',
-      icon: '🏫',
-    },
-    {
-      title: 'Face-to-Face Product Demonstrations',
-      description:
-        'High-impact, on-ground demos that put your products directly in the hands of consumers for real-time feedback and experience.',
-      icon: '🤝',
-    },
-    {
-      title: 'Industrial Product Showcases',
-      description:
-        'Specialized presentations and demonstrations for industrial audiences, decision makers, and trade partners.',
-      icon: '🏭',
-    },
-    {
-      title: 'Experiential Event Planning',
-      description:
-        'Concept, design, and execution of events that create immersive brand stories and memorable experiences.',
-      icon: '🎉',
-    },
-    {
-      title: 'Retail & Channel Activations',
-      description:
-        'In-store promotions, dealer meets, and channel programs that drive visibility and conversions.',
-      icon: '🛒',
-    },
-    {
-      title: 'Brand & Marketing Strategy',
-      description:
-        'Integrated marketing campaigns combining on-ground, digital, and content to amplify your brand message.',
-      icon: '📢',
-    },
-  ]
-
   return (
     <PublicLayout>
-      <div className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h1 className="section-title">Our Services</h1>
-            <p className="section-subtitle">
-              On-ground experiences, school activities, face-to-face demos, and industrial activations tailored
-              for your brand.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <div
-                key={index}
-                className="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-lg p-8 border border-gray-100 card-hover group"
-              >
-                <div className="text-5xl mb-6 transform group-hover:scale-110 transition-transform duration-300">
-                  {service.icon}
+      <PageHero
+        eyebrow="Services"
+        title={
+          <>
+            Everything a brand needs <em className="text-gradient font-medium italic">on the ground</em>.
+          </>
+        }
+        subtitle="On-ground experiences, school activities, face-to-face demos and industrial activations tailored to your brand."
+        image="/Photos/EPSON FOR BUSINESS/Pune- Jan 2025/Picture1.jpg"
+      />
+
+      <section className="bg-ink-950 py-24 md:py-32">
+        <div className="container-x">
+          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.08] md:grid-cols-2 lg:grid-cols-3">
+            {services.map((service, i) => (
+              <div key={service.title} className="group relative bg-ink-950 p-8 transition duration-300 hover:bg-ink-900 md:p-10">
+                <div className="flex items-start justify-between">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full border border-gold-400/40 text-gold-400 transition group-hover:bg-gold-400 group-hover:text-ink-950">
+                    <Icon name={service.icon} className="h-5 w-5" />
+                  </span>
+                  <span className="font-display text-sm text-zinc-600">0{i + 1}</span>
                 </div>
-                <h3 className="text-2xl font-bold mb-3 text-gray-900 group-hover:text-blue-600 transition">
-                  {service.title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">{service.description}</p>
+                <h3 className="mt-8 text-2xl text-white">{service.title}</h3>
+                <p className="mt-3 leading-relaxed text-zinc-400">{service.description}</p>
               </div>
             ))}
           </div>
         </div>
-      </div>
+      </section>
+
+      <section className="bg-ink-900 py-24 md:py-32">
+        <div className="container-x">
+          <SectionHeading
+            eyebrow="Our process"
+            title="How a campaign runs"
+            subtitle="A simple, accountable process from first call to final report."
+          />
+          <ol className="grid grid-cols-1 gap-10 md:grid-cols-4 md:gap-6">
+            {process.map((step, i) => (
+              <li key={step.title} className="relative">
+                <div className="flex items-center gap-4">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gold-400 font-display text-lg text-ink-950">
+                    {i + 1}
+                  </span>
+                  {i < process.length - 1 ? <span className="hidden h-px flex-1 bg-gradient-to-r from-gold-400/60 to-transparent md:block" /> : null}
+                </div>
+                <h3 className="mt-6 text-2xl text-white">{step.title}</h3>
+                <p className="mt-2 leading-relaxed text-zinc-400">{step.desc}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <CtaBand />
     </PublicLayout>
   )
 }
-

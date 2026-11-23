@@ -75,6 +75,9 @@ const outPath = path.join(root, 'public', 'sitemap.xml')
 fs.mkdirSync(path.dirname(outPath), { recursive: true })
 fs.writeFileSync(outPath, xml, 'utf8')
 
+const robots = `User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: ${siteUrl}/sitemap.xml\n`
+fs.writeFileSync(path.join(root, 'public', 'robots.txt'), robots, 'utf8')
+
 console.log(`Generated sitemap at ${outPath}`)
 console.log(`Base URL: ${siteUrl}`)
 

@@ -31,7 +31,7 @@ export default function AdminLayout({ children }) {
   }
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+    <div className="flex min-h-screen bg-ink-950">
       <Sidebar onLogout={handleLogout} />
       <main className="flex-1 p-6 md:p-8 lg:p-10 overflow-x-hidden">
         {children}

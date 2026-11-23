@@ -1,81 +1,113 @@
-import PublicLayout from '../../components/PublicLayout'
 import { Link } from 'react-router-dom'
+import PublicLayout from '../../components/PublicLayout'
+import { CtaBand, Icon, PageHero } from '../../components/ui'
+
+const stats = [
+  { value: '500+', label: 'Events organised' },
+  { value: '10+', label: 'Years of experience' },
+  { value: '100%', label: 'Client satisfaction' },
+]
+
+const values = [
+  { title: 'Plan before we play', desc: 'Every activation starts with clear objectives, approvals, locations and manpower planning.' },
+  { title: 'People on the ground', desc: 'Trained promoters and team leads who represent your brand with discipline and warmth.' },
+  { title: 'Proof, every day', desc: 'Daily reporting with photos, videos and counts, so you always know what was delivered.' },
+]
 
 export default function About() {
   return (
     <PublicLayout>
-      <div className="bg-gradient-to-br from-blue-50 to-purple-50 py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h1 className="section-title">About Us</h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Crafting extraordinary experiences that transform ideas into unforgettable moments
+      <PageHero
+        eyebrow="About us"
+        title={
+          <>
+            Crafting experiences that turn ideas into <em className="text-gradient font-medium italic">results</em>.
+          </>
+        }
+        subtitle="Class 17 Events is a marketing and advertising company that brings brands face to face with the people who matter to them."
+        image="/Social activity/social activity in kolkata/social activity kol 2.png"
+      />
+
+      <section className="bg-ink-950 py-24 md:py-32">
+        <div className="container-x grid grid-cols-1 gap-16 lg:grid-cols-2">
+          <div>
+            <p className="eyebrow mb-6">Our story</p>
+            <h2 className="section-title">Ideas that speak louder than words.</h2>
+          </div>
+          <div className="space-y-6 text-lg leading-relaxed text-zinc-400">
+            <p>
+              We are an event management and marketing company dedicated to creating experiences that leave a lasting
+              impact. Our team brings your vision to life, combining creativity with careful attention to detail.
+            </p>
+            <p>
+              Over the years we have organised hundreds of activations, from school programs and retail demos to
+              cricket engagements and corporate events, across metros and district towns alike.
             </p>
           </div>
-          
-          <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 space-y-6">
-            <div className="rounded-2xl border border-gray-200 bg-gradient-to-br from-white to-gray-50 p-6 md:p-7 flex flex-col md:flex-row items-center gap-6">
-              <div className="w-40 md:w-44 aspect-square rounded-3xl overflow-hidden border border-gray-200 shadow-md bg-gray-100 shrink-0">
+        </div>
+
+        <div className="container-x mt-20">
+          <dl className="grid grid-cols-1 divide-y divide-white/[0.08] border-y border-white/[0.08] sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+            {stats.map((s) => (
+              <div key={s.label} className="py-10 text-center">
+                <dt className="font-display text-5xl text-gradient md:text-6xl">{s.value}</dt>
+                <dd className="mt-3 text-xs uppercase tracking-[0.25em] text-zinc-500">{s.label}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      {/* Founder */}
+      <section className="relative overflow-hidden bg-ink-900 py-24 md:py-32">
+        <div className="absolute right-0 top-1/2 h-[500px] w-[500px] -translate-y-1/2 rounded-full bg-gold-500/10 blur-[140px]" />
+        <div className="container-x relative grid grid-cols-1 items-center gap-16 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <div className="relative mx-auto w-full max-w-md">
+              <div className="absolute -bottom-5 -right-5 h-full w-full rounded-2xl border border-gold-400/50" />
+              <div className="relative aspect-square overflow-hidden rounded-2xl bg-ink-800 shadow-2xl">
                 <img
                   src="/ashiq.jpeg"
-                  alt="MD Ashique Sidique"
-                  className="w-full h-full object-cover"
+                  alt="MD Ashique Sidique, Founder & Chairman"
+                  className="h-full w-full object-cover"
                   onError={(e) => {
                     e.currentTarget.src = '/placeholder-image.svg'
                   }}
                 />
               </div>
-              <div className="text-center md:text-left flex-1">
-                <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider">Founder & Chairman</p>
-                <h2 className="text-2xl font-bold text-gray-900 mt-1">MD Ashique Sidique</h2>
-                <p className="text-gray-600 mt-2 leading-relaxed">
-                  Best-in-class founder leadership with strategy-led activations and on-ground execution across India — disciplined operations, trained teams, and measurable reporting.
-                </p>
-                <div className="mt-4">
-                  <Link
-                    to="/founder"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#2E8B57] hover:bg-[#257046] text-white font-semibold shadow-lg hover:shadow-xl transition"
-                  >
-                    View Founder Profile →
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            <div className="prose prose-lg max-w-none">
-              <p className="text-gray-700 text-lg leading-relaxed">
-                Welcome to <span className="font-semibold text-blue-600">Class 17 Events</span>, where we believe that <span className="font-semibold text-purple-600">ideas speak louder than words</span>.
-              </p>
-              <p className="text-gray-700 text-lg leading-relaxed">
-                We are a premier event management and marketing company dedicated to creating
-                unforgettable experiences that leave a lasting impact. Our team of creative professionals
-                works tirelessly to bring your vision to life, combining innovation with meticulous attention to detail.
-              </p>
-              <p className="text-gray-700 text-lg leading-relaxed">
-                With years of experience in the industry, we have successfully organized hundreds of
-                events ranging from corporate conferences to grand celebrations. Our commitment to
-                excellence and passion for perfection sets us apart in every project we undertake.
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 pt-8 border-t border-gray-200">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-blue-600 mb-2">500+</div>
-                <div className="text-gray-600">Events Organized</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-purple-600 mb-2">10+</div>
-                <div className="text-gray-600">Years Experience</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-pink-600 mb-2">100%</div>
-                <div className="text-gray-600">Client Satisfaction</div>
-              </div>
             </div>
           </div>
+          <div className="lg:col-span-7">
+            <p className="eyebrow mb-6">Founder &amp; Chairman</p>
+            <h2 className="font-display text-4xl font-semibold text-white md:text-6xl">MD Ashique Sidique</h2>
+            <blockquote className="mt-8 border-l-2 border-gold-400 pl-6 font-display text-xl italic leading-relaxed text-zinc-200 md:text-2xl">
+              Best-in-class leadership behind strategy-led activations and on-ground execution across India, with
+              disciplined operations, trained teams and measurable reporting.
+            </blockquote>
+            <Link to="/founder" className="btn-gold mt-10">
+              View founder profile <Icon name="arrow" className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
-      </div>
+      </section>
+
+      <section className="bg-ink-950 py-24 md:py-32">
+        <div className="container-x">
+          <p className="eyebrow mb-6">How we work</p>
+          <h2 className="section-title max-w-2xl">Three promises on every project.</h2>
+          <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-3">
+            {values.map((v, i) => (
+              <div key={v.title} className="card p-8">
+                <span className="font-display text-4xl text-gold-500/60">0{i + 1}</span>
+                <h3 className="mt-6 text-2xl text-white">{v.title}</h3>
+                <p className="mt-3 leading-relaxed text-zinc-400">{v.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <CtaBand />
     </PublicLayout>
   )
 }
-
