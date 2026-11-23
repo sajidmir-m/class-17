@@ -117,7 +117,7 @@ export default function Home() {
               We turn brand briefs into <em className="text-gradient font-medium italic">moments</em> people remember.
             </h2>
             <p className="mt-6 leading-relaxed text-zinc-600">
-              Class 17 Events plans and runs on-ground marketing for leading brands, from a single school session to
+              Class 17 plans and runs on-ground marketing for leading brands, from a single school session to
               multi-state rollouts. Strategy, people and reporting under one roof.
             </p>
             <Link to="/about" className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-gold-700 hover:text-gold-600">

@@ -124,7 +124,7 @@ export function CtaBand({
                 Start a conversation
               </Link>
               <a
-                href={whatsappLink('Hello Class 17 Events, I would like to discuss a campaign.')}
+                href={whatsappLink('Hello Class 17, I would like to discuss a campaign.')}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-outline"

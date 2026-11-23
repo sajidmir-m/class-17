@@ -24,7 +24,7 @@ export default function About() {
             Crafting experiences that turn ideas into <em className="text-gradient font-medium italic">results</em>.
           </>
         }
-        subtitle="Class 17 Events is a marketing and advertising company that brings brands face to face with the people who matter to them."
+        subtitle="Class 17 is a marketing and advertising company that brings brands face to face with the people who matter to them."
         image="/Social activity/social activity in kolkata/social activity kol 2.png"
       />
 

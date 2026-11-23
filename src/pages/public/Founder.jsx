@@ -10,9 +10,9 @@ const fallbackProfile = {
   name: 'MD Ashique Sidique',
   title: 'Founder & Chairman',
   brief_intro:
-    'Founder & Chairman of Class 17 Events, delivering strategy-led activations and on-ground execution across India.',
+    'Founder & Chairman of Class 17, delivering strategy-led activations and on-ground execution across India.',
   about:
-    'Class 17 Events is built on clear planning, disciplined execution, and measurable impact. We work across schools, retail, sports, corporate and industrial outreach — with a strong emphasis on quality teams, compliance, and consistent reporting.',
+    'Class 17 is built on clear planning, disciplined execution, and measurable impact. We work across schools, retail, sports, corporate and industrial outreach — with a strong emphasis on quality teams, compliance, and consistent reporting.',
   highlights: [
     'Pan-India campaign execution across metros and tier cities',
     'School & campus activations with trained teams',
@@ -208,7 +208,7 @@ export default function Founder() {
 
         <div className="container-x mt-12">
           <Link to="/about" className="inline-flex items-center gap-2 text-sm font-semibold text-gold-700 hover:text-gold-600">
-            About Class 17 Events <Icon name="arrow" className="h-4 w-4" />
+            About Class 17 <Icon name="arrow" className="h-4 w-4" />
           </Link>
         </div>
       </section>

@@ -42,7 +42,7 @@ export default function Contact() {
       icon: 'phone',
       label: 'WhatsApp',
       value: '+91 91495 59393',
-      href: whatsappLink('Hello Class 17 Events, I would like to get in touch.'),
+      href: whatsappLink('Hello Class 17, I would like to get in touch.'),
       external: true,
     },
     {

@@ -69,7 +69,7 @@ export default function HeroShowcase() {
       <div className="container-x relative flex w-full flex-col justify-end pb-8 pt-24 sm:pb-10 sm:pt-28 md:pb-12 md:pt-32">
         <div className="max-w-3xl">
           <p className="eyebrow mb-4 animate-fade-up sm:mb-6">
-            Marketing &amp; Advertising<span className="hidden sm:inline"> · Pan-India</span>
+            Class 17<span className="hidden sm:inline"> · Marketing &amp; Advertising</span>
           </p>
           <h1 className="font-display text-[2.05rem] font-semibold leading-[1.05] sm:text-5xl md:text-6xl lg:text-[4.15rem]">
             <span className="block animate-fade-up [animation-delay:120ms]">Ideas that speak</span>
@@ -78,8 +78,8 @@ export default function HeroShowcase() {
             </span>
           </h1>
           <p className="mt-4 max-w-xl animate-fade-up text-sm leading-relaxed text-zinc-300 [animation-delay:360ms] sm:mt-6 sm:text-base md:text-lg">
-            Printers, projectors, school programs, dealer meets and cricket match activations, planned with
-            strategy and executed across India.
+            Class 17 plans printers, projectors, school programs, dealer meets and cricket match activations,
+            then executes them across India.
           </p>
           <div className="mt-6 flex animate-fade-up flex-col gap-3 [animation-delay:480ms] sm:mt-8 sm:flex-row sm:gap-4">
             <Link to="/contact" className="btn-gold">

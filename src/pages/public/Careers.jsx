@@ -60,7 +60,7 @@ export default function Careers() {
   const applyOnWhatsApp = (job) =>
     openWhatsApp(
       [
-        'Hello Class 17 Events, I want to apply for this job.',
+        'Hello Class 17, I want to apply for this job.',
         '',
         `Job Title: ${job.title || '-'}`,
         `Location: ${job.location || '-'}`,
@@ -83,7 +83,7 @@ export default function Careers() {
       if (selectedJob?.isInternship) {
         openWhatsApp(
           [
-            'Hello Class 17 Events, I want to apply for the Marketing & Advertising Internship.',
+            'Hello Class 17, I want to apply for the Marketing & Advertising Internship.',
             '',
             `Name: ${formData.name || '-'}`,
             `Phone: ${formData.phone || '-'}`,
