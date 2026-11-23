@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom'
 const SLIDE_MS = 6500
 
 const slides = [
-  { src: '/hero/cricket.webp', activity: 'Cricket & sports', place: 'Stadium fan engagement', position: '65% center' },
-  { src: '/hero/school.webp', activity: 'School programs', place: 'Campus activations', position: '70% center' },
-  { src: '/hero/retail.webp', activity: 'Brand activations', place: 'Retail & mall demos', position: '72% center' },
-  { src: '/hero/event.webp', activity: 'Live events', place: 'Stage & experiential', position: '70% center' },
+  { src: '/hero/school.webp', activity: 'Projectors', place: 'School & campus demos', position: '72% center' },
+  { src: '/hero/printers.webp', activity: 'Printers', place: 'Dealer meets & showcases', position: '70% center' },
+  { src: '/hero/cricket.webp', activity: 'Cricket', place: 'Match-day activations', position: '68% center' },
+  { src: '/hero/event.webp', activity: 'School events', place: 'Education activations', position: '70% center' },
 ]
 
 const stats = [
@@ -78,7 +78,7 @@ export default function HeroShowcase() {
             </span>
           </h1>
           <p className="mt-7 max-w-xl animate-fade-up text-base leading-relaxed text-zinc-300 [animation-delay:360ms] md:text-lg">
-            Brand activations, school programs, cricket and sports engagement, and on-ground events, planned with
+            Printers, projectors, school programs, dealer meets and cricket match activations, planned with
             strategy and executed across India.
           </p>
           <div className="mt-9 flex animate-fade-up flex-col gap-4 [animation-delay:480ms] sm:flex-row">
